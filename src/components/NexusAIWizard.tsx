@@ -34,7 +34,7 @@ import {
 import confetti from 'canvas-confetti';
 
 // ===== CONFIGURATION =====
-const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxluhaYj7f2nFIZ8TmedkS6jj2hmg88V32VlBa4n_8bXQt7RNQ3AQBpv0g3mXN_uGri/exec';
+const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwsGVrodJSBRgk6vqoZOTLK1CRC_fV4ZeK66rMFCUFJeet8bNlRnsGQdqZgr4XqKd5EuQ/exec';
 const WHATSAPP_NUMBER = '27XXXXXXXXXX'; // USER: Replace with your actual business number
 
 interface WizardData {
@@ -466,7 +466,7 @@ export default function NexusAIWizard() {
     const leadScore = calculateLeadScore(data);
     const mappedBudget = { starter: 'Starter', growth: 'Growth', scale: 'Scale', discuss: "Let's Discuss" }[data.budget] || data.budget;
     
-    // Construct the flat payload (Must match Apps Script doPost keys exactly)
+    // Construct the flat payload (Must match Apps Script expectations exactly)
     const payload = {
       Name: data.name,
       Email: data.email,
@@ -475,7 +475,7 @@ export default function NexusAIWizard() {
       Primary_Service: `${data.painPoint} -> ${data.p2_conditional}`,
       Budget: mappedBudget,
       Lead_Score: Number(leadScore), // STRICT NUMBER
-      Vision: data.vision || ''
+      Vision: data.vision || ''      // TEXT ONLY - NO PREFIXES
     };
 
     // ACTION 2: DEBUG LOGGING
@@ -485,21 +485,12 @@ export default function NexusAIWizard() {
     console.log('Lead_Score value:', payload.Lead_Score);
     console.log('============================');
 
-    const formData = new FormData();
-    formData.append('Name', payload.Name);
-    formData.append('Email', payload.Email);
-    formData.append('Phone', payload.Phone);
-    formData.append('Company', payload.Company);
-    formData.append('Primary_Service', payload.Primary_Service);
-    formData.append('Budget', payload.Budget);
-    formData.append('Lead_Score', payload.Lead_Score.toString());
-    formData.append('Vision', payload.Vision);
-
     try {
       await fetch(FORM_ENDPOINT, { 
         method: 'POST', 
         mode: 'no-cors', 
-        body: formData 
+        headers: { 'Content-Type': 'text/plain' }, // Using text/plain for no-cors JSON bypass
+        body: JSON.stringify(payload) 
       });
       
       // Analytics & Confetti
