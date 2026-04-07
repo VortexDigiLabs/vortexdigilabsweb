@@ -65,71 +65,8 @@ const INITIAL_DATA: WizardData = {
 
 // --- HELPERS ---
 
-// LEAD SCORING ALGORITHM
-function calculateLeadScore(answers: WizardData) {
-  let score = 0;
-  
-  // Budget weighting (max 30 points)
-  const budgetScores: Record<string, number> = {
-    'scale': 30,
-    'growth': 20, 
-    'starter': 10,
-    'discuss': 15
-  };
-  
-  const b = (answers.budget || '').toLowerCase();
-  const budgetKey = b.includes('scale') ? 'scale' :
-                    (b.includes('growth') || b.includes('r25k') || b.includes('r20k') || b.includes('r15k')) ? 'growth' :
-                    (b.includes('starter') || b.includes('r8k') || b.includes('r5k') || b.includes('r3k')) ? 'starter' :
-                    'discuss';
-  
-  score += budgetScores[budgetKey] || 5;
-  
-  // Timeline/Urgency weighting (max 25 points)
-  const urgencyScores: Record<string, number> = {
-    'urgent': 25,
-    'this_month': 18,
-    'next_quarter': 10,
-    'exploring': 5
-  };
-  
-  const t = (answers.timeline || '').toLowerCase();
-  const timelineKey = (t.includes('urgent') || t.includes('asap')) ? 'urgent' :
-                      t.includes('month') ? 'this_month' :
-                      t.includes('quarter') ? 'next_quarter' :
-                      'exploring';
-  
-  score += urgencyScores[timelineKey] || 5;
-  
-  // Pain point clarity (max 20 points)
-  const specificPains = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
-  if (specificPains.includes(answers.painPoint)) {
-    score += 20;
-  } else if (answers.painPoint === 'new_business') {
-    score += 12;
-  } else {
-    score += 5;
-  }
-  
-  // Goal clarity (max 15 points)
-  if (answers.p2_conditional && !answers.p2_conditional.toLowerCase().includes('all')) {
-    score += 15;
-  } else {
-    score += 8;
-  }
-  
-  // Engagement bonus (max 10 points)
-  if (answers.phone) score += 3;
-  if (answers.company) score += 3;
-  if (answers.vision && answers.vision.length > 50) score += 4;
-  
-  return Math.min(score, 100);
-}
-
-const getTier = (score: number) => {
-  if (score >= 80) return { label: `🔥 PRIORITY CLIENT - ${score}/100`, color: 'text-red-400', badge: 'bg-red-500/20 border-red-500', icon: '' };
-  if (score >= 60) return { label: `✅ GREAT FIT - ${score}/100`, color: 'text-green-400', badge: 'bg-green-500/20 border-green-500', icon: '' };
-  return { label: `🟡 WELCOME ABOARD - ${score}/100`, color: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500', icon: '' };
+const getBudgetLabel = (b: string) => {
+  return { starter: 'Starter', growth: 'Growth', scale: 'Scale', discuss: "Let's Discuss" }[b] || b;
 };
 
 // --- STEP COMPONENTS ---
@@ -463,42 +400,36 @@ export default function NexusAIWizard() {
     setIsSubmitting(true);
     setError('');
 
-    const leadScore = calculateLeadScore(data);
-    const mappedBudget = { starter: 'Starter', growth: 'Growth', scale: 'Scale', discuss: "Let's Discuss" }[data.budget] || data.budget;
+    const budgetLabel = getBudgetLabel(data.budget);
     
-    // Construct the flat payload (Must match Apps Script expectations exactly)
+    // Construct the simple flat payload (Must match EXACTLY for G-Sheets)
     const payload = {
       Name: data.name,
       Email: data.email,
       Phone: data.phone || '',
       Company: data.company || '',
-      Primary_Service: `${data.painPoint} -> ${data.p2_conditional}`,
-      Budget: mappedBudget,
-      Lead_Score: Number(leadScore), // STRICT NUMBER
-      Vision: data.vision || ''      // TEXT ONLY - NO PREFIXES
+      Service_Interest: `${data.painPoint} -> ${data.p2_conditional} (Budget: ${budgetLabel})`,
+      Message: data.vision || ''
     };
 
-    // ACTION 2: DEBUG LOGGING
-    console.log('=== WIZARD PAYLOAD DEBUG ===');
-    console.log('Full payload object:', JSON.stringify(payload, null, 2));
-    console.log('Lead_Score type:', typeof payload.Lead_Score);
-    console.log('Lead_Score value:', payload.Lead_Score);
-    console.log('============================');
+    // DEBUG LOGGING
+    console.log('=== SIMPLE WIZARD PAYLOAD DEBUG ===');
+    console.log('Payload:', JSON.stringify(payload, null, 2));
+    console.log('====================================');
 
     try {
       await fetch(FORM_ENDPOINT, { 
         method: 'POST', 
         mode: 'no-cors', 
-        headers: { 'Content-Type': 'text/plain' }, // Using text/plain for no-cors JSON bypass
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload) 
       });
       
       // Analytics & Confetti
       if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'lead_scored', { score: leadScore, tier: getTier(leadScore).label });
         (window as any).gtag('event', 'generate_lead', { 
-          form_name: 'nexus_ai_wizard_v2', 
-          score: leadScore
+          form_name: 'nexus_ai_wizard_simple', 
+          package: budgetLabel
         });
       }
       
@@ -546,13 +477,8 @@ export default function NexusAIWizard() {
   }
 
   if (isSubmitted) {
-    const finalScore = calculateLeadScore(data);
-    const tier = getTier(finalScore);
+    const budgetLabel = getBudgetLabel(data.budget);
     
-    // WhatsApp pre-fill
-    const waMessage = `Hi Vortex Team! 👋\n\nI just completed your NEXUS AI discovery wizard.\n\n👤 Name: ${data.name}\n📧 Email: ${data.email}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n⏰ Timeline: ${data.timeline}\n💰 Budget: ${data.budget}\n\nLooking forward to hearing from you!`;
-    const waUrl = `https://wa.me/27XXXXXXXXXX?text=${encodeURIComponent(waMessage)}`;
-
     return (
       <section id="contact" className="py-24 max-w-2xl mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-8">
@@ -561,34 +487,25 @@ export default function NexusAIWizard() {
           </div>
           <div>
             <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">DISCOVERY COMPLETE! 🚀</h2>
-            <div className={`inline-block px-4 py-1 rounded-full border ${tier.badge} text-[10px] font-bold uppercase tracking-widest ${tier.color}`}>
-              {tier.icon} {tier.label}
-            </div>
-            <p className="font-mono text-silver/60 mt-4 max-w-md mx-auto">Thanks {data.name}! Our team has received your data and is ready to launch your vision.</p>
+            <p className="font-mono text-silver/60 mt-4 max-w-md mx-auto">Thanks {data.name}! Our team has received your data and will reach out within 24 hours.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
              <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-left">
-                <h4 className="font-mono text-cyan text-[10px] uppercase tracking-widest mb-3">Transmission Profile</h4>
+                <h4 className="font-mono text-cyan text-[10px] uppercase tracking-widest mb-3">Service Profile</h4>
                 <div className="space-y-1 text-xs font-mono opacity-60">
-                  <p>ID: VLAB-{Math.random().toString(36).substr(2, 6).toUpperCase()}</p>
-                  <p>SCORE: {finalScore}/100</p>
-                  <p>STATUS: VERIFIED</p>
+                  <p>Service: {data.painPoint} {'->'} {data.p2_conditional}</p>
+                  <p>Budget: {budgetLabel}</p>
                 </div>
              </div>
              <a 
-              href={waUrl}
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Team! 👋\n\nI just completed your discovery wizard.\n\n👤 Name: ${data.name}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n💰 Budget: ${budgetLabel}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as any).gtag) {
-                  (window as any).gtag('event', 'whatsapp_initiated', { method: 'success_screen_button', lead_score: finalScore });
-                }
-              }}
               className="p-6 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-2xl flex flex-col items-center justify-center gap-2 group transition-transform hover:scale-[1.02]"
              >
                 <MessageSquare className="w-8 h-8 text-white group-hover:animate-bounce" />
-                <span className="text-white font-bold uppercase tracking-widest text-sm">Quick Connect via WhatsApp</span>
+                <span className="text-white font-bold uppercase tracking-widest text-sm">Quick Connect</span>
              </a>
           </div>
 
