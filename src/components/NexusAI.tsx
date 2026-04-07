@@ -26,7 +26,7 @@ export default function NexusAI() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!chatRef.current) {
+    if (!chatRef.current && ai) {
       chatRef.current = ai.chats.create({
         model: "gemini-3-flash-preview",
         config: {
