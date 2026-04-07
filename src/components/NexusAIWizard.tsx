@@ -35,7 +35,7 @@ import confetti from 'canvas-confetti';
 
 // ===== CONFIGURATION =====
 const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwsGVrodJSBRgk6vqoZOTLK1CRC_fV4ZeK66rMFCUFJeet8bNlRnsGQdqZgr4XqKd5EuQ/exec';
-const WHATSAPP_NUMBER = '27XXXXXXXXXX'; // USER: Replace with your actual business number
+const WHATSAPP_NUMBER = '27658024718'; // Vortex Digital Labs WhatsApp
 
 interface WizardData {
   painPoint: string;
