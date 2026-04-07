@@ -273,25 +273,22 @@ export default function NexusAIWizard() {
       discuss: "Let's Discuss" 
     }[data.budget] || data.budget;
 
-    const payload = {
-      timestamp: new Date().toISOString(),
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      company: data.company,
-      primary_service: `${data.painPoint} -> ${data.goal}`,
-      addons: '',
-      budget: mappedBudget,
-      vision: `Challenge: ${data.painPoint}\nGoal: ${data.goal}\nUrgency: ${data.timeline}\nBudget: ${mappedBudget}\nMessage: ${data.vision}`.trim()
-    };
+    const formData = new FormData();
+    formData.append('Name', data.name);
+    formData.append('Email', data.email);
+    formData.append('Phone', data.phone || '');
+    formData.append('Company', data.company || '');
+    formData.append('Primary_Service', `${data.painPoint} -> ${data.goal}`);
+    formData.append('Budget', mappedBudget);
+    formData.append('Vision', `Challenge: ${data.painPoint}\nGoal: ${data.goal}\nUrgency: ${data.timeline}\nBudget: ${mappedBudget}\nMessage: ${data.vision}`.trim());
 
     try {
       await fetch(FORM_ENDPOINT, { 
         method: 'POST', 
         mode: 'no-cors', 
-        headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify(payload) 
+        body: formData 
       });
+      
       trackEvent('generate_lead', { 
         form_name: 'nexus_ai_wizard', 
         pain_point: data.painPoint, 
@@ -300,7 +297,8 @@ export default function NexusAIWizard() {
         budget: data.budget 
       });
       setIsSubmitted(true);
-    } catch { 
+    } catch (err) { 
+      console.error('Submission error:', err);
       setError('Signal lost. Please try re-transmitting.'); 
     } finally { 
       setIsSubmitting(false); 
