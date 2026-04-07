@@ -65,6 +65,73 @@ const INITIAL_DATA: WizardData = {
 
 // --- HELPERS ---
 
+// LEAD SCORING ALGORITHM
+function calculateLeadScore(answers: WizardData) {
+  let score = 0;
+  
+  // Budget weighting (max 30 points)
+  const budgetScores: Record<string, number> = {
+    'scale': 30,
+    'growth': 20, 
+    'starter': 10,
+    'discuss': 15
+  };
+  
+  const b = (answers.budget || '').toLowerCase();
+  const budgetKey = b.includes('scale') ? 'scale' :
+                    (b.includes('growth') || b.includes('r25k') || b.includes('r20k') || b.includes('r15k')) ? 'growth' :
+                    (b.includes('starter') || b.includes('r8k') || b.includes('r5k') || b.includes('r3k')) ? 'starter' :
+                    'discuss';
+  
+  score += budgetScores[budgetKey] || 5;
+  
+  // Timeline/Urgency weighting (max 25 points)
+  const urgencyScores: Record<string, number> = {
+    'urgent': 25,
+    'this_month': 18,
+    'next_quarter': 10,
+    'exploring': 5
+  };
+  
+  const t = (answers.timeline || '').toLowerCase();
+  const timelineKey = (t.includes('urgent') || t.includes('asap')) ? 'urgent' :
+                      t.includes('month') ? 'this_month' :
+                      t.includes('quarter') ? 'next_quarter' :
+                      'exploring';
+  
+  score += urgencyScores[timelineKey] || 5;
+  
+  // Pain point clarity (max 20 points)
+  const specificPains = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
+  if (specificPains.includes(answers.painPoint)) {
+    score += 20;
+  } else if (answers.painPoint === 'new_business') {
+    score += 12;
+  } else {
+    score += 5;
+  }
+  
+  // Goal clarity (max 15 points)
+  if (answers.p2_conditional && !answers.p2_conditional.toLowerCase().includes('all')) {
+    score += 15;
+  } else {
+    score += 8;
+  }
+  
+  // Engagement bonus (max 10 points)
+  if (answers.phone) score += 3;
+  if (answers.company) score += 3;
+  if (answers.vision && answers.vision.length > 50) score += 4;
+  
+  return Math.min(score, 100);
+}
+
+const getTier = (score: number) => {
+  if (score >= 80) return { label: `🔥 PRIORITY CLIENT - ${score}/100`, color: 'text-red-400', badge: 'bg-red-500/20 border-red-500' };
+  if (score >= 60) return { label: `✅ GREAT FIT - ${score}/100`, color: 'text-green-400', badge: 'bg-green-500/20 border-green-500' };
+  return { label: `🟡 WELCOME ABOARD - ${score}/100`, color: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500' };
+};
+
 const getBudgetLabel = (b: string) => {
   return { starter: 'Starter', growth: 'Growth', scale: 'Scale', discuss: "Let's Discuss" }[b] || b;
 };
@@ -401,38 +468,53 @@ export default function NexusAIWizard() {
     setError('');
 
     const budgetLabel = getBudgetLabel(data.budget);
+    const calculatedScore = calculateLeadScore(data);
     
-    // Construct the simple flat payload (Must match EXACTLY for G-Sheets)
+    // Construct the flat payload (Must match EXACTLY for G-Sheets)
     const payload = {
       Name: data.name,
       Email: data.email,
       Phone: data.phone || '',
       Company: data.company || '',
-      Service_Interest: `${data.painPoint} -> ${data.p2_conditional} (Budget: ${budgetLabel})`,
-      Message: data.vision || ''
+      Primary_Service: `${data.painPoint} -> ${data.p2_conditional}`,
+      Budget: budgetLabel,
+      Lead_Score: Number(calculatedScore), // STRICT NUMBER
+      Vision: data.vision || '' // Raw text (no metadata prefixes)
     };
 
-    // DEBUG LOGGING
-    console.log('=== SIMPLE WIZARD PAYLOAD DEBUG ===');
-    console.log('Payload:', JSON.stringify(payload, null, 2));
-    console.log('====================================');
+    // ACTION 2: DEBUG LOGGING
+    console.log('=== WIZARD PAYLOAD DEBUG ===');
+    console.log('Full payload object:', JSON.stringify(payload, null, 2));
+    console.log('Lead_Score type:', typeof payload.Lead_Score);
+    console.log('Lead_Score value:', payload.Lead_Score);
+    console.log('============================');
+
+    const formData = new FormData();
+    formData.append('Name', payload.Name);
+    formData.append('Email', payload.Email);
+    formData.append('Phone', payload.Phone);
+    formData.append('Company', payload.Company);
+    formData.append('Primary_Service', payload.Primary_Service);
+    formData.append('Budget', payload.Budget);
+    formData.append('Lead_Score', payload.Lead_Score.toString());
+    formData.append('Vision', payload.Vision);
 
     try {
       await fetch(FORM_ENDPOINT, { 
         method: 'POST', 
         mode: 'no-cors', 
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload) 
+        body: formData 
       });
       
       // Analytics & Confetti
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'generate_lead', { 
-          form_name: 'nexus_ai_wizard_simple', 
-          package: budgetLabel
+          form_name: 'nexus_ai_wizard_v2', 
+          score: payload.Lead_Score,
+          package: payload.Budget
         });
       }
-      
+
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00ffff', '#ffffff', '#a855f7'] });
       localStorage.removeItem('nexus_wizard_progress');
       setIsSubmitted(true);
@@ -478,6 +560,8 @@ export default function NexusAIWizard() {
 
   if (isSubmitted) {
     const budgetLabel = getBudgetLabel(data.budget);
+    const score = calculateLeadScore(data);
+    const tier = getTier(score);
     
     return (
       <section id="contact" className="py-24 max-w-2xl mx-auto px-6">
@@ -487,7 +571,10 @@ export default function NexusAIWizard() {
           </div>
           <div>
             <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">DISCOVERY COMPLETE! 🚀</h2>
-            <p className="font-mono text-silver/60 mt-4 max-w-md mx-auto">Thanks {data.name}! Our team has received your data and will reach out within 24 hours.</p>
+            <div className={`inline-block px-4 py-1 rounded-full border ${tier.badge} text-[10px] font-bold uppercase tracking-widest ${tier.color} mb-4`}>
+              {tier.label}
+            </div>
+            <p className="font-mono text-silver/60 max-w-md mx-auto">Thanks {data.name}! Our team has received your data and will reach out within 24 hours.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -499,7 +586,7 @@ export default function NexusAIWizard() {
                 </div>
              </div>
              <a 
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Team! 👋\n\nI just completed your discovery wizard.\n\n👤 Name: ${data.name}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n💰 Budget: ${budgetLabel}`)}`}
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Team! 👋\n\nI just completed your discovery wizard.\n\n👤 Name: ${data.name}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n💰 Budget: ${budgetLabel}\n🔥 Score: ${score}/100`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-6 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-2xl flex flex-col items-center justify-center gap-2 group transition-transform hover:scale-[1.02]"
