@@ -464,27 +464,62 @@ export default function NexusAIWizard() {
     setError('');
 
     const leadScore = calculateLeadScore(data);
-    const mappedBudget = { starter: 'R3k-R12k', growth: 'R10k-R25k', scale: 'R25k-R50k+', discuss: "Discuss" }[data.budget] || data.budget;
+    const mappedBudget = { starter: 'Starter', growth: 'Growth', scale: 'Scale', discuss: "Let's Discuss" }[data.budget] || data.budget;
     
+    // Construct the flat payload (Must match Apps Script doPost keys exactly)
+    const payload = {
+      Name: data.name,
+      Email: data.email,
+      Phone: data.phone || '',
+      Company: data.company || '',
+      Primary_Service: `${data.painPoint} -> ${data.p2_conditional}`,
+      Budget: mappedBudget,
+      Lead_Score: Number(leadScore), // STRICT NUMBER
+      Vision: data.vision || ''
+    };
+
+    // ACTION 2: DEBUG LOGGING
+    console.log('=== WIZARD PAYLOAD DEBUG ===');
+    console.log('Full payload object:', JSON.stringify(payload, null, 2));
+    console.log('Lead_Score type:', typeof payload.Lead_Score);
+    console.log('Lead_Score value:', payload.Lead_Score);
+    console.log('============================');
+
     const formData = new FormData();
-    formData.append('Name', data.name);
-    formData.append('Email', data.email);
-    formData.append('Phone', data.phone || '');
-    formData.append('Company', data.company || '');
-    formData.append('Primary_Service', `${data.painPoint} (${data.p2_conditional})`);
-    formData.append('Budget', mappedBudget);
-    formData.append('Lead_Score', leadScore.toString());
-    formData.append('Vision', `[Score: ${leadScore}/100] [URL: ${data.websiteUrl}] ${data.vision}`.trim());
+    formData.append('Name', payload.Name);
+    formData.append('Email', payload.Email);
+    formData.append('Phone', payload.Phone);
+    formData.append('Company', payload.Company);
+    formData.append('Primary_Service', payload.Primary_Service);
+    formData.append('Budget', payload.Budget);
+    formData.append('Lead_Score', payload.Lead_Score.toString());
+    formData.append('Vision', payload.Vision);
 
     try {
-      await fetch(FORM_ENDPOINT, { method: 'POST', mode: 'no-cors', body: formData });
+      await fetch(FORM_ENDPOINT, { 
+        method: 'POST', 
+        mode: 'no-cors', 
+        body: formData 
+      });
+      
+      // Analytics & Confetti
       if (typeof window !== 'undefined' && (window as any).gtag) {
         (window as any).gtag('event', 'lead_scored', { score: leadScore, tier: getTier(leadScore).label });
+        (window as any).gtag('event', 'generate_lead', { 
+          form_name: 'nexus_ai_wizard_v2', 
+          score: leadScore
+        });
       }
+      
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00ffff', '#ffffff', '#a855f7'] });
       localStorage.removeItem('nexus_wizard_progress');
       setIsSubmitted(true);
-    } catch { setError('Signal lost. Please try re-transmitting.'); } finally { setIsSubmitting(false); }
+    } catch (err) { 
+      console.error('Submission error:', err);
+      setError('Signal lost. Please try re-transmitting.'); 
+    } finally { 
+      setIsSubmitting(false); 
+    }
   };
 
   const startFresh = () => {
