@@ -11,7 +11,6 @@ import Mission from './components/Mission';
 import { HeroSection } from './components/ui/hero-section-shadcnui';
 import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
-import NexusAI from './components/NexusAI';
 import VaultPage from './pages/VaultPage';
 import CertificationsPage from './pages/CertificationsPage';
 
@@ -39,7 +38,6 @@ function HomePage() {
         <NexusAIWizard />
       </main>
       <Footer />
-      <NexusAI />
     </div>
   );
 }
