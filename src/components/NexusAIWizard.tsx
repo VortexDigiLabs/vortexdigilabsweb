@@ -478,32 +478,26 @@ export default function NexusAIWizard() {
       Company: data.company || '',
       Primary_Service: `${data.painPoint} -> ${data.p2_conditional}`,
       Budget: budgetLabel,
-      Lead_Score: Number(calculatedScore), // STRICT NUMBER
-      Vision: data.vision || '' // Raw text (no metadata prefixes)
+      Lead_Score: calculatedScore, // NUMBER - will stay number because we send as JSON
+      Vision: data.vision || ''
     };
 
-    // ACTION 2: DEBUG LOGGING
+    // DEBUG LOGGING
     console.log('=== WIZARD PAYLOAD DEBUG ===');
     console.log('Full payload object:', JSON.stringify(payload, null, 2));
     console.log('Lead_Score type:', typeof payload.Lead_Score);
     console.log('Lead_Score value:', payload.Lead_Score);
     console.log('============================');
 
-    const formData = new FormData();
-    formData.append('Name', payload.Name);
-    formData.append('Email', payload.Email);
-    formData.append('Phone', payload.Phone);
-    formData.append('Company', payload.Company);
-    formData.append('Primary_Service', payload.Primary_Service);
-    formData.append('Budget', payload.Budget);
-    formData.append('Lead_Score', payload.Lead_Score.toString());
-    formData.append('Vision', payload.Vision);
-
     try {
+      // ✅ SEND AS JSON (not FormData!)
       await fetch(FORM_ENDPOINT, { 
-        method: 'POST', 
-        mode: 'no-cors', 
-        body: formData 
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json', // ← TELL SERVER IT'S JSON
+        },
+        body: JSON.stringify(payload) // ← STRINGIFY THE OBJECT DIRECTLY
       });
       
       // Analytics & Confetti
