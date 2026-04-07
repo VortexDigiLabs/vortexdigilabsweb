@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ChevronRight, 
-  ChevronLeft, 
-  Send, 
-  CheckCircle2, 
-  Loader2, 
+import {
+  ChevronRight,
+  ChevronLeft,
+  Send,
+  CheckCircle2,
+  Loader2,
   AlertCircle,
   Target,
   Rocket,
@@ -68,23 +68,23 @@ const INITIAL_DATA: WizardData = {
 // LEAD SCORING ALGORITHM
 function calculateLeadScore(answers: WizardData) {
   let score = 0;
-  
+
   // Budget weighting (max 30 points)
   const budgetScores: Record<string, number> = {
     'scale': 30,
-    'growth': 20, 
+    'growth': 20,
     'starter': 10,
     'discuss': 15
   };
-  
+
   const b = (answers.budget || '').toLowerCase();
   const budgetKey = b.includes('scale') ? 'scale' :
-                    (b.includes('growth') || b.includes('r25k') || b.includes('r20k') || b.includes('r15k')) ? 'growth' :
-                    (b.includes('starter') || b.includes('r8k') || b.includes('r5k') || b.includes('r3k')) ? 'starter' :
-                    'discuss';
-  
+    (b.includes('growth') || b.includes('r25k') || b.includes('r20k') || b.includes('r15k')) ? 'growth' :
+      (b.includes('starter') || b.includes('r8k') || b.includes('r5k') || b.includes('r3k')) ? 'starter' :
+        'discuss';
+
   score += budgetScores[budgetKey] || 5;
-  
+
   // Timeline/Urgency weighting (max 25 points)
   const urgencyScores: Record<string, number> = {
     'urgent': 25,
@@ -92,15 +92,15 @@ function calculateLeadScore(answers: WizardData) {
     'next_quarter': 10,
     'exploring': 5
   };
-  
+
   const t = (answers.timeline || '').toLowerCase();
   const timelineKey = (t.includes('urgent') || t.includes('asap')) ? 'urgent' :
-                      t.includes('month') ? 'this_month' :
-                      t.includes('quarter') ? 'next_quarter' :
-                      'exploring';
-  
+    t.includes('month') ? 'this_month' :
+      t.includes('quarter') ? 'next_quarter' :
+        'exploring';
+
   score += urgencyScores[timelineKey] || 5;
-  
+
   // Pain point clarity (max 20 points)
   const specificPains = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
   if (specificPains.includes(answers.painPoint)) {
@@ -110,19 +110,19 @@ function calculateLeadScore(answers: WizardData) {
   } else {
     score += 5;
   }
-  
+
   // Goal clarity (max 15 points)
   if (answers.p2_conditional && !answers.p2_conditional.toLowerCase().includes('all')) {
     score += 15;
   } else {
     score += 8;
   }
-  
+
   // Engagement bonus (max 10 points)
   if (answers.phone) score += 3;
   if (answers.company) score += 3;
   if (answers.vision && answers.vision.length > 50) score += 4;
-  
+
   return Math.min(score, 100);
 }
 
@@ -167,7 +167,7 @@ const Step1 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void })
 
 const Step2 = ({ painPoint, onNext, data, setData }: { painPoint: string, onNext: (f: keyof WizardData, v: string) => void, data: WizardData, setData: any }) => {
   const getBranch = () => {
-    switch(painPoint) {
+    switch (painPoint) {
       case 'invisible': return {
         q: "Where do you want to be found?",
         opts: [
@@ -232,7 +232,7 @@ const Step2 = ({ painPoint, onNext, data, setData }: { painPoint: string, onNext
           className="w-full bg-white/5 border border-white/20 p-4 rounded-xl font-mono text-sm text-silver focus:border-cyan outline-none h-32 resize-none"
           placeholder="Type here..."
         />
-        <button 
+        <button
           onClick={() => onNext('p2_conditional', data.p2_conditional)}
           className="w-full p-4 bg-cyan/10 hover:bg-cyan/20 border border-cyan/40 text-cyan rounded-xl transition-all font-mono uppercase text-sm"
         >
@@ -438,11 +438,11 @@ export default function NexusAIWizard() {
     const newData = { ...data, [field]: value };
     setData(newData);
     saveToLocal(step + 1, newData);
-    
+
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'wizard_branch_taken', { 
-        from_step: step + 1, 
-        branch_path: `${field} → ${value}` 
+      (window as any).gtag('event', 'wizard_branch_taken', {
+        from_step: step + 1,
+        branch_path: `${field} → ${value}`
       });
     }
 
@@ -469,7 +469,7 @@ export default function NexusAIWizard() {
 
     const budgetLabel = getBudgetLabel(data.budget);
     const calculatedScore = calculateLeadScore(data);
-    
+
     // Construct the flat payload (Must match EXACTLY for G-Sheets)
     const payload = {
       Name: data.name,
@@ -491,7 +491,7 @@ export default function NexusAIWizard() {
 
     try {
       // ✅ SEND AS JSON (not FormData!)
-      await fetch(FORM_ENDPOINT, { 
+      await fetch(FORM_ENDPOINT, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
@@ -499,11 +499,11 @@ export default function NexusAIWizard() {
         },
         body: JSON.stringify(payload) // ← STRINGIFY THE OBJECT DIRECTLY
       });
-      
+
       // Analytics & Confetti
       if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'generate_lead', { 
-          form_name: 'nexus_ai_wizard_v2', 
+        (window as any).gtag('event', 'generate_lead', {
+          form_name: 'nexus_ai_wizard_v2',
           score: payload.Lead_Score,
           package: payload.Budget
         });
@@ -512,11 +512,11 @@ export default function NexusAIWizard() {
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00ffff', '#ffffff', '#a855f7'] });
       localStorage.removeItem('nexus_wizard_progress');
       setIsSubmitted(true);
-    } catch (err) { 
+    } catch (err) {
       console.error('Submission error:', err);
-      setError('Signal lost. Please try re-transmitting.'); 
-    } finally { 
-      setIsSubmitting(false); 
+      setError('Signal lost. Please try re-transmitting.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -556,7 +556,7 @@ export default function NexusAIWizard() {
     const budgetLabel = getBudgetLabel(data.budget);
     const score = calculateLeadScore(data);
     const tier = getTier(score);
-    
+
     return (
       <section id="contact" className="py-24 max-w-2xl mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-8">
@@ -572,22 +572,22 @@ export default function NexusAIWizard() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-left">
-                <h4 className="font-mono text-cyan text-[10px] uppercase tracking-widest mb-3">Service Profile</h4>
-                <div className="space-y-1 text-xs font-mono opacity-60">
-                  <p>Service: {data.painPoint} {'->'} {data.p2_conditional}</p>
-                  <p>Budget: {budgetLabel}</p>
-                </div>
-             </div>
-             <a 
+            <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-left">
+              <h4 className="font-mono text-cyan text-[10px] uppercase tracking-widest mb-3">Service Profile</h4>
+              <div className="space-y-1 text-xs font-mono opacity-60">
+                <p>Service: {data.painPoint} {'->'} {data.p2_conditional}</p>
+                <p>Budget: {budgetLabel}</p>
+              </div>
+            </div>
+            <a
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Team! 👋\n\nI just completed your discovery wizard.\n\n👤 Name: ${data.name}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n💰 Budget: ${budgetLabel}\n🔥 Score: ${score}/100`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="p-6 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-2xl flex flex-col items-center justify-center gap-2 group transition-transform hover:scale-[1.02]"
-             >
-                <MessageSquare className="w-8 h-8 text-white group-hover:animate-bounce" />
-                <span className="text-white font-bold uppercase tracking-widest text-sm">Quick Connect</span>
-             </a>
+            >
+              <MessageSquare className="w-8 h-8 text-white group-hover:animate-bounce" />
+              <span className="text-white font-bold uppercase tracking-widest text-sm">Quick Connect</span>
+            </a>
           </div>
 
           <button onClick={() => { setData(INITIAL_DATA); setStep(0); setIsSubmitted(false); }} className="text-silver/30 hover:text-cyan font-mono text-[10px] uppercase tracking-widest transition-colors">Submit Another Project</button>
@@ -599,15 +599,15 @@ export default function NexusAIWizard() {
   return (
     <section id="contact" className="py-24 relative overflow-hidden bg-charcoal">
       <div className="max-w-xl mx-auto px-6 relative z-10">
-        
+
         {/* PROGRESS BAR v2.0 */}
         <div className="mb-12 relative">
           <div className="flex justify-between items-center relative z-10">
             {[0, 1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col items-center gap-2">
-                <motion.div 
+                <motion.div
                   initial={false}
-                  animate={{ 
+                  animate={{
                     backgroundColor: i <= step ? '#00ffff' : 'rgba(255,255,255,0.1)',
                     scale: i === step ? 1.2 : 1
                   }}
@@ -619,14 +619,14 @@ export default function NexusAIWizard() {
             ))}
           </div>
           <div className="absolute top-3 left-0 w-full h-[2px] bg-white/10 -z-0" />
-          <motion.div 
+          <motion.div
             className="absolute top-3 left-0 h-[2px] bg-gradient-to-r from-cyan to-purple-500 -z-0"
             initial={{ width: '0%' }}
             animate={{ width: `${step * 25}%` }}
           />
           <div className="flex justify-between mt-4">
-             <span className="text-[10px] font-mono text-cyan uppercase tracking-tighter">Step {step + 1} of 5</span>
-             <span className="text-[10px] font-mono text-silver/30 uppercase tracking-tighter">~{Math.max(0.5, 2 - step * 0.4).toFixed(1)} min remaining</span>
+            <span className="text-[10px] font-mono text-cyan uppercase tracking-tighter">Step {step + 1} of 5</span>
+            <span className="text-[10px] font-mono text-silver/30 uppercase tracking-tighter">~{Math.max(0.5, 2 - step * 0.4).toFixed(1)} min remaining</span>
           </div>
         </div>
 
