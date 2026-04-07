@@ -9,7 +9,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Mission from './components/Mission';
 import { HeroSection } from './components/ui/hero-section-shadcnui';
-import VortexForm from './components/VortexForm';
+import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import NexusAI from './components/NexusAI';
 import VaultPage from './pages/VaultPage';
@@ -36,7 +36,7 @@ function HomePage() {
         <Hero />
         <Mission />
         <HeroSection />
-        <VortexForm />
+        <NexusAIWizard />
       </main>
       <Footer />
       <NexusAI />
