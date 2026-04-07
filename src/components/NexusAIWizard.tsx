@@ -13,6 +13,7 @@ import {
   Wallet,
   User
 } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 // ===== CONFIGURATION =====
 // Reverted to the endpoint known to work in VortexForm.tsx
@@ -296,6 +297,15 @@ export default function NexusAIWizard() {
         timeline: data.timeline, 
         budget: data.budget 
       });
+
+      // Trigger Confetti Party!
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#00ffff', '#ffffff', '#a855f7']
+      });
+
       setIsSubmitted(true);
     } catch (err) { 
       console.error('Submission error:', err);
