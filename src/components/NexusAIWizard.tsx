@@ -148,176 +148,19 @@ Message: ${data.vision}
 
       setIsSubmitted(true);
     } catch (err) {
-      setError('Signal lost. Please try re-transmitting.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    } catch { setError('Signal lost. Please try re-transmitting.'); } finally { setIsSubmitting(false); }
   };
 
-  // Components for each step
-  const Step1 = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-mono text-cyan mb-6">What's your biggest challenge right now?</h3>
-      <div className="grid grid-cols-1 gap-3">
-        {[
-          { label: "Nobody can find me online", value: "invisible", color: "border-red-500/30 hover:border-red-500 text-red-100" },
-          { label: "My website looks outdated", value: "outdated", color: "border-orange-500/30 hover:border-orange-500 text-orange-100" },
-          { label: "Visitors don't become customers", value: "no_conversions", color: "border-orange-400/30 hover:border-orange-400 text-orange-50" },
-          { label: "I'm overwhelmed by manual work", value: "overwhelmed", color: "border-green-500/30 hover:border-green-500 text-green-100" },
-          { label: "Starting fresh - no online presence", value: "new_business", color: "border-purple-500/30 hover:border-purple-500 text-purple-100" },
-          { label: "Something else...", value: "other", color: "border-white/20 hover:border-white text-white" }
-        ].map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => handleNext('painPoint', opt.value)}
-            className={`w-full p-4 rounded-xl bg-white/5 border ${opt.color} transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between`}
-          >
-            <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-            <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const Step2 = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-mono text-cyan mb-6">Got it. If we solve that, what's your #1 goal?</h3>
-      <div className="grid grid-cols-1 gap-3">
-        {[
-          { label: "More qualified inquiries", value: "more_leads", icon: Target },
-          { label: "Direct online revenue", value: "more_sales", icon: Rocket },
-          { label: "Look like an industry leader", value: "brand_authority", icon: User },
-          { label: "Automate & save time", value: "time_savings", icon: Clock },
-          { label: "All of the above!", value: "all_above", icon: CheckCircle2 }
-        ].map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => handleNext('goal', opt.value)}
-            className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
-          >
-            <div className="flex items-center gap-3">
-              <opt.icon className="w-5 h-5 text-cyan" />
-              <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-            </div>
-            <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const Step3 = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-mono text-cyan mb-6">When do you need this live?</h3>
-      <div className="grid grid-cols-1 gap-3">
-        {[
-          { label: "ASAP (within 2 weeks)", value: "urgent" },
-          { label: "This month", value: "this_month" },
-          { label: "Next 1-3 months", value: "next_quarter" },
-          { label: "Just exploring options", value: "exploring" }
-        ].map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => handleNext('timeline', opt.value)}
-            className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
-          >
-            <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-            <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const Step4 = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-mono text-cyan mb-6">Investment range you're comfortable with?</h3>
-      <div className="grid grid-cols-1 gap-3">
-        {[
-          { label: "Starter (R3k - R8k)", value: "starter", color: "text-green-400" },
-          { label: "Growth (R8k - R25k)", value: "growth", color: "text-blue-400" },
-          { label: "Scale (R25k - R50k+)", value: "scale", color: "text-purple-400" },
-          { label: "Show me options first", value: "discuss", color: "text-silver" }
-        ].map(opt => (
-          <button
-            key={opt.value}
-            onClick={() => handleNext('budget', opt.value)}
-            className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
-          >
-            <div className="flex items-center gap-3">
-              <Wallet className={`w-4 h-4 ${opt.color}`} />
-              <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-            </div>
-            <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  const Step5 = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-mono text-cyan mb-4">Perfect! Last step - your details:</h3>
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="text"
-            placeholder="Name *"
-            value={data.name}
-            onChange={e => setData(prev => ({ ...prev, name: e.target.value }))}
-            className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
-          />
-          <input
-            type="email"
-            placeholder="Email *"
-            value={data.email}
-            onChange={e => setData(prev => ({ ...prev, email: e.target.value }))}
-            className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
-            type="tel"
-            placeholder="Phone/WhatsApp"
-            value={data.phone}
-            onChange={e => setData(prev => ({ ...prev, phone: e.target.value }))}
-            className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
-          />
-          <input
-            type="text"
-            placeholder="Company"
-            value={data.company}
-            onChange={e => setData(prev => ({ ...prev, company: e.target.value }))}
-            className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
-          />
-        </div>
-        <textarea
-          placeholder="Any specific features or ideas..."
-          rows={3}
-          value={data.vision}
-          onChange={e => setData(prev => ({ ...prev, vision: e.target.value }))}
-          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none resize-none"
-        />
-        
-        {error && (
-          <div className="flex items-center gap-2 text-red-400 text-xs font-mono">
-            <AlertCircle className="w-4 h-4" />
-            {error}
-          </div>
-        )}
-
-        <button
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="w-full py-4 bg-cyan hover:bg-white text-charcoal font-mono font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
-        >
-          {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Transmit Discovery Data'}
-          {!isSubmitting && <Send className="w-4 h-4" />}
-        </button>
-      </div>
-    </div>
-  );
+  const renderStep = () => {
+    switch (step) {
+      case 0: return <Step1 onNext={handleNext} />;
+      case 1: return <Step2 onNext={handleNext} />;
+      case 2: return <Step3 onNext={handleNext} />;
+      case 3: return <Step4 onNext={handleNext} />;
+      case 4: return <Step5 data={data} setData={setData} onSubmit={handleSubmit} isSubmitting={isSubmitting} error={error} />;
+      default: return null;
+    }
+  };
 
   const SuccessState = () => (
     <motion.div
