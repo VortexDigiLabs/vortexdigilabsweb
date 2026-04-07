@@ -65,22 +65,60 @@ const INITIAL_DATA: WizardData = {
 
 // --- HELPERS ---
 
+// LEAD SCORING ALGORITHM
 function calculateLeadScore(answers: WizardData) {
   let score = 0;
   
-  const budgetScores: Record<string, number> = { 'scale': 30, 'growth': 20, 'starter': 10, 'discuss': 15 };
-  score += budgetScores[answers.budget] || 5;
+  // Budget weighting (max 30 points)
+  const budgetScores: Record<string, number> = {
+    'scale': 30,
+    'growth': 20, 
+    'starter': 10,
+    'discuss': 15
+  };
   
-  const urgencyScores: Record<string, number> = { 'urgent': 25, 'this_month': 18, 'next_quarter': 10, 'exploring': 5 };
-  score += urgencyScores[answers.timeline] || 5;
+  const b = (answers.budget || '').toLowerCase();
+  const budgetKey = b.includes('scale') ? 'scale' :
+                    (b.includes('growth') || b.includes('r25k') || b.includes('r20k') || b.includes('r15k')) ? 'growth' :
+                    (b.includes('starter') || b.includes('r8k') || b.includes('r5k') || b.includes('r3k')) ? 'starter' :
+                    'discuss';
   
-  const specificPainPoints = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
-  if (specificPainPoints.includes(answers.painPoint)) score += 20;
-  else if (answers.painPoint === 'new_business') score += 12;
-  else score += 5;
+  score += budgetScores[budgetKey] || 5;
   
-  if (answers.p2_conditional) score += 15;
+  // Timeline/Urgency weighting (max 25 points)
+  const urgencyScores: Record<string, number> = {
+    'urgent': 25,
+    'this_month': 18,
+    'next_quarter': 10,
+    'exploring': 5
+  };
   
+  const t = (answers.timeline || '').toLowerCase();
+  const timelineKey = (t.includes('urgent') || t.includes('asap')) ? 'urgent' :
+                      t.includes('month') ? 'this_month' :
+                      t.includes('quarter') ? 'next_quarter' :
+                      'exploring';
+  
+  score += urgencyScores[timelineKey] || 5;
+  
+  // Pain point clarity (max 20 points)
+  const specificPains = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
+  if (specificPains.includes(answers.painPoint)) {
+    score += 20;
+  } else if (answers.painPoint === 'new_business') {
+    score += 12;
+  } else {
+    score += 5;
+  }
+  
+  // Goal clarity (max 15 points)
+  if (answers.p2_conditional && !answers.p2_conditional.toLowerCase().includes('all')) {
+    score += 15;
+  } else {
+    score += 8;
+  }
+  
+  // Engagement bonus (max 10 points)
   if (answers.phone) score += 3;
   if (answers.company) score += 3;
   if (answers.vision && answers.vision.length > 50) score += 4;
@@ -89,10 +127,9 @@ function calculateLeadScore(answers: WizardData) {
 }
 
 const getTier = (score: number) => {
-  if (score >= 80) return { label: '🔥 HOT LEAD (Priority Response)', color: 'text-red-400', badge: 'bg-red-500/20 border-red-500', icon: '🔥' };
-  if (score >= 60) return { label: '✅ WARM LEAD (High Potential)', color: 'text-green-400', badge: 'bg-green-500/20 border-green-500', icon: '✅' };
-  if (score >= 40) return { label: '🟡 INTERESTED', color: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500', icon: '🟡' };
-  return { label: '❄️ EXPLORING', color: 'text-blue-400', badge: 'bg-blue-500/20 border-blue-500', icon: '❄️' };
+  if (score >= 80) return { label: `🔥 PRIORITY CLIENT - ${score}/100`, color: 'text-red-400', badge: 'bg-red-500/20 border-red-500', icon: '' };
+  if (score >= 60) return { label: `✅ GREAT FIT - ${score}/100`, color: 'text-green-400', badge: 'bg-green-500/20 border-green-500', icon: '' };
+  return { label: `🟡 WELCOME ABOARD - ${score}/100`, color: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500', icon: '' };
 };
 
 // --- STEP COMPONENTS ---
