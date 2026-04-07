@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 
 // ===== CONFIGURATION =====
-const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwsGVrodJSBRgk6vqoZOTLK1CRC_fV4ZeK66rMFCUFJeet8bNlRnsGQdqZgr4XqKd5EuQ/exec';
+// Reverted to the endpoint known to work in VortexForm.tsx
+const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxluhaYj7f2nFIZ8TmedkS6jj2hmg88V32VlBa4n_8bXQt7RNQ3AQBpv0g3mXN_uGri/exec';
 
 interface WizardData {
   painPoint: string;
