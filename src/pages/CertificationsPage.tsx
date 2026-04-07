@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Certifications from '../components/Certifications';
 import Footer from '../components/Footer';
-import NexusAI from '../components/NexusAI';
-
 export default function CertificationsPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -16,7 +14,7 @@ export default function CertificationsPage() {
         <Certifications />
       </main>
       <Footer />
-      <NexusAI />
     </div>
   );
 }
+
