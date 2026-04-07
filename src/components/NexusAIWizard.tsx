@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronRight, 
@@ -11,91 +11,216 @@ import {
   Rocket,
   Clock,
   Wallet,
-  User
+  User,
+  Globe,
+  Search,
+  MapPin,
+  Smartphone,
+  Layout,
+  Zap,
+  PhoneCall,
+  ShoppingCart,
+  Calendar,
+  PenTool,
+  MessageSquare,
+  Database,
+  Utensils,
+  Briefcase,
+  HardHat,
+  GraduationCap,
+  HeartPulse,
+  MoreHorizontal
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 // ===== CONFIGURATION =====
-// Reverted to the endpoint known to work in VortexForm.tsx
 const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxluhaYj7f2nFIZ8TmedkS6jj2hmg88V32VlBa4n_8bXQt7RNQ3AQBpv0g3mXN_uGri/exec';
+const WHATSAPP_NUMBER = '27XXXXXXXXXX'; // USER: Replace with your actual business number
 
 interface WizardData {
   painPoint: string;
-  goal: string;
+  p2_conditional: string;
   timeline: string;
   budget: string;
   name: string;
   email: string;
   phone: string;
   company: string;
+  websiteUrl: string;
   vision: string;
 }
 
 const INITIAL_DATA: WizardData = {
   painPoint: '',
-  goal: '',
+  p2_conditional: '',
   timeline: '',
   budget: '',
   name: '',
   email: '',
   phone: '',
   company: '',
+  websiteUrl: '',
   vision: '',
 };
 
-// --- STABLE STEP COMPONENTS ---
+// --- HELPERS ---
+
+function calculateLeadScore(answers: WizardData) {
+  let score = 0;
+  
+  const budgetScores: Record<string, number> = { 'scale': 30, 'growth': 20, 'starter': 10, 'discuss': 15 };
+  score += budgetScores[answers.budget] || 5;
+  
+  const urgencyScores: Record<string, number> = { 'urgent': 25, 'this_month': 18, 'next_quarter': 10, 'exploring': 5 };
+  score += urgencyScores[answers.timeline] || 5;
+  
+  const specificPainPoints = ['invisible', 'outdated', 'no_conversions', 'overwhelmed'];
+  if (specificPainPoints.includes(answers.painPoint)) score += 20;
+  else if (answers.painPoint === 'new_business') score += 12;
+  else score += 5;
+  
+  if (answers.p2_conditional) score += 15;
+  
+  if (answers.phone) score += 3;
+  if (answers.company) score += 3;
+  if (answers.vision && answers.vision.length > 50) score += 4;
+  
+  return Math.min(score, 100);
+}
+
+const getTier = (score: number) => {
+  if (score >= 80) return { label: '🔥 HOT LEAD (Priority Response)', color: 'text-red-400', badge: 'bg-red-500/20 border-red-500', icon: '🔥' };
+  if (score >= 60) return { label: '✅ WARM LEAD (High Potential)', color: 'text-green-400', badge: 'bg-green-500/20 border-green-500', icon: '✅' };
+  if (score >= 40) return { label: '🟡 INTERESTED', color: 'text-yellow-400', badge: 'bg-yellow-500/20 border-yellow-500', icon: '🟡' };
+  return { label: '❄️ EXPLORING', color: 'text-blue-400', badge: 'bg-blue-500/20 border-blue-500', icon: '❄️' };
+};
+
+// --- STEP COMPONENTS ---
 
 const Step1 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void }) => (
   <div className="space-y-4">
     <h3 className="text-xl font-mono text-cyan mb-6">What's your biggest challenge right now?</h3>
-    <div className="grid grid-cols-1 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {[
-        { label: "Nobody can find me online", value: "invisible", color: "border-red-500/30 hover:border-red-500 text-red-100" },
-        { label: "My website looks outdated", value: "outdated", color: "border-orange-500/30 hover:border-orange-500 text-orange-100" },
-        { label: "Visitors don't become customers", value: "no_conversions", color: "border-orange-400/30 hover:border-orange-400 text-orange-50" },
-        { label: "I'm overwhelmed by manual work", value: "overwhelmed", color: "border-green-500/30 hover:border-green-500 text-green-100" },
-        { label: "Starting fresh - no online presence", value: "new_business", color: "border-purple-500/30 hover:border-purple-500 text-purple-100" },
-        { label: "Something else...", value: "other", color: "border-white/20 hover:border-white text-white" }
+        { label: "Invisible Online", value: "invisible", desc: "Nobody can find me", color: "border-red-500/30 hover:border-red-500 text-red-100" },
+        { label: "Outdated Image", value: "outdated", desc: "My site looks like 2010", color: "border-orange-500/30 hover:border-orange-500 text-orange-100" },
+        { label: "Low Conversions", value: "no_conversions", desc: "Traffic but no sales", color: "border-orange-400/30 hover:border-orange-400 text-orange-50" },
+        { label: "Manual Grind", value: "overwhelmed", desc: "Too much manual work", color: "border-green-500/30 hover:border-green-500 text-green-100" },
+        { label: "Starting Fresh", value: "new_business", desc: "Build from scratch", color: "border-purple-500/30 hover:border-purple-500 text-purple-100" },
+        { label: "Custom Need", value: "other", desc: "Something else...", color: "border-white/20 hover:border-white text-white" }
       ].map(opt => (
         <button
           key={opt.value}
           onClick={() => onNext('painPoint', opt.value)}
-          className={`w-full p-4 rounded-xl bg-white/5 border ${opt.color} transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between`}
+          className={`w-full p-4 rounded-xl bg-white/5 border ${opt.color} transition-all duration-300 text-left backdrop-blur-sm group`}
         >
-          <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-          <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="flex flex-col">
+            <span className="font-mono text-sm uppercase tracking-wider font-bold">{opt.label}</span>
+            <span className="text-[10px] opacity-40 uppercase mt-1">{opt.desc}</span>
+          </div>
         </button>
       ))}
     </div>
   </div>
 );
 
-const Step2 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void }) => (
-  <div className="space-y-4">
-    <h3 className="text-xl font-mono text-cyan mb-6">Got it. If we solve that, what's your #1 goal?</h3>
-    <div className="grid grid-cols-1 gap-3">
-      {[
-        { label: "More qualified inquiries", value: "more_leads", icon: Target },
-        { label: "Direct online revenue", value: "more_sales", icon: Rocket },
-        { label: "Look like an industry leader", value: "brand_authority", icon: User },
-        { label: "Automate & save time", value: "time_savings", icon: Clock },
-        { label: "All of the above!", value: "all_above", icon: CheckCircle2 }
-      ].map(opt => (
-        <button
-          key={opt.value}
-          onClick={() => onNext('goal', opt.value)}
-          className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
+const Step2 = ({ painPoint, onNext, data, setData }: { painPoint: string, onNext: (f: keyof WizardData, v: string) => void, data: WizardData, setData: any }) => {
+  const getBranch = () => {
+    switch(painPoint) {
+      case 'invisible': return {
+        q: "Where do you want to be found?",
+        opts: [
+          { l: "Google Search results", v: "google", i: Search },
+          { l: "Google Maps (Local)", v: "maps", i: MapPin },
+          { l: "Social Media platforms", v: "social", i: Smartphone },
+          { l: "Everywhere possible", v: "omni", i: Globe }
+        ]
+      };
+      case 'outdated': return {
+        q: "What's the main concern with current look?",
+        opts: [
+          { l: "Looks unprofessional", v: "amateur", i: User },
+          { l: "Not mobile-friendly", v: "mobile", i: Smartphone },
+          { l: "Slow loading / clunky", v: "speed", i: Zap },
+          { l: "Just looks old", v: "stale", i: Clock }
+        ]
+      };
+      case 'no_conversions': return {
+        q: "What should visitors be doing?",
+        opts: [
+          { l: "Calling or emailing us", v: "leads", i: PhoneCall },
+          { l: "Buying products online", v: "sales", i: ShoppingCart },
+          { l: "Filling inquiry forms", v: "forms", i: Send },
+          { l: "Booking appointments", v: "booking", i: Calendar }
+        ]
+      };
+      case 'overwhelmed': return {
+        q: "Which tasks take most of your time?",
+        opts: [
+          { l: "Creating content/posts", v: "content", i: PenTool },
+          { l: "Responding to messages", v: "chat", i: MessageSquare },
+          { l: "Manual admin/data entry", v: "admin", i: Database },
+          { l: "Updating the website", v: "updates", i: Layout }
+        ]
+      };
+      case 'new_business': return {
+        q: "What type of business are you?",
+        opts: [
+          { l: "Restaurant / Food", v: "food", i: Utensils },
+          { l: "Retail / E-comm", v: "retail", i: ShoppingCart },
+          { l: "Professional Services", v: "pro", i: Briefcase },
+          { l: "Trades / Construction", v: "trades", i: HardHat },
+          { l: "Education / Coaching", v: "edu", i: GraduationCap },
+          { l: "Health / Wellness", v: "health", i: HeartPulse },
+          { l: "Other Industry", v: "other_ind", i: MoreHorizontal }
+        ]
+      };
+      default: return null;
+    }
+  };
+
+  const branch = getBranch();
+
+  if (!branch) {
+    return (
+      <div className="space-y-4">
+        <h3 className="text-xl font-mono text-cyan mb-6">Tell us more about your situation:</h3>
+        <textarea
+          value={data.p2_conditional}
+          onChange={e => setData((p: any) => ({ ...p, p2_conditional: e.target.value }))}
+          className="w-full bg-white/5 border border-white/20 p-4 rounded-xl font-mono text-sm text-silver focus:border-cyan outline-none h-32 resize-none"
+          placeholder="Type here..."
+        />
+        <button 
+          onClick={() => onNext('p2_conditional', data.p2_conditional)}
+          className="w-full p-4 bg-cyan/10 hover:bg-cyan/20 border border-cyan/40 text-cyan rounded-xl transition-all font-mono uppercase text-sm"
         >
-          <div className="flex items-center gap-3">
-            <opt.icon className="w-5 h-5 text-cyan" />
-            <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-          </div>
-          <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          Continue
         </button>
-      ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-xl font-mono text-cyan mb-6">{branch.q}</h3>
+      <div className="grid grid-cols-1 gap-2">
+        {branch.opts.map(opt => (
+          <button
+            key={opt.v}
+            onClick={() => onNext('p2_conditional', opt.v)}
+            className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <opt.i className="w-5 h-5 text-cyan" />
+              <span className="font-mono text-sm uppercase tracking-wider">{opt.l}</span>
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Step3 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void }) => (
   <div className="space-y-4">
@@ -120,62 +245,75 @@ const Step3 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void })
   </div>
 );
 
-const Step4 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void }) => (
-  <div className="space-y-4">
-    <h3 className="text-xl font-mono text-cyan mb-6">Investment range you're comfortable with?</h3>
-    <div className="grid grid-cols-1 gap-3">
-      {[
-        { label: "Starter (R3k - R8k)", value: "starter", color: "text-green-400" },
-        { label: "Growth (R8k - R25k)", value: "growth", color: "text-blue-400" },
-        { label: "Scale (R25k - R50k+)", value: "scale", color: "text-purple-400" },
-        { label: "Show me options first", value: "discuss", color: "text-silver" }
-      ].map(opt => (
-        <button
-          key={opt.value}
-          onClick={() => onNext('budget', opt.value)}
-          className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
-        >
-          <div className="flex items-center gap-3">
-            <Wallet className={`w-4 h-4 ${opt.color}`} />
-            <span className="font-mono text-sm uppercase tracking-wider">{opt.label}</span>
-          </div>
-          <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </button>
-      ))}
-    </div>
-  </div>
-);
+const Step4 = ({ painPoint, onNext }: { painPoint: string, onNext: (f: keyof WizardData, v: string) => void }) => {
+  const getOpts = () => {
+    if (['invisible', 'outdated'].includes(painPoint)) {
+      return [
+        { l: "Starter (R3k - R8k)", v: "starter", d: "Basic fix", c: "text-green-400" },
+        { l: "Growth (R8k - R20k)", v: "growth", d: "Solid upgrade", c: "text-blue-400" },
+        { l: "Scale (R20k - R40k+)", v: "scale", d: "Full transformation", c: "text-purple-400" },
+        { l: "Show me packages", v: "discuss", d: "Advise me", c: "text-silver" }
+      ];
+    }
+    if (['no_conversions', 'overwhelmed'].includes(painPoint)) {
+      return [
+        { l: "Starter (R5k - R12k)", v: "starter", d: "Essential tools", c: "text-green-400" },
+        { l: "Growth (R12k - R25k)", v: "growth", d: "Optimization suite", c: "text-blue-400" },
+        { l: "Scale (R25k - R50k+)", v: "scale", d: "Complete automation", c: "text-purple-400" },
+        { l: "Need custom quote", v: "discuss", d: "Contact me", c: "text-silver" }
+      ];
+    }
+    return [
+      { l: "Starter (R5k - R10k)", v: "starter", d: "Launch ready", c: "text-green-400" },
+      { l: "Growth (R10k - R25k)", v: "growth", d: "Professional launch", c: "text-blue-400" },
+      { l: "Scale (R25k - R50k+)", v: "scale", d: "Premium presence", c: "text-purple-400" },
+      { l: "Advise me first", v: "discuss", d: "Consultation", c: "text-silver" }
+    ];
+  };
 
-const Step5 = ({ 
-  data, 
-  setData, 
-  onSubmit, 
-  isSubmitting, 
-  error 
-}: { 
-  data: WizardData, 
-  setData: React.Dispatch<React.SetStateAction<WizardData>>, 
-  onSubmit: (e: React.FormEvent) => void, 
-  isSubmitting: boolean, 
-  error: string 
-}) => (
+  return (
+    <div className="space-y-4">
+      <h3 className="text-xl font-mono text-cyan mb-6">Investment range you're comfortable with?</h3>
+      <div className="grid grid-cols-1 gap-2">
+        {getOpts().map(opt => (
+          <button
+            key={opt.v}
+            onClick={() => onNext('budget', opt.v)}
+            className="w-full p-4 rounded-xl bg-white/5 border border-cyan/20 hover:border-cyan text-silver transition-all duration-300 text-left backdrop-blur-sm group flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <Wallet className={`w-4 h-4 ${opt.c}`} />
+              <div>
+                <span className="font-mono text-sm uppercase tracking-wider block">{opt.l}</span>
+                <span className="text-[10px] opacity-40 uppercase">{opt.d}</span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Step5 = ({ data, setData, onSubmit, isSubmitting, error }: { data: WizardData, setData: any, onSubmit: any, isSubmitting: boolean, error: string }) => (
   <div className="space-y-4">
-    <h3 className="text-xl font-mono text-cyan mb-4">Perfect! Last step - your details:</h3>
+    <h3 className="text-xl font-mono text-cyan mb-4">Final transmission details:</h3>
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Name *"
           value={data.name}
-          onChange={e => setData(prev => ({ ...prev, name: e.target.value }))}
-          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
+          onChange={e => setData((p: any) => ({ ...p, name: e.target.value }))}
+          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none"
         />
         <input
           type="email"
           placeholder="Email *"
           value={data.email}
-          onChange={e => setData(prev => ({ ...prev, email: e.target.value }))}
-          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
+          onChange={e => setData((p: any) => ({ ...p, email: e.target.value }))}
+          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none"
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -183,45 +321,45 @@ const Step5 = ({
           type="tel"
           placeholder="Phone/WhatsApp"
           value={data.phone}
-          onChange={e => setData(prev => ({ ...prev, phone: e.target.value }))}
-          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
+          onChange={e => setData((p: any) => ({ ...p, phone: e.target.value }))}
+          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none"
         />
         <input
           type="text"
           placeholder="Company"
           value={data.company}
-          onChange={e => setData(prev => ({ ...prev, company: e.target.value }))}
-          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none"
+          onChange={e => setData((p: any) => ({ ...p, company: e.target.value }))}
+          className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none"
         />
       </div>
-      <textarea
-        placeholder="Any specific features or ideas..."
-        rows={3}
-        value={data.vision}
-        onChange={e => setData(prev => ({ ...prev, vision: e.target.value }))}
-        className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver placeholder:text-silver/30 focus:border-cyan outline-none resize-none"
+      <input
+        type="text"
+        placeholder="Website URL (if any)"
+        value={data.websiteUrl}
+        onChange={e => setData((p: any) => ({ ...p, websiteUrl: e.target.value }))}
+        className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none"
       />
-      
-      {error && (
-        <div className="flex items-center gap-2 text-red-400 text-xs font-mono">
-          <AlertCircle className="w-4 h-4" />
-          {error}
-        </div>
-      )}
-
+      <textarea
+        placeholder="How can we bring your vision to life?"
+        rows={2}
+        value={data.vision}
+        onChange={e => setData((p: any) => ({ ...p, vision: e.target.value }))}
+        className="w-full bg-white/5 border border-white/20 p-3 rounded-lg font-mono text-sm text-silver focus:border-cyan outline-none resize-none"
+      />
+      {error && <div className="flex items-center gap-2 text-red-400 text-xs font-mono"><AlertCircle className="w-4 h-4" /> {error}</div>}
       <button
         onClick={onSubmit}
         disabled={isSubmitting}
-        className="w-full py-4 bg-cyan hover:bg-white text-charcoal font-mono font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50"
+        className="w-full py-4 bg-cyan hover:bg-white text-charcoal font-mono font-bold uppercase tracking-widest rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 shadow-[0_0_20px_rgba(0,255,255,0.3)]"
       >
-        {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Transmit Discovery Data'}
+        {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Launch Inquiry'}
         {!isSubmitting && <Send className="w-4 h-4" />}
       </button>
     </div>
   </div>
 );
 
-// --- MAIN WIZARD COMPONENT ---
+// --- MAIN WIZARD ---
 
 export default function NexusAIWizard() {
   const [step, setStep] = useState(0);
@@ -231,21 +369,42 @@ export default function NexusAIWizard() {
   const [error, setError] = useState('');
   const [direction, setDirection] = useState(1);
   const [typing, setTyping] = useState(false);
+  const [resumePrompt, setResumePrompt] = useState(false);
 
-  const trackEvent = (name: string, params?: object) => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', name, params);
-    }
-  };
-
+  // Recovery Logic
   useEffect(() => {
-    trackEvent('wizard_started');
+    const saved = localStorage.getItem('nexus_wizard_progress');
+    if (saved) {
+      const { currentStep, answers, timestamp } = JSON.parse(saved);
+      const isFresh = Date.now() - timestamp < 24 * 60 * 60 * 1000;
+      if (isFresh && currentStep > 0 && currentStep < 5) {
+        setResumePrompt(true);
+      } else {
+        localStorage.removeItem('nexus_wizard_progress');
+      }
+    }
   }, []);
 
+  const saveToLocal = (s: number, d: WizardData) => {
+    localStorage.setItem('nexus_wizard_progress', JSON.stringify({
+      currentStep: s,
+      answers: d,
+      timestamp: Date.now()
+    }));
+  };
+
   const handleNext = (field: keyof WizardData, value: string) => {
-    setData(prev => ({ ...prev, [field]: value }));
-    trackEvent(`wizard_step_${step + 1}_complete`, { step_number: step + 1, answer: value });
+    const newData = { ...data, [field]: value };
+    setData(newData);
+    saveToLocal(step + 1, newData);
     
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'wizard_branch_taken', { 
+        from_step: step + 1, 
+        branch_path: `${field} → ${value}` 
+      });
+    }
+
     setDirection(1);
     setTyping(true);
     setTimeout(() => {
@@ -267,151 +426,187 @@ export default function NexusAIWizard() {
     setIsSubmitting(true);
     setError('');
 
-    const mappedBudget = { 
-      starter: 'R3k - R8k', 
-      growth: 'R8k - R25k', 
-      scale: 'R25k - R50k+', 
-      discuss: "Let's Discuss" 
-    }[data.budget] || data.budget;
-
+    const leadScore = calculateLeadScore(data);
+    const mappedBudget = { starter: 'R3k-R12k', growth: 'R10k-R25k', scale: 'R25k-R50k+', discuss: "Discuss" }[data.budget] || data.budget;
+    
     const formData = new FormData();
     formData.append('Name', data.name);
     formData.append('Email', data.email);
     formData.append('Phone', data.phone || '');
     formData.append('Company', data.company || '');
-    formData.append('Primary_Service', `${data.painPoint} -> ${data.goal}`);
+    formData.append('Primary_Service', `${data.painPoint} (${data.p2_conditional})`);
     formData.append('Budget', mappedBudget);
-    formData.append('Vision', `Challenge: ${data.painPoint}\nGoal: ${data.goal}\nUrgency: ${data.timeline}\nBudget: ${mappedBudget}\nMessage: ${data.vision}`.trim());
+    formData.append('Lead_Score', leadScore.toString());
+    formData.append('Vision', `[Score: ${leadScore}/100] [URL: ${data.websiteUrl}] ${data.vision}`.trim());
 
     try {
-      await fetch(FORM_ENDPOINT, { 
-        method: 'POST', 
-        mode: 'no-cors', 
-        body: formData 
-      });
-      
-      trackEvent('generate_lead', { 
-        form_name: 'nexus_ai_wizard', 
-        pain_point: data.painPoint, 
-        goal: data.goal, 
-        timeline: data.timeline, 
-        budget: data.budget 
-      });
-
-      // Trigger Confetti Party!
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#00ffff', '#ffffff', '#a855f7']
-      });
-
+      await fetch(FORM_ENDPOINT, { method: 'POST', mode: 'no-cors', body: formData });
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'lead_scored', { score: leadScore, tier: getTier(leadScore).label });
+      }
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#00ffff', '#ffffff', '#a855f7'] });
+      localStorage.removeItem('nexus_wizard_progress');
       setIsSubmitted(true);
-    } catch (err) { 
-      console.error('Submission error:', err);
-      setError('Signal lost. Please try re-transmitting.'); 
-    } finally { 
-      setIsSubmitting(false); 
-    }
+    } catch { setError('Signal lost. Please try re-transmitting.'); } finally { setIsSubmitting(false); }
   };
 
-  if (isSubmitted) return (
-    <section id="contact" className="py-24 max-w-2xl mx-auto px-6">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="text-center space-y-6"
-      >
-        <div className="w-20 h-20 bg-cyan rounded-full flex items-center justify-center mx-auto">
-          <CheckCircle2 className="w-12 h-12 text-charcoal" />
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-3xl font-bold text-white uppercase tracking-tighter">Discovery complete! 🚀</h2>
-          <p className="font-mono text-silver/80">Thanks {data.name}! Our team will reach out within 24 hours.</p>
-        </div>
-        <button
-          onClick={() => { setData(INITIAL_DATA); setStep(0); setIsSubmitted(false); }}
-          className="text-cyan hover:text-white font-mono text-sm underline transition-colors"
-        >
-          SUBMIT ANOTHER PROJECT
-        </button>
-      </motion.div>
-    </section>
-  );
+  const startFresh = () => {
+    localStorage.removeItem('nexus_wizard_progress');
+    setData(INITIAL_DATA);
+    setStep(0);
+    setResumePrompt(false);
+  };
+
+  const resumeSession = () => {
+    const saved = localStorage.getItem('nexus_wizard_progress');
+    if (saved) {
+      const { currentStep, answers } = JSON.parse(saved);
+      setData(answers);
+      setStep(currentStep);
+    }
+    setResumePrompt(false);
+  };
+
+  if (resumePrompt) {
+    return (
+      <section id="contact" className="py-24 px-6 flex justify-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/5 border border-cyan/30 backdrop-blur-xl p-10 rounded-3xl text-center max-w-sm">
+          <h2 className="text-2xl font-bold text-white mb-2">👋 Welcome back!</h2>
+          <p className="text-silver/60 font-mono text-sm mb-8">You were at Step {step + 1} of 5. Want to continue where you left off?</p>
+          <div className="flex flex-col gap-3">
+            <button onClick={resumeSession} className="py-4 bg-cyan text-charcoal font-bold uppercase tracking-widest rounded-xl hover:bg-white transition-all">Continue Session</button>
+            <button onClick={startFresh} className="py-4 text-cyan font-mono text-xs uppercase tracking-widest hover:text-white transition-all">Start Fresh</button>
+          </div>
+        </motion.div>
+      </section>
+    );
+  }
+
+  if (isSubmitted) {
+    const finalScore = calculateLeadScore(data);
+    const tier = getTier(finalScore);
+    
+    // WhatsApp pre-fill
+    const waMessage = `Hi Vortex Team! 👋\n\nI just completed your NEXUS AI discovery wizard.\n\n👤 Name: ${data.name}\n📧 Email: ${data.email}\n🎯 Challenge: ${data.painPoint}\n💡 Goal: ${data.p2_conditional}\n⏰ Timeline: ${data.timeline}\n💰 Budget: ${data.budget}\n\nLooking forward to hearing from you!`;
+    const waUrl = `https://wa.me/27XXXXXXXXXX?text=${encodeURIComponent(waMessage)}`;
+
+    return (
+      <section id="contact" className="py-24 max-w-2xl mx-auto px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-8">
+          <div className="w-20 h-20 bg-cyan rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(0,255,255,0.4)]">
+            <CheckCircle2 className="w-12 h-12 text-charcoal" />
+          </div>
+          <div>
+            <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">DISCOVERY COMPLETE! 🚀</h2>
+            <div className={`inline-block px-4 py-1 rounded-full border ${tier.badge} text-[10px] font-bold uppercase tracking-widest ${tier.color}`}>
+              {tier.icon} {tier.label}
+            </div>
+            <p className="font-mono text-silver/60 mt-4 max-w-md mx-auto">Thanks {data.name}! Our team has received your data and is ready to launch your vision.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl text-left">
+                <h4 className="font-mono text-cyan text-[10px] uppercase tracking-widest mb-3">Transmission Profile</h4>
+                <div className="space-y-1 text-xs font-mono opacity-60">
+                  <p>ID: VLAB-{Math.random().toString(36).substr(2, 6).toUpperCase()}</p>
+                  <p>SCORE: {finalScore}/100</p>
+                  <p>STATUS: VERIFIED</p>
+                </div>
+             </div>
+             <a 
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as any).gtag) {
+                  (window as any).gtag('event', 'whatsapp_initiated', { method: 'success_screen_button', lead_score: finalScore });
+                }
+              }}
+              className="p-6 bg-gradient-to-br from-[#25D366] to-[#128C7E] rounded-2xl flex flex-col items-center justify-center gap-2 group transition-transform hover:scale-[1.02]"
+             >
+                <MessageSquare className="w-8 h-8 text-white group-hover:animate-bounce" />
+                <span className="text-white font-bold uppercase tracking-widest text-sm">Quick Connect via WhatsApp</span>
+             </a>
+          </div>
+
+          <button onClick={() => { setData(INITIAL_DATA); setStep(0); setIsSubmitted(false); }} className="text-silver/30 hover:text-cyan font-mono text-[10px] uppercase tracking-widest transition-colors">Submit Another Project</button>
+        </motion.div>
+      </section>
+    );
+  }
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden bg-charcoal">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/10 via-transparent to-transparent opacity-50" />
-      
       <div className="max-w-xl mx-auto px-6 relative z-10">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex gap-1.5">
-            {[0,1,2,3,4].map((i) => (
-              <div 
-                key={i} 
-                className={`h-1 rounded-full transition-all duration-500 ${
-                  i === step ? 'w-8 bg-cyan' : i < step ? 'w-4 bg-cyan/40' : 'w-4 bg-white/10'
-                }`}
-              />
+        
+        {/* PROGRESS BAR v2.0 */}
+        <div className="mb-12 relative">
+          <div className="flex justify-between items-center relative z-10">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex flex-col items-center gap-2">
+                <motion.div 
+                  initial={false}
+                  animate={{ 
+                    backgroundColor: i <= step ? '#00ffff' : 'rgba(255,255,255,0.1)',
+                    scale: i === step ? 1.2 : 1
+                  }}
+                  className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${i < step ? 'border-cyan' : i === step ? 'border-cyan' : 'border-white/10'}`}
+                >
+                  {i < step ? <CheckCircle2 className="w-4 h-4 text-charcoal" /> : i === step ? <div className="w-1.5 h-1.5 bg-charcoal rounded-full animate-pulse" /> : null}
+                </motion.div>
+              </div>
             ))}
           </div>
-          <span className="font-mono text-[10px] text-silver/40 uppercase tracking-widest">
-            Step {step + 1} of 5
-          </span>
+          <div className="absolute top-3 left-0 w-full h-[2px] bg-white/10 -z-0" />
+          <motion.div 
+            className="absolute top-3 left-0 h-[2px] bg-gradient-to-r from-cyan to-purple-500 -z-0"
+            initial={{ width: '0%' }}
+            animate={{ width: `${step * 25}%` }}
+          />
+          <div className="flex justify-between mt-4">
+             <span className="text-[10px] font-mono text-cyan uppercase tracking-tighter">Step {step + 1} of 5</span>
+             <span className="text-[10px] font-mono text-silver/30 uppercase tracking-tighter">~{Math.max(0.5, 2 - step * 0.4).toFixed(1)} min remaining</span>
+          </div>
         </div>
 
-        <div className="relative min-h-[450px]">
+        <div className="relative min-h-[500px]">
           <AnimatePresence mode="wait" custom={direction}>
             {!typing && (
               <motion.div
                 key={step}
                 custom={direction}
                 variants={{
-                  initial: (dir: number) => ({ opacity: 0, x: dir * 50, scale: 0.98 }),
-                  animate: { opacity: 1, x: 0, scale: 1 },
-                  exit: (dir: number) => ({ opacity: 0, x: dir * -50, scale: 0.98 })
+                  initial: (dir: number) => ({ opacity: 0, x: dir * 50, filter: 'blur(10px)' }),
+                  animate: { opacity: 1, x: 0, filter: 'blur(0px)' },
+                  exit: (dir: number) => ({ opacity: 0, x: dir * -50, filter: 'blur(10px)' })
                 }}
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl"
+                transition={{ type: "spring", damping: 25, stiffness: 120 }}
+                className="bg-white/5 border border-white/10 backdrop-blur-3xl rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden"
               >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan/5 blur-3xl rounded-full -mr-16 -mt-16" />
                 <div className="mb-8">
                   {step > 0 && (
-                    <button
-                      onClick={handleBack}
-                      className="flex items-center gap-1 text-silver/40 hover:text-silver transition-colors font-mono text-[10px] uppercase tracking-widest mb-4"
-                    >
+                    <button onClick={handleBack} className="flex items-center gap-1 text-silver/20 hover:text-silver transition-colors font-mono text-[9px] uppercase tracking-widest mb-6 border border-white/10 px-2 py-1 rounded-md">
                       <ChevronLeft className="w-3 h-3" /> Back
                     </button>
                   )}
-                  
-                  {/* DIRECT CONDITIONAL RENDERING (NO IN-RENDER WRAPPER COMPONENT) */}
                   {step === 0 && <Step1 onNext={handleNext} />}
-                  {step === 1 && <Step2 onNext={handleNext} />}
+                  {step === 1 && <Step2 painPoint={data.painPoint} onNext={handleNext} data={data} setData={setData} />}
                   {step === 2 && <Step3 onNext={handleNext} />}
-                  {step === 3 && <Step4 onNext={handleNext} />}
+                  {step === 3 && <Step4 painPoint={data.painPoint} onNext={handleNext} />}
                   {step === 4 && <Step5 data={data} setData={setData} onSubmit={handleSubmit} isSubmitting={isSubmitting} error={error} />}
                 </div>
               </motion.div>
             )}
 
             {typing && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-center justify-center h-48"
-              >
-                <div className="flex gap-1">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center justify-center h-64">
+                <div className="flex gap-2">
                   {[0, 1, 2].map(i => (
-                    <motion.div
-                      key={i}
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                      className="w-1.5 h-1.5 bg-cyan rounded-full"
-                    />
+                    <motion.div key={i} animate={{ y: [0, -8, 0], opacity: [0.3, 1, 0.3] }} transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }} className="w-2 h-2 bg-cyan rounded-full" />
                   ))}
                 </div>
               </motion.div>
