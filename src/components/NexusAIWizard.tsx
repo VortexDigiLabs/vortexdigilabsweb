@@ -41,7 +41,7 @@ const INITIAL_DATA: WizardData = {
   vision: '',
 };
 
-// --- STEP COMPONENTS (Defined outside to prevent re-render focus loss) ---
+// --- STABLE STEP COMPONENTS ---
 
 const Step1 = ({ onNext }: { onNext: (f: keyof WizardData, v: string) => void }) => (
   <div className="space-y-4">
@@ -299,7 +299,7 @@ export default function NexusAIWizard() {
         budget: data.budget 
       });
       setIsSubmitted(true);
-    } catch (err) { 
+    } catch { 
       setError('Signal lost. Please try re-transmitting.'); 
     } finally { 
       setIsSubmitting(false); 
@@ -329,17 +329,6 @@ export default function NexusAIWizard() {
       </motion.div>
     </section>
   );
-
-  const CurrentStep = () => {
-    switch (step) {
-      case 0: return <Step1 onNext={handleNext} />;
-      case 1: return <Step2 onNext={handleNext} />;
-      case 2: return <Step3 onNext={handleNext} />;
-      case 3: return <Step4 onNext={handleNext} />;
-      case 4: return <Step5 data={data} setData={setData} onSubmit={handleSubmit} isSubmitting={isSubmitting} error={error} />;
-      default: return null;
-    }
-  };
 
   return (
     <section id="contact" className="py-24 relative overflow-hidden bg-charcoal">
@@ -388,7 +377,13 @@ export default function NexusAIWizard() {
                       <ChevronLeft className="w-3 h-3" /> Back
                     </button>
                   )}
-                  <CurrentStep />
+                  
+                  {/* DIRECT CONDITIONAL RENDERING (NO IN-RENDER WRAPPER COMPONENT) */}
+                  {step === 0 && <Step1 onNext={handleNext} />}
+                  {step === 1 && <Step2 onNext={handleNext} />}
+                  {step === 2 && <Step3 onNext={handleNext} />}
+                  {step === 3 && <Step4 onNext={handleNext} />}
+                  {step === 4 && <Step5 data={data} setData={setData} onSubmit={handleSubmit} isSubmitting={isSubmitting} error={error} />}
                 </div>
               </motion.div>
             )}
