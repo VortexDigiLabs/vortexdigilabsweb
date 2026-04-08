@@ -373,17 +373,6 @@ export function CardStack<T extends CardStackItem>({
               );
             })}
           </div>
-          {activeItem.href ? (
-            <a
-              href={activeItem.href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-white/60 hover:text-white transition"
-              aria-label="Open link"
-            >
-              <SquareArrowOutUpRight className="h-4 w-4" />
-            </a>
-          ) : null}
         </div>
       ) : null}
 

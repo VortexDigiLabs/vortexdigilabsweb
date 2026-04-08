@@ -1,90 +1,101 @@
-import { motion, type Variants } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import InteractiveCanvasBackground from "../InteractiveCanvasBackground";
 
+const slides = [
+  {
+    id: 1,
+    image: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Mp4%20Drive/Section%201.png",
+  },
+  {
+    id: 2,
+    image: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Mp4%20Drive/Section%202.jpeg",
+  },
+  {
+    id: 3,
+    image: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Mp4%20Drive/Section%203.jpeg",
+  }
+];
+
 export function HeroSection() {
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % slides.length);
   };
 
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Interactive Canvas Background */}
+    <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
       <InteractiveCanvasBackground />
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 flex min-h-[500px] flex-col items-center justify-center px-4 py-16 text-center text-silver pointer-events-none"
-      >
-        <motion.h1
-          variants={itemVariants}
-          className="mb-6 text-5xl font-bold tracking-tight md:text-7xl text-white pointer-events-auto"
-        >
-          Build Amazing
-          <br />
-          <span className="bg-gradient-to-r from-cyan to-cyan/60 bg-clip-text text-transparent">
-            User Experiences
-          </span>
-        </motion.h1>
-
-        <motion.p
-          variants={itemVariants}
-          className="mb-8 max-w-2xl text-lg text-silver/90 pointer-events-auto"
-        >
-          Create stunning, animated interfaces with our collection of
-          production-ready components. Built with React, Framer Motion, and
-          TailwindCSS.
-        </motion.p>
-
-        <motion.div variants={itemVariants} className="flex gap-4 pointer-events-auto">
-          <a href="#contact" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-cyan text-black hover:bg-cyan/90 h-11 px-8 gap-2">
-            Get Started
-            <ArrowRight className="h-4 w-4" />
-          </a>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="mt-12 flex items-center gap-8 text-sm text-silver/80 pointer-events-auto"
-        >
-          <div>
-            <div className="text-2xl font-bold text-white">
-              10k+
-            </div>
-            <div>Downloads</div>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-16 flex flex-col lg:flex-row items-center justify-between gap-12 pointer-events-none">
+        
+        {/* Static Text Section */}
+        <div className="flex-1 text-left pointer-events-auto z-20">
+          <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-7xl text-white">
+            [Main Title Placeholder]
+            <br />
+            <span className="bg-gradient-to-r from-cyan to-cyan/60 bg-clip-text text-transparent">
+              [Subtitle Placeholder]
+            </span>
+          </h1>
+          <p className="mb-6 max-w-xl text-lg text-silver/90">
+            [Description Placeholder 1: This is a static description placeholder. Please replace this text with the content from your design. The robots will animate and cycle through the pages while this text remains static.]
+          </p>
+          <p className="mb-8 max-w-xl text-lg text-silver/70">
+            [Description Placeholder 2: Additional text block for any secondary information or bullet points from the image placeholders.]
+          </p>
+          
+          <div className="flex gap-4 items-center mt-8">
+            <button 
+              onClick={prevSlide}
+              className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all border border-white/20"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button 
+              onClick={nextSlide}
+              className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm transition-all border border-white/20"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
-          <div className="h-8 w-px bg-white/20" />
-          <div>
-            <div className="text-2xl font-bold text-white">50+</div>
-            <div>Components</div>
-          </div>
-          <div className="h-8 w-px bg-white/20" />
-          <div>
-            <div className="text-2xl font-bold text-white">
-              100%
-            </div>
-            <div>Open Source</div>
-          </div>
-        </motion.div>
-      </motion.div>
+        </div>
+
+        {/* Animated Robot Image Carousel */}
+        <div className="flex-1 relative h-[500px] w-full flex items-center justify-center pointer-events-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <motion.img
+                src={slides[currentIndex].image}
+                alt={`Robot ${currentIndex + 1}`}
+                className="max-w-full max-h-full object-contain drop-shadow-[0_0_30px_rgba(0,229,255,0.3)]"
+                animate={{ 
+                  y: [0, -20, 0],
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+      </div>
     </section>
   );
 }
