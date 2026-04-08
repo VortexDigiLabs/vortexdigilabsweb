@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Vault from '../components/Vault';
+import VideoSection from '../components/VideoSection';
 
 export default function VaultPage() {
   useEffect(() => {
@@ -13,6 +14,7 @@ export default function VaultPage() {
       <Navbar />
       <main className="flex-grow pt-20">
         <Vault />
+        <VideoSection />
       </main>
       <Footer />
     </div>

@@ -14,7 +14,7 @@ export default function Mission() {
         <div className="flex flex-col md:flex-row h-full">
           {/* Left content */}
           <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-4">
+            <h1 className="text-3xl md:text-4xl premium-heading mb-4 glitch-text" data-text="Stop Losing Customers to Boring Websites.">
               Stop Losing Customers to Boring Websites. Welcome to High-End Digital Architecture.
             </h1>
             <p className="text-neutral-300 max-w-lg mb-8 text-sm md:text-base leading-relaxed">

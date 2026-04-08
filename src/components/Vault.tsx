@@ -64,7 +64,7 @@ export default function Vault() {
     <section id="vault" className="py-24 bg-charcoal text-silver overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold font-mono text-white mb-4 tracking-tight">
+          <h2 className="text-3xl md:text-5xl premium-heading mb-4 glitch-text" data-text="THE VAULT">
             THE <span className="text-cyan">VAULT</span>
           </h2>
           <p className="text-lg text-silver/80 max-w-2xl mx-auto">

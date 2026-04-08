@@ -7,12 +7,11 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Mission from './components/Mission';
-import { HeroSection } from './components/ui/hero-section-shadcnui';
+import Showcase from './components/Showcase';
+import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
-import CertificationsPage from './pages/CertificationsPage';
 
 function HomePage() {
   const location = useLocation();
@@ -33,8 +32,8 @@ function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <Mission />
-        <HeroSection />
+        <Showcase />
+        <FeatureCarousel />
         <NexusAIWizard />
       </main>
       <Footer />
@@ -48,7 +47,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vault" element={<VaultPage />} />
-        <Route path="/certifications" element={<CertificationsPage />} />
       </Routes>
     </Router>
   );

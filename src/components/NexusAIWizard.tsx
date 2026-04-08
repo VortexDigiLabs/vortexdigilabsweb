@@ -564,7 +564,12 @@ export default function NexusAIWizard() {
             <CheckCircle2 className="w-12 h-12 text-charcoal" />
           </div>
           <div>
-            <h2 className="text-4xl font-black text-white uppercase tracking-tighter mb-2 italic">DISCOVERY COMPLETE! 🚀</h2>
+            <h2 
+              className="text-4xl md:text-5xl premium-heading mb-2 glitch-text" 
+              data-text="DISCOVERY COMPLETE! 🚀"
+            >
+              DISCOVERY COMPLETE! 🚀
+            </h2>
             <div className={`inline-block px-4 py-1 rounded-full border ${tier.badge} text-[10px] font-bold uppercase tracking-widest ${tier.color} mb-4`}>
               {tier.label}
             </div>

@@ -1,4 +1,4 @@
-import { Hexagon, Github, Facebook, Video, Sparkles as SparklesIcon, Cpu, Mic } from 'lucide-react';
+import { Hexagon, Github, Facebook, Video, Cpu, Mic } from 'lucide-react';
 import { Sparkles } from './ui/sparkles-new';
 
 const GithubLogo = () => (
@@ -95,14 +95,11 @@ export default function Footer() {
             <a href="https://www.facebook.com/VortexDigiLabs" target="_blank" rel="noopener noreferrer" title="Facebook" className="text-silver/60 hover:text-cyan transition-colors">
               <Facebook className="w-5 h-5" />
             </a>
-            <a href="https://github.com/cloud_walker369" target="_blank" rel="noopener noreferrer" title="GitHub" className="text-silver/60 hover:text-cyan transition-colors">
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" title="GitHub" className="text-silver/60 hover:text-cyan transition-colors">
               <Github className="w-5 h-5" />
             </a>
             <a href="https://www.heygen.com/?sid=rewardful&via=vortexdigilabs" target="_blank" rel="noopener noreferrer" title="HeyGen" className="text-silver/60 hover:text-cyan transition-colors">
               <Video className="w-5 h-5" />
-            </a>
-            <a href="https://yupp.ai/join/brief-salmon-endor" target="_blank" rel="noopener noreferrer" title="YUPP" className="text-silver/60 hover:text-cyan transition-colors">
-              <SparklesIcon className="w-5 h-5" />
             </a>
             <a href="https://manus.im/invitation/XZDS0OAWATATW" target="_blank" rel="noopener noreferrer" title="Manus" className="text-silver/60 hover:text-cyan transition-colors">
               <Cpu className="w-5 h-5" />

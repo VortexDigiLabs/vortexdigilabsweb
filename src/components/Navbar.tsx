@@ -16,9 +16,9 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Mission', href: '/#mission' },
+    { name: 'Showcase', href: '/#showcase' },
+    { name: 'Features', href: '/#features' },
     { name: 'The Vault', href: '/vault' },
-    { name: 'Certifications', href: '/certifications' },
     { name: 'Contact', href: '/#contact' },
   ];
 
@@ -48,7 +48,7 @@ export default function Navbar() {
               <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" strokeDasharray="4 4" opacity="0.6" />
               <circle cx="12" cy="12" r="2" fill="currentColor" />
             </motion.svg>
-            <span className="font-mono text-xl font-bold tracking-wider text-silver">
+            <span className="font-heading text-xl font-black tracking-tight text-silver uppercase italic">
               VORTEX<span className="text-cyan">DIGI</span>LABS
             </span>
           </Link>
