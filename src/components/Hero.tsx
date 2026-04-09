@@ -42,7 +42,7 @@ export default function Hero() {
           <span className="text-silver glitch-text" data-text="VORTEX">VORTEX</span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-blue-500">
-            DIGI LABS
+            Digi Labs
           </span>
         </motion.h1>
 

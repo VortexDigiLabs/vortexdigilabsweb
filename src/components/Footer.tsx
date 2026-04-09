@@ -87,7 +87,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Hexagon className="text-cyan w-6 h-6" />
             <span className="font-mono text-lg font-bold tracking-wider text-silver">
-              VORTEX<span className="text-cyan">DIGI</span>LABS
+              Vortex<span className="text-cyan">Digi</span>Labs
             </span>
           </div>
           

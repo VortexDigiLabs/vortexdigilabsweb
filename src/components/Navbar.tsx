@@ -48,8 +48,8 @@ export default function Navbar() {
               <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" strokeDasharray="4 4" opacity="0.6" />
               <circle cx="12" cy="12" r="2" fill="currentColor" />
             </motion.svg>
-            <span className="font-heading text-xl font-black tracking-tight text-silver uppercase italic">
-              VORTEX<span className="text-cyan">DIGI</span>LABS
+            <span className="font-heading text-xl font-black tracking-tight text-silver italic">
+              Vortex<span className="text-cyan">Digi</span>Labs
             </span>
           </Link>
           
