@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import Certifications from '../components/Certifications';
+import Certifications from '../portfolio-components/Certifications';
 import Footer from '../components/Footer';
-import NexusAI from '../components/NexusAI';
+import NexusAI from '../portfolio-components/NexusAI';
 
 export default function CertificationsPage() {
   useEffect(() => {
