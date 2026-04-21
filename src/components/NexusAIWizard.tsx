@@ -461,8 +461,8 @@ export default function NexusAIWizard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!data.name.trim()) { setError("Identification required."); return; }
-    if (!data.email.trim() || !data.email.includes('@')) { setError("Valid contact vector required."); return; }
+    if (!data.name.trim()) { setError("Please enter your name."); return; }
+    if (!data.email.trim() || !data.email.includes('@')) { setError("Please enter a valid email address."); return; }
 
     setIsSubmitting(true);
     setError('');
@@ -495,7 +495,7 @@ export default function NexusAIWizard() {
         method: 'POST',
         mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json', // ← TELL SERVER IT'S JSON
+          'Content-Type': 'text/plain;charset=utf-8', // Safelisted header for no-cors
         },
         body: JSON.stringify(payload) // ← STRINGIFY THE OBJECT DIRECTLY
       });

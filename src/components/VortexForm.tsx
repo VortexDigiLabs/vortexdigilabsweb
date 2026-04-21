@@ -35,11 +35,24 @@ const VortexForm: React.FC = () => {
     combineCheckboxes('Budget');
 
     try {
-      // Send data to Google Sheets
-      await fetch('https://script.google.com/macros/s/AKfycbxluhaYj7f2nFIZ8TmedkS6jj2hmg88V32VlBa4n_8bXQt7RNQ3AQBpv0g3mXN_uGri/exec', {
+      const payload = {
+        Name: data.get('Name') || '',
+        Email: data.get('Email') || '',
+        Phone: data.get('Phone') || '',
+        Company: data.get('Company') || '',
+        Primary_Service: `${data.get('Primary_Service') || ''} ${data.get('Add_ons') ? '(Addons: ' + data.get('Add_ons') + ')' : ''}`,
+        Budget: data.get('Budget') || '',
+        Lead_Score: 0,
+        Vision: data.get('Vision') || ''
+      };
+
+      await fetch('https://script.google.com/macros/s/AKfycbwsGVrodJSBRgk6vqoZOTLK1CRC_fV4ZeK66rMFCUFJeet8bNlRnsGQdqZgr4XqKd5EuQ/exec', {
         method: 'POST',
-        body: data,
-        mode: 'no-cors', // Required for Google Apps Script
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
       });
 
       setSuccessMessage('Success! Your project details have been submitted. We will be in touch.');

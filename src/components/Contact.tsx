@@ -12,28 +12,29 @@ export default function Contact() {
     
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    
+    const payload = {
+      Name: data.name,
+      Email: data.email,
+      Phone: data.phone || '',
+      Company: '',
+      Primary_Service: 'Contact Page Inquiry',
+      Budget: '',
+      Lead_Score: 0,
+      Vision: data.message || ''
+    };
 
     try {
-      // Using Formspree with the user's email
-      // Note: Formspree requires a specific ID, but for this task I will 
-      // implement the logic and show the thank you message.
-      const response = await fetch('https://formspree.io/f/vortexdigital.sa369@gmail.com', {
+      await fetch('https://script.google.com/macros/s/AKfycbwsGVrodJSBRgk6vqoZOTLK1CRC_fV4ZeK66rMFCUFJeet8bNlRnsGQdqZgr4XqKd5EuQ/exec', {
         method: 'POST',
-        body: JSON.stringify(data),
+        mode: 'no-cors',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-      } else {
-        // Even if it fails (due to missing Formspree setup), we show the thank you 
-        // as requested to ensure the "simple" part works for the user's perception 
-        // while they fix the backend.
-        setIsSubmitted(true); 
-      }
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Submission error:', error);
       setIsSubmitted(true); // Fallback to success for UX in this context
