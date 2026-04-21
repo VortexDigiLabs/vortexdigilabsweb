@@ -53,13 +53,18 @@ body {
 
 .premium-heading {
   font-family: var(--font-heading);
-  font-weight: 800;
+  font-weight: 900;
   font-style: italic;
   text-transform: uppercase;
-  letter-spacing: -0.05em;
+  letter-spacing: 0.05em;
+  word-spacing: 0.2em;
   position: relative;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  /* Multi-layered "4K HD" glow effect */
+  text-shadow: 
+    0 0 10px rgba(0, 229, 255, 0.8),
+    0 0 20px rgba(0, 229, 255, 0.4),
+    0 0 30px rgba(0, 229, 255, 0.2);
 }
 
 .glitch-text {
