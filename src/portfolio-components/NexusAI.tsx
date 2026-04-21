@@ -3,8 +3,17 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, X, Send, Cpu, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Initialize Gemini helper function
+const getAI = () => {
+  const apiKey = typeof process !== 'undefined' && process.env ? process.env.GEMINI_API_KEY : undefined;
+  if (!apiKey) return null;
+  try {
+    return new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.error("Failed to initialize GoogleGenAI:", e);
+    return null;
+  }
+};
 
 export default function NexusAI() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +27,21 @@ export default function NexusAI() {
 
   useEffect(() => {
     if (!chatRef.current) {
-      chatRef.current = ai.chats.create({
-        model: "gemini-3-flash-preview",
-        config: {
-          systemInstruction: "You are Nexus AI, the official AI assistant for Vortex Digi Labs and Captain Terence Dean Allen. You specialize in Digital Innovation and Facilities Management (Physical Intelligence). Keep responses concise, futuristic, and professional. You help users understand Vortex Digi Labs' services and guide them to initiate a consultation.",
-        }
-      });
+      const ai = getAI();
+      if (!ai) {
+        console.warn("NexusAI (Portfolio): GEMINI_API_KEY is missing or invalid. AI features will be disabled.");
+        return;
+      }
+      try {
+        chatRef.current = ai.chats.create({
+          model: "gemini-3-flash-preview",
+          config: {
+            systemInstruction: "You are Nexus AI, the official AI assistant for Vortex Digi Labs and Captain Terence Dean Allen. You specialize in Digital Innovation and Facilities Management (Physical Intelligence). Keep responses concise, futuristic, and professional. You help users understand Vortex Digi Labs' services and guide them to initiate a consultation.",
+          }
+        });
+      } catch (e) {
+        console.error("Failed to create AI chat:", e);
+      }
     }
   }, []);
 
@@ -39,6 +57,12 @@ export default function NexusAI() {
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
     setIsLoading(true);
+
+    if (!chatRef.current) {
+      setMessages(prev => [...prev, { role: 'model', text: 'ERROR: AI core not initialized. Please check configuration.' }]);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await chatRef.current.sendMessage({ message: userText });

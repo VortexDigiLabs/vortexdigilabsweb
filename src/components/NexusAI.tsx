@@ -3,8 +3,17 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Terminal, X, Send, Cpu, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Initialize Gemini helper function
+const getAI = () => {
+  const apiKey = typeof process !== 'undefined' && process.env ? process.env.GEMINI_API_KEY : undefined;
+  if (!apiKey) return null;
+  try {
+    return new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.error("Failed to initialize GoogleGenAI:", e);
+    return null;
+  }
+};
 
 export default function NexusAI() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +27,21 @@ export default function NexusAI() {
 
   useEffect(() => {
     if (!chatRef.current) {
-      chatRef.current = ai.chats.create({
-        model: "gemini-3-flash-preview",
-        config: {
-          systemInstruction: "You are Nexus AI, the official AI assistant for Vortex Digi Labs. Your knowledge is STRICTLY LIMITED to the information provided on this website. Do not answer questions about topics outside of Vortex Digi Labs, its services, or its team. Vortex Digi Labs is a premium digital agency specializing in Digital Innovation and Facilities Management (Physical Intelligence), led by Captain Terence Dean Allen in Johannesburg. Services include Interactive 3D, High-End Digital Architecture, and AI integration. Projects in 'The Vault' include Video Project 10, Background Paths, Bento Cards, AI Upscaled Vision, Info Cards, Scroll Animation, Shader Animation, and Video Project 11. If a user asks something not related to the site content, politely inform them that you are only authorized to discuss Vortex Digi Labs operations. Keep responses concise, futuristic, and professional.",
-        }
-      });
+      const ai = getAI();
+      if (!ai) {
+        console.warn("NexusAI: GEMINI_API_KEY is missing or invalid. AI features will be disabled.");
+        return;
+      }
+      try {
+        chatRef.current = ai.chats.create({
+          model: "gemini-3-flash-preview",
+          config: {
+            systemInstruction: "You are Nexus AI, the official AI assistant for Vortex Digi Labs. Your knowledge is STRICTLY LIMITED to the information provided on this website. Do not answer questions about topics outside of Vortex Digi Labs, its services, or its team. Vortex Digi Labs is a premium digital agency specializing in Digital Innovation and Facilities Management (Physical Intelligence), led by Captain Terence Dean Allen in Johannesburg. Services include Interactive 3D, High-End Digital Architecture, and AI integration. Projects in 'The Vault' include Video Project 10, Background Paths, Bento Cards, AI Upscaled Vision, Info Cards, Scroll Animation, Shader Animation, and Video Project 11. If a user asks something not related to the site content, politely inform them that you are only authorized to discuss Vortex Digi Labs operations. Keep responses concise, futuristic, and professional.",
+          }
+        });
+      } catch (e) {
+        console.error("Failed to create AI chat:", e);
+      }
     }
   }, []);
 
@@ -39,6 +57,12 @@ export default function NexusAI() {
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: userText }]);
     setIsLoading(true);
+
+    if (!chatRef.current) {
+      setMessages(prev => [...prev, { role: 'model', text: 'ERROR: AI core not initialized. Please check configuration.' }]);
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await chatRef.current.sendMessage({ message: userText });
