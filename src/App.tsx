@@ -15,6 +15,7 @@ import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
 import GallerySection from './components/GallerySection';
 import DemoPage from './pages/demo';
+import { CinematicFooter } from './components/ui/motion-footer';
 
 function HomePage() {
   const location = useLocation();
@@ -35,7 +36,7 @@ function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <GallerySection />
+        <CinematicFooter />
         <FeatureCarousel />
       </main>
       <Footer />
