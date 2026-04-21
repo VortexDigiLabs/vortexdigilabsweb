@@ -1,0 +1,123 @@
+import React from 'react';
+import { CircularGallery, GalleryItem } from './ui/circular-gallery';
+
+const galleryData: GalleryItem[] = [
+	{
+		common: 'Lion',
+		binomial: 'Panthera leo',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1583499871880-de841d1ace2a?w=900&auto=format&fit=crop&q=80',
+			text: 'lion couple kissing on a brown rock',
+			pos: '47% 35%',
+			by: 'Clément Roy'
+		}
+	},
+	{
+		common: 'Asiatic elephant',
+		binomial: 'Elephas maximus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1571406761758-9a3eed5338ef?w=900&auto=format&fit=crop&q=80',
+			text: 'herd of Sri Lankan elephants walking away from a river',
+			pos: '75% 65%',
+			by: 'Alex Azabache'
+		}
+	},
+	{
+		common: 'Red-tailed black cockatoo',
+		binomial: 'Calyptorhynchus banksii',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1619664208054-41eefeab29e9?w=900&auto=format&fit=crop&q=80',
+			text: 'close-up of a black cockatoo',
+			pos: '53% 43%',
+			by: 'David Clode'
+		}
+	},
+	{
+		common: 'Dromedary',
+		binomial: 'Camelus dromedarius',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1662841238473-f4b137e123cb?w=900&auto=format&fit=crop&q=80',
+			text: 'camel and her new born calf walking in the Sahara desert',
+			pos: '65% 65%',
+			by: 'Moaz Tobok'
+		}
+	},
+	{
+		common: 'Polar bear',
+		binomial: 'Ursus maritimus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1589648751789-c8ecb7a88bd5?w=900&auto=format&fit=crop&q=80',
+			text: 'polar bear on the snow, by the water, raised on the hind legs, front paws together',
+			pos: '50% 25%',
+			by: 'Hans-Jurgen Mager'
+		}
+	},
+	{
+		common: 'Giant panda',
+		binomial: 'Ailuropoda melanoleuca',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1659540181281-1d89d6112832?w=900&auto=format&fit=crop&q=80',
+			text: 'giant panda hanging from a tree branch',
+			pos: '47%',
+			by: 'Jiachen Lin'
+		}
+	},
+	{
+		common: 'Grévy\'s zebra',
+		binomial: 'Equus grevyi',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1526095179574-86e545346ae6?w=900&auto=format&fit=crop&q=80',
+			text: 'zebra standing on wheat field, looking back towards the camera',
+			pos: '65% 35%',
+			by: 'Jeff Griffith'
+		}
+	},
+	{
+		common: 'Cheetah',
+		binomial: 'Acinonyx jubatus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1541707519942-08fd2f6480ba?w=900&auto=format&fit=crop&q=80',
+			text: 'cheetah sitting in the grass under a blue sky',
+			by: 'Mike Bird'
+		}
+	},
+	{
+		common: 'King penguin',
+		binomial: 'Aptenodytes patagonicus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1595792419466-23cec2476fa6?w=900&auto=format&fit=crop&q=80',
+			text: 'king penguin with a fluffy brown chick on grey rocks',
+			pos: '35%',
+			by: 'Martin Wettstein'
+		}
+	},
+	{
+		common: 'Red panda',
+		binomial: 'Ailurus fulgens',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1689799513565-44d2bc09d75b?w=900&auto=format&fit=crop&q=80',
+			text: 'a red panda in a tree',
+			by: 'Niels Baars'
+		}
+	},
+];
+
+export default function GallerySection() {
+  return (
+    <div className="w-full bg-charcoal" style={{ height: '500vh' }}>
+      <div className="w-full h-screen sticky top-0 flex flex-col items-center justify-center overflow-hidden">
+        <div className="text-center mb-8 absolute top-32 z-10">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-silver premium-heading mb-4">
+            DIGITAL SPECIES
+          </h2>
+          <p className="text-cyan font-mono tracking-widest uppercase">
+            Scroll to rotate the evolution
+          </p>
+        </div>
+        <div className="w-full h-full">
+          <CircularGallery items={galleryData} radius={800} />
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import TimeWarp from './TimeWarp';
+import { StardustButton } from './ui/stardust-button';
 
 export default function Hero() {
   return (
@@ -68,24 +69,18 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-8"
         >
-          <Link
-            to="/contact"
-            className="group relative inline-flex items-center justify-center px-8 py-4 font-mono font-bold text-charcoal bg-cyan hover:bg-white transition-colors duration-300 w-full sm:w-auto overflow-hidden"
-          >
-            <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
-            <span className="relative flex items-center gap-2">
+          <Link to="/contact">
+            <StardustButton className="w-full sm:w-auto">
               INITIATE CONSULTATION
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </span>
+            </StardustButton>
           </Link>
           
-          <Link
-            to="/vault"
-            className="inline-flex items-center justify-center px-8 py-4 font-mono font-bold text-silver border border-silver/20 hover:border-cyan hover:text-cyan transition-colors duration-300 w-full sm:w-auto"
-          >
-            ACCESS VAULT
+          <Link to="/vault">
+            <StardustButton className="w-full sm:w-auto">
+              ACCESS VAULT
+            </StardustButton>
           </Link>
         </motion.div>
       </div>

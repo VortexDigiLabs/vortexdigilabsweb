@@ -13,6 +13,8 @@ import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
+import GallerySection from './components/GallerySection';
+import DemoPage from './pages/demo';
 
 function HomePage() {
   const location = useLocation();
@@ -33,7 +35,7 @@ function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <HexGallery />
+        <GallerySection />
         <FeatureCarousel />
       </main>
       <Footer />
@@ -48,6 +50,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/vault" element={<VaultPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/demo" element={<DemoPage />} />
       </Routes>
     </Router>
   );
