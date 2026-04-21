@@ -12,6 +12,7 @@ import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
+import ContactPage from './pages/ContactPage';
 
 function HomePage() {
   const location = useLocation();
@@ -34,7 +35,6 @@ function HomePage() {
         <Hero />
         <Showcase />
         <FeatureCarousel />
-        <NexusAIWizard />
       </main>
       <Footer />
     </div>
@@ -47,6 +47,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vault" element={<VaultPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </Router>
   );
