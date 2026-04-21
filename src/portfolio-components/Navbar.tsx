@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Mission', href: '/#mission' },
-    { name: 'The Vault', href: '/vault' },
+    { name: 'Featured Work', href: '/vault' },
     { name: 'Certifications', href: '/certifications' },
     { name: 'Contact', href: '/#contact' },
   ];
