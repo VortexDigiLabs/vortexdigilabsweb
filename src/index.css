@@ -60,26 +60,26 @@ body {
   word-spacing: 0.2em;
   position: relative;
   color: #ffffff;
-  /* Multi-layered "4K HD" glow effect */
+  /* Reduced multi-layered glow effect */
   text-shadow: 
-    0 0 10px rgba(0, 229, 255, 0.8),
-    0 0 20px rgba(0, 229, 255, 0.4),
-    0 0 30px rgba(0, 229, 255, 0.2);
+    0 0 5px rgba(0, 229, 255, 0.4),
+    0 0 10px rgba(0, 229, 255, 0.2),
+    0 0 15px rgba(0, 229, 255, 0.1);
   animation: glow-pulse 4s infinite ease-in-out;
 }
 
 @keyframes glow-pulse {
   0%, 100% {
     text-shadow: 
-      0 0 10px rgba(0, 229, 255, 0.8),
-      0 0 20px rgba(0, 229, 255, 0.4),
-      0 0 30px rgba(0, 229, 255, 0.2);
+      0 0 5px rgba(0, 229, 255, 0.4),
+      0 0 10px rgba(0, 229, 255, 0.2),
+      0 0 15px rgba(0, 229, 255, 0.1);
   }
   50% {
     text-shadow: 
-      0 0 15px rgba(0, 229, 255, 0.9),
-      0 0 30px rgba(0, 229, 255, 0.6),
-      0 0 45px rgba(0, 229, 255, 0.3);
+      0 0 8px rgba(0, 229, 255, 0.5),
+      0 0 15px rgba(0, 229, 255, 0.3),
+      0 0 22px rgba(0, 229, 255, 0.15);
   }
 }
 
