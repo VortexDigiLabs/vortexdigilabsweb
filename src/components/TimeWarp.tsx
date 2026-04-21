@@ -160,7 +160,7 @@ export default function TimeWarp() {
   }, []);
 
   return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-black">
+    <div className="absolute inset-0 z-0 overflow-hidden bg-black">
       <canvas ref={canvasRef} className="block w-full h-full" />
       <p className="absolute top-24 left-4 sm:left-8 text-white/50 font-mono text-sm sm:text-base animate-pulse pointer-events-none z-10">
         Hold mouse down to enter time warp

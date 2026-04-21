@@ -12,8 +12,6 @@ import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
-import PortfolioPage from './pages/PortfolioPage';
-import CertificationsPage from './portfolio-pages/CertificationsPage';
 
 function HomePage() {
   const location = useLocation();
@@ -46,15 +44,9 @@ function HomePage() {
 export default function App() {
   return (
     <Router>
-      <div className="fixed top-4 left-4 z-[9999] text-cyan font-mono text-xs animate-pulse pointer-events-none">
-        VORTEX_SYSTEM_ACTIVE
-      </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vault" element={<VaultPage />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="/certifications" element={<CertificationsPage />} />
-        <Route path="*" element={<HomePage />} />
       </Routes>
     </Router>
   );
