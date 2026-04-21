@@ -108,11 +108,8 @@ export default function GallerySection() {
       <div className="w-full h-screen sticky top-0 flex flex-col items-center justify-center overflow-hidden">
         <div className="text-center mb-8 absolute top-32 z-10">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-silver premium-heading mb-4">
-            DIGITAL SPECIES
+            DIGITAL SPACES
           </h2>
-          <p className="text-cyan font-mono tracking-widest uppercase">
-            Scroll to rotate the evolution
-          </p>
         </div>
         <div className="w-full h-full">
           <CircularGallery items={galleryData} radius={800} />
