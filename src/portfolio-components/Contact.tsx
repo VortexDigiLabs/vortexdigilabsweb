@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Send, Sparkles, Loader2 } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 
