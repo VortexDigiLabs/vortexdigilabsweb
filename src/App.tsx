@@ -12,6 +12,8 @@ import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
+import PortfolioPage from './pages/PortfolioPage';
+import CertificationsPage from './portfolio-pages/CertificationsPage';
 
 function HomePage() {
   const location = useLocation();
@@ -47,6 +49,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/vault" element={<VaultPage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/certifications" element={<CertificationsPage />} />
       </Routes>
     </Router>
   );
