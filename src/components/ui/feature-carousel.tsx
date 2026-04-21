@@ -97,6 +97,22 @@ const FEATURES = [
       "https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1200",
     description: "Supporting local businesses and creators.",
   },
+  {
+    id: "underwater-vis",
+    label: "Deep Sea Viz",
+    icon: Globe,
+    image:
+      "https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater.gif",
+    description: "Immersive underwater data visualization.",
+  },
+  {
+    id: "underwater-flow",
+    label: "Flow Dynamics",
+    icon: Wand2,
+    image:
+      "https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater%20Flow.gif",
+    description: "Fluid motion analytics and simulations.",
+  },
 ];
 
 const AUTO_PLAY_INTERVAL = 3000;
