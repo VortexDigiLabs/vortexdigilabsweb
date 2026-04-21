@@ -3,102 +3,77 @@ import { CircularGallery, GalleryItem } from './ui/circular-gallery';
 
 const galleryData: GalleryItem[] = [
 	{
-		common: 'Lion',
-		binomial: 'Panthera leo',
+		common: 'Butcher Shop',
+		binomial: 'Visual Branding',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1583499871880-de841d1ace2a?w=900&auto=format&fit=crop&q=80',
-			text: 'lion couple kissing on a brown rock',
-			pos: '47% 35%',
-			by: 'Clément Roy'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Butcher.png',
+			text: 'Butcher shop visual identity',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Asiatic elephant',
-		binomial: 'Elephas maximus',
+		common: 'Industrial Hub',
+		binomial: 'Construction & Design',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1571406761758-9a3eed5338ef?w=900&auto=format&fit=crop&q=80',
-			text: 'herd of Sri Lankan elephants walking away from a river',
-			pos: '75% 65%',
-			by: 'Alex Azabache'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Construction.png',
+			text: 'Construction site visualization',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Red-tailed black cockatoo',
-		binomial: 'Calyptorhynchus banksii',
+		common: 'Euphoria',
+		binomial: 'Digital Experience',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1619664208054-41eefeab29e9?w=900&auto=format&fit=crop&q=80',
-			text: 'close-up of a black cockatoo',
-			pos: '53% 43%',
-			by: 'David Clode'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Feel%20The%20Euphoria.png',
+			text: 'Feel the Euphoria digital art',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Dromedary',
-		binomial: 'Camelus dromedarius',
+		common: 'Kahana',
+		binomial: 'Luxury Lifestyle',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1662841238473-f4b137e123cb?w=900&auto=format&fit=crop&q=80',
-			text: 'camel and her new born calf walking in the Sahara desert',
-			pos: '65% 65%',
-			by: 'Moaz Tobok'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Kahana.png',
+			text: 'Kahana lifestyle branding',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Polar bear',
-		binomial: 'Ursus maritimus',
+		common: 'Karoo Velvet',
+		binomial: 'Premium Textures',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1589648751789-c8ecb7a88bd5?w=900&auto=format&fit=crop&q=80',
-			text: 'polar bear on the snow, by the water, raised on the hind legs, front paws together',
-			pos: '50% 25%',
-			by: 'Hans-Jurgen Mager'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Karoo%20Velvet.png',
+			text: 'Karoo Velvet aesthetic',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Giant panda',
-		binomial: 'Ailuropoda melanoleuca',
+		common: 'PlatteLand',
+		binomial: 'Rural Landscapes',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1659540181281-1d89d6112832?w=900&auto=format&fit=crop&q=80',
-			text: 'giant panda hanging from a tree branch',
-			pos: '47%',
-			by: 'Jiachen Lin'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/PlatteLand.png',
+			text: 'PlatteLand visualization',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Grévy\'s zebra',
-		binomial: 'Equus grevyi',
+		common: 'Jelly 2.0',
+		binomial: 'Abstract Motion',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1526095179574-86e545346ae6?w=900&auto=format&fit=crop&q=80',
-			text: 'zebra standing on wheat field, looking back towards the camera',
-			pos: '65% 35%',
-			by: 'Jeff Griffith'
+			url: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Jelly%202.PNG',
+			text: 'Abstract jelly art',
+			by: 'Vortex Digi Labs'
 		}
 	},
 	{
-		common: 'Cheetah',
-		binomial: 'Acinonyx jubatus',
+		common: 'NFT Template',
+		binomial: 'Digital Assets',
 		photo: {
-			url: 'https://images.unsplash.com/photo-1541707519942-08fd2f6480ba?w=900&auto=format&fit=crop&q=80',
-			text: 'cheetah sitting in the grass under a blue sky',
-			by: 'Mike Bird'
-		}
-	},
-	{
-		common: 'King penguin',
-		binomial: 'Aptenodytes patagonicus',
-		photo: {
-			url: 'https://images.unsplash.com/photo-1595792419466-23cec2476fa6?w=900&auto=format&fit=crop&q=80',
-			text: 'king penguin with a fluffy brown chick on grey rocks',
-			pos: '35%',
-			by: 'Martin Wettstein'
-		}
-	},
-	{
-		common: 'Red panda',
-		binomial: 'Ailurus fulgens',
-		photo: {
-			url: 'https://images.unsplash.com/photo-1689799513565-44d2bc09d75b?w=900&auto=format&fit=crop&q=80',
-			text: 'a red panda in a tree',
-			by: 'Niels Baars'
-		}
+			url: 'https://images.unsplash.com/photo-1644018335954-ab54c83aa049?w=900&auto=format&fit=crop&q=80',
+			text: 'Premium NFT template video',
+			by: 'Vortex Digi Labs'
+		},
+		videoUrl: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Template%20NFT.mp4'
 	},
 ];
 
