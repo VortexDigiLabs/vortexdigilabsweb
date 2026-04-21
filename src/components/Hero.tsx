@@ -38,7 +38,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-2 premium-heading"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 premium-heading"
         >
           <span className="text-silver glitch-text" data-text="VORTEX">VORTEX</span>
           <br />
