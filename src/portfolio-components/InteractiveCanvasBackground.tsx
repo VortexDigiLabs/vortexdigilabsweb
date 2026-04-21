@@ -379,7 +379,7 @@ export default function InteractiveCanvasBackground() {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 z-0 overflow-hidden"
+      className="absolute inset-0 -z-10 overflow-hidden"
       style={{
         backgroundColor: uiState.bgColor,
         backgroundImage: config.current.bgImage ? `url('${config.current.bgImage}')` : 'none',
