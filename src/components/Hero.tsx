@@ -70,8 +70,8 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <a
-            href="#contact"
+          <Link
+            to="/contact"
             className="group relative inline-flex items-center justify-center px-8 py-4 font-mono font-bold text-charcoal bg-cyan hover:bg-white transition-colors duration-300 w-full sm:w-auto overflow-hidden"
           >
             <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
@@ -79,7 +79,7 @@ export default function Hero() {
               INITIATE CONSULTATION
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </span>
-          </a>
+          </Link>
           
           <Link
             to="/vault"

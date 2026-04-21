@@ -18,7 +18,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Showcase', href: '/#showcase' },
     { name: 'The Vault', href: '/vault' },
-    { name: 'Contact', href: '/#contact' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
