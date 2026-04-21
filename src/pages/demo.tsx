@@ -1,6 +1,6 @@
 import React from 'react';
-import { StardustButtonDemo } from "@/src/components/ui/stardust-button";
-import { CircularGallery, GalleryItem } from '@/src/components/ui/circular-gallery';
+import { StardustButtonDemo } from "../components/ui/stardust-button";
+import { CircularGallery, GalleryItem } from '../components/ui/circular-gallery';
 
 const galleryData: GalleryItem[] = [
 	{
