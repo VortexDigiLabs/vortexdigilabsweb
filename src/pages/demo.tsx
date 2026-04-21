@@ -1,9 +1,107 @@
 import React from 'react';
 import { StardustButtonDemo } from "@/src/components/ui/stardust-button";
 import { CircularGallery, GalleryItem } from '@/src/components/ui/circular-gallery';
-import { CinematicFooter } from '@/src/components/ui/motion-footer';
 
-// ... (galleryData remains same)
+const galleryData: GalleryItem[] = [
+	{
+		common: 'Lion',
+		binomial: 'Panthera leo',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1583499871880-de841d1ace2a?w=900&auto=format&fit=crop&q=80',
+			text: 'lion couple kissing on a brown rock',
+			pos: '47% 35%',
+			by: 'Clément Roy'
+		}
+	},
+	{
+		common: 'Asiatic elephant',
+		binomial: 'Elephas maximus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1571406761758-9a3eed5338ef?w=900&auto=format&fit=crop&q=80',
+			text: 'herd of Sri Lankan elephants walking away from a river',
+			pos: '75% 65%',
+			by: 'Alex Azabache'
+		}
+	},
+	{
+		common: 'Red-tailed black cockatoo',
+		binomial: 'Calyptorhynchus banksii',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1619664208054-41eefeab29e9?w=900&auto=format&fit=crop&q=80',
+			text: 'close-up of a black cockatoo',
+			pos: '53% 43%',
+			by: 'David Clode'
+		}
+	},
+	{
+		common: 'Dromedary',
+		binomial: 'Camelus dromedarius',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1662841238473-f4b137e123cb?w=900&auto=format&fit=crop&q=80',
+			text: 'camel and her new born calf walking in the Sahara desert',
+			pos: '65% 65%',
+			by: 'Moaz Tobok'
+		}
+	},
+	{
+		common: 'Polar bear',
+		binomial: 'Ursus maritimus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1589648751789-c8ecb7a88bd5?w=900&auto=format&fit=crop&q=80',
+			text: 'polar bear on the snow, by the water, raised on the hind legs, front paws together',
+			pos: '50% 25%',
+			by: 'Hans-Jurgen Mager'
+		}
+	},
+	{
+		common: 'Giant panda',
+		binomial: 'Ailuropoda melanoleuca',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1659540181281-1d89d6112832?w=900&auto=format&fit=crop&q=80',
+			text: 'giant panda hanging from a tree branch',
+			pos: '47%',
+			by: 'Jiachen Lin'
+		}
+	},
+	{
+		common: 'Grévy\'s zebra',
+		binomial: 'Equus grevyi',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1526095179574-86e545346ae6?w=900&auto=format&fit=crop&q=80',
+			text: 'zebra standing on wheat field, looking back towards the camera',
+			pos: '65% 35%',
+			by: 'Jeff Griffith'
+		}
+	},
+	{
+		common: 'Cheetah',
+		binomial: 'Acinonyx jubatus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1541707519942-08fd2f6480ba?w=900&auto=format&fit=crop&q=80',
+			text: 'cheetah sitting in the grass under a blue sky',
+			by: 'Mike Bird'
+		}
+	},
+	{
+		common: 'King penguin',
+		binomial: 'Aptenodytes patagonicus',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1595792419466-23cec2476fa6?w=900&auto=format&fit=crop&q=80',
+			text: 'king penguin with a fluffy brown chick on grey rocks',
+			pos: '35%',
+			by: 'Martin Wettstein'
+		}
+	},
+	{
+		common: 'Red panda',
+		binomial: 'Ailurus fulgens',
+		photo: {
+			url: 'https://images.unsplash.com/photo-1689799513565-44d2bc09d75b?w=900&auto=format&fit=crop&q=80',
+			text: 'a red panda in a tree',
+			by: 'Niels Baars'
+		}
+	},
+];
 
 const CircularGalleryDemo = () => {
   return (
@@ -33,14 +131,9 @@ export default function DemoPage() {
       
       <section className="relative z-10 bg-charcoal border-b border-silver/10">
         <div className="container mx-auto px-4 py-20 pb-0">
-          <h2 className="text-3xl font-bold mb-10 text-center text-silver">Circular Gallery & Cinematic Footer Reveal</h2>
+          <h2 className="text-3xl font-bold mb-10 text-center text-silver">Circular Gallery Demo</h2>
         </div>
         <CircularGalleryDemo />
-      </section>
-
-      <section>
-         {/* The footer reveal depends on scrolling past the content above it */}
-         <CinematicFooter />
       </section>
     </div>
   );
