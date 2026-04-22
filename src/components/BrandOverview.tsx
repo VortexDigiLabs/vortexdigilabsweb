@@ -121,28 +121,28 @@ export default function BrandOverview() {
             </div>
 
             {/* Square Visual Element (Replacing Pills) */}
-            <div className="relative w-48 h-48 rounded-2xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group mt-4">
+            <div className="relative w-full aspect-square max-w-[400px] rounded-3xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group mt-4">
                <div className="absolute inset-0 bg-gradient-to-br from-vortex-accent/5 to-purple-500/5" />
                <motion.div 
                  animate={{ rotate: -360 }}
                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                  className="relative"
                >
-                 <Globe className="w-20 h-20 text-vortex-accent/20" />
-                 <div className="absolute inset-0 blur-xl bg-vortex-accent/10 rounded-full scale-125" />
+                 <Globe className="w-40 h-40 text-vortex-accent/20" />
+                 <div className="absolute inset-0 blur-3xl bg-vortex-accent/15 rounded-full scale-150" />
                </motion.div>
                <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="text-center p-2">
-                   <p className="font-display text-sm font-bold tracking-tighter opacity-40 leading-tight">VORTEX CORE SECURITY</p>
-                   <p className="text-vortex-accent font-mono text-[8px] opacity-30 mt-1 uppercase">verified_nexus_protocol</p>
+                 <div className="text-center p-6">
+                   <p className="font-display text-2xl font-bold tracking-tighter opacity-40 leading-tight">VORTEX CORE SECURITY</p>
+                   <p className="text-vortex-accent font-mono text-xs opacity-30 mt-3 uppercase tracking-[0.2em]">verified_nexus_protocol</p>
                  </div>
                </div>
                
                {/* Tech brackets */}
-               <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-vortex-accent/40" />
-               <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-vortex-accent/40" />
-               <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-vortex-accent/40" />
-               <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-vortex-accent/40" />
+               <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-vortex-accent/40" />
+               <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-vortex-accent/40" />
+               <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-vortex-accent/40" />
+               <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-vortex-accent/40" />
             </div>
           </motion.aside>
 
