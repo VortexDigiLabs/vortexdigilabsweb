@@ -78,8 +78,26 @@ const galleryData: GalleryItem[] = [
 ];
 
 export default function GallerySection() {
+  const [radius, setRadius] = React.useState(800);
+
+  React.useEffect(() => {
+    const updateRadius = () => {
+      if (window.innerWidth < 768) {
+        setRadius(400);
+      } else if (window.innerWidth < 1024) {
+        setRadius(600);
+      } else {
+        setRadius(800);
+      }
+    };
+    
+    updateRadius();
+    window.addEventListener('resize', updateRadius);
+    return () => window.removeEventListener('resize', updateRadius);
+  }, []);
+
   return (
-    <div className="w-full bg-charcoal" style={{ height: '300vh' }}>
+    <div className="w-full bg-charcoal" style={{ height: window.innerWidth < 768 ? '150vh' : '300vh' }}>
       <div className="w-full h-screen sticky top-0 flex flex-col items-center justify-center overflow-hidden">
         <div className="text-center mb-8 absolute top-16 z-10">
           <h2 className="text-4xl md:text-6xl font-black text-silver premium-heading mb-4">
@@ -87,7 +105,7 @@ export default function GallerySection() {
           </h2>
         </div>
         <div className="w-full h-full">
-          <CircularGallery items={galleryData} radius={800} />
+          <CircularGallery items={galleryData} radius={radius} />
         </div>
       </div>
     </div>
