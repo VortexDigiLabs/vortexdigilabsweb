@@ -3,12 +3,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
 const VIDEOS = [
-  { id: 'v1', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/CATS%20(1).mp4' },
-  { id: 'v2', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Platteland.mp4' },
-  { id: 'v3', src: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Fettys%20Bilton%20Showcase%20Vid.mp4" },
-  { id: 'v4', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/DJ%20Coby%20Jinx%202.mp4' },
-  { id: 'v5', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater.gif' },
-  { id: 'v6', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater%20Flow.gif' }
+  { id: 'v1', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/CATS%20(1).mp4', title: 'CATS PROJECT' },
+  { id: 'v2', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Platteland.mp4', title: 'PLATTELAND' },
+  { id: 'v3', src: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Fettys%20Bilton%20Showcase%20Vid.mp4", title: 'FETTYS SHOWCASE' },
+  { id: 'v4', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/DJ%20Coby%20Jinx%202.mp4', title: 'DJ COBY JINX' },
+  { id: 'v5', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/31.03.2026_20.23.42_REC.mp4', title: 'CORE RECORDING' },
+  { id: 'v6', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Fetty\'s%20Deli_compress_lv2.mp4', title: 'FETTYS DELI' },
+  { id: 'v7', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/KAHANA_compress_lv2.mp4', title: 'KAHANA LUXURY' },
+  { id: 'v8', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Video%20Project%2010.mp4', title: 'VAULT PROJECT 10' },
+  { id: 'v9', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater.gif', title: 'UNDERWATER VIZ' },
+  { id: 'v10', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater%20Flow.gif', title: 'FLOW DYNAMICS' }
 ];
 
 export default function VideoSection() {
@@ -114,8 +118,8 @@ function VideoCard({ src, id, onClick }: { src: string; id: string; onClick: () 
       {src.endsWith('.gif') ? (
         <img 
           src={src} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          alt="Featured work"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 contrast-110 brightness-110"
+          alt={id}
         />
       ) : (
         <video 
@@ -124,13 +128,16 @@ function VideoCard({ src, id, onClick }: { src: string; id: string; onClick: () 
           loop 
           muted 
           playsInline 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 contrast-[1.15] brightness-110 saturate-[1.1]"
         />
       )}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-90 group-hover:scale-100">
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg mb-4 transform scale-90 group-hover:scale-100 transition-transform">
           <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[16px] border-l-white border-b-[10px] border-b-transparent ml-1 drop-shadow-md" />
         </div>
+        <p className="text-white font-display text-lg font-bold tracking-widest uppercase drop-shadow-[0_0_10px_rgba(0,229,255,0.5)]">
+          {VIDEOS.find(v => v.id === id)?.title}
+        </p>
       </div>
     </motion.div>
   );
