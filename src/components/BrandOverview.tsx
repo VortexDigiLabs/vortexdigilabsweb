@@ -162,12 +162,12 @@ export default function BrandOverview() {
                  loop 
                  muted 
                  playsInline 
-                 className="absolute inset-0 w-full h-full object-cover object-[50%_25%] transition-all duration-700 brightness-110 contrast-110"
+                 className="absolute inset-0 w-full h-full object-cover object-[50%_25%] grayscale contrast-[1.4] brightness-125"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60" />
-               <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80" />
+               <div className="absolute inset-0 flex items-center justify-center bg-transparent">
                  <div className="text-center z-10">
-                   <p className="font-display text-2xl md:text-3xl font-bold tracking-tighter text-white drop-shadow-[0_0_20px_rgba(0,229,255,0.6)] px-4">ENGINEERING THE NEXT ERA</p>
+                   <p className="font-display text-2xl md:text-3xl font-black tracking-tighter text-silver drop-shadow-[0_0_10px_rgba(255,255,255,0.4)] px-4">ENGINEERING THE NEXT ERA</p>
                  </div>
                </div>
                
