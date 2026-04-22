@@ -55,7 +55,7 @@ const services = [
 ];
 
 const stats = [
-  { number: "150+", label: "3D Websites Launched" },
+  { number: "13", label: "3D Websites Launched" },
   { number: "98%", label: "Client Satisfaction Rate" },
   { number: "3.2s", label: "Avg. Load Time Optimization" },
   { number: "24/7", label: "Support & Monitoring" },
@@ -120,13 +120,29 @@ export default function BrandOverview() {
               </p>
             </div>
 
-            {/* Core Values */}
-            <div className="flex flex-wrap gap-4 mt-4">
-              {["IMMERSIVE", "PRECISE", "PERFORMANT", "PARTNER-DRIVEN"].map((val) => (
-                <span key={val} className="px-4 py-2 bg-vortex-accent/10 border border-vortex-accent/30 text-vortex-accent font-brand font-bold text-sm tracking-widest rounded-full">
-                  ⚡ {val}
-                </span>
-              ))}
+            {/* Square Visual Element (Replacing Pills) */}
+            <div className="relative w-48 h-48 rounded-2xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group mt-4">
+               <div className="absolute inset-0 bg-gradient-to-br from-vortex-accent/5 to-purple-500/5" />
+               <motion.div 
+                 animate={{ rotate: -360 }}
+                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                 className="relative"
+               >
+                 <Globe className="w-20 h-20 text-vortex-accent/20" />
+                 <div className="absolute inset-0 blur-xl bg-vortex-accent/10 rounded-full scale-125" />
+               </motion.div>
+               <div className="absolute inset-0 flex items-center justify-center">
+                 <div className="text-center p-2">
+                   <p className="font-display text-sm font-bold tracking-tighter opacity-40 leading-tight">VORTEX CORE SECURITY</p>
+                   <p className="text-vortex-accent font-mono text-[8px] opacity-30 mt-1 uppercase">verified_nexus_protocol</p>
+                 </div>
+               </div>
+               
+               {/* Tech brackets */}
+               <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-vortex-accent/40" />
+               <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-vortex-accent/40" />
+               <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-vortex-accent/40" />
+               <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-vortex-accent/40" />
             </div>
           </motion.aside>
 
