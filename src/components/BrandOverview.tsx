@@ -120,22 +120,18 @@ export default function BrandOverview() {
               </p>
             </div>
 
-            {/* Square Visual Element (Replacing Pills) */}
-            <div className="relative w-full aspect-square max-w-[400px] rounded-3xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group">
-               <video 
-                 src="https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/hf_20260422_110431_cf06c99b-fc39-43e6-8222-d429d0ac3b1e.mp4"
-                 autoPlay 
-                 loop 
-                 muted 
-                 playsInline 
-                 className="absolute inset-0 w-full h-full object-cover brightness-110 contrast-125"
-               />
-               
-               {/* Tech brackets */}
-               <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-vortex-accent/40 z-20" />
-               <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-vortex-accent/40 z-20" />
-               <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-vortex-accent/40 z-20" />
-               <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-vortex-accent/40 z-20" />
+            {/* Brand Values Statement */}
+            <div className="relative pl-10 border-l-[6px] border-cyan flex flex-col justify-center py-8">
+               <div className="flex items-center gap-4 mb-8">
+                 <div className="relative">
+                   <Target className="text-cyan w-10 h-10" />
+                   <div className="absolute inset-0 bg-cyan/20 blur-xl rounded-full" />
+                 </div>
+                 <h3 className="text-cyan font-mono text-3xl font-black tracking-tighter">OUR VALUES</h3>
+               </div>
+               <p className="text-silver/90 text-2xl font-sans italic leading-relaxed tracking-tight">
+                 "To lead with integrity by blending cutting-edge innovation with absolute transparency. We prioritize user-centric design, sustainable digital growth, and the relentless pursuit of excellence. For us, technology is the tool, but human-first results are the mission that defines every project we build."
+               </p>
             </div>
           </motion.aside>
 
