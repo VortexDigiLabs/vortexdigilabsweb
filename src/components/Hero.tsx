@@ -1,10 +1,15 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import TimeWarp from './TimeWarp';
 import { StardustButton } from './ui/stardust-button';
+import { VideoModal } from './ui/VideoModal';
 
 export default function Hero() {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const videoUrl = "https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Vortex%20Digi%20Labs%20-%20Intro.mp4";
+
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       <TimeWarp />
@@ -77,13 +82,20 @@ export default function Hero() {
             </StardustButton>
           </Link>
           
-          <Link to="/vault">
-            <StardustButton className="w-full sm:w-auto">
-              ACCESS VAULT
-            </StardustButton>
-          </Link>
+          <StardustButton 
+            className="w-full sm:w-auto"
+            onClick={() => setIsVideoModalOpen(true)}
+          >
+            MEET THE OWNER
+          </StardustButton>
         </motion.div>
       </div>
+
+      <VideoModal 
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoUrl={videoUrl}
+      />
     </section>
   );
 }
