@@ -91,7 +91,7 @@ export default function BrandOverview() {
           >
             <div>
               <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-wider mb-6">
-                WHO IS <span className="text-vortex-accent">VORTEX?</span>
+                WHO WE <span className="text-vortex-accent">ARE</span>
               </h2>
               <p className="text-vortex-text-secondary text-lg leading-relaxed font-sans max-w-[60ch]">
                 Vortex Digi Labs is a next-generation 3D web design agency that transforms ordinary online presence into immersive digital experiences. We specialize in creating visually stunning, highly interactive websites using cutting-edge 3D animation, motion design, and spatial computing technologies.
