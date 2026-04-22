@@ -81,7 +81,7 @@ export default function GallerySection() {
   return (
     <div className="w-full bg-charcoal" style={{ height: '300vh' }}>
       <div className="w-full h-screen sticky top-0 flex flex-col items-center justify-center overflow-hidden">
-        <div className="text-center mb-8 absolute top-32 z-10">
+        <div className="text-center mb-8 absolute top-16 z-10">
           <h2 className="text-4xl md:text-6xl font-black text-silver premium-heading mb-4">
             DIGITAL SPACES
           </h2>
