@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import BrandOverview from './components/BrandOverview';
 import HexGallery from './components/HexGallery';
 import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
@@ -35,6 +36,7 @@ function HomePage() {
       <Navbar />
       <main>
         <Hero />
+        <BrandOverview />
         <GallerySection />
         <FeatureCarousel />
       </main>
