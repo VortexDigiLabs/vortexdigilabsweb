@@ -19,8 +19,8 @@ export default function VideoSection() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
       <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl premium-heading mb-4 glitch-text" data-text="FEATURED WORK">
-          FEATURED <span className="text-cyan">WORK</span>
+        <h2 className="text-3xl md:text-5xl premium-heading mb-4 glitch-text" data-text="PORTFOLIO">
+          PORTFOLIO
         </h2>
         <p className="text-silver text-lg max-w-2xl mx-auto">
           A glimpse into our latest visual experiences.
