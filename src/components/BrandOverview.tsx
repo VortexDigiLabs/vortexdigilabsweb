@@ -121,7 +121,7 @@ export default function BrandOverview() {
             </div>
 
             {/* Square Visual Element (Replacing Pills) */}
-            <div className="relative w-full aspect-square max-w-[400px] rounded-3xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group mt-4">
+            <div className="relative w-full aspect-square max-w-[400px] rounded-3xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group">
                <video 
                  src="https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/hf_20260422_110431_cf06c99b-fc39-43e6-8222-d429d0ac3b1e.mp4"
                  autoPlay 
