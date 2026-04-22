@@ -156,27 +156,27 @@ export default function BrandOverview() {
           >
             {/* Visual Anchor */}
             <div className="relative aspect-video lg:aspect-auto lg:h-64 rounded-2xl overflow-hidden bg-vortex-bg-secondary flex items-center justify-center border border-vortex-border-subtle group">
-               <div className="absolute inset-0 bg-gradient-to-br from-vortex-accent/5 to-purple-500/5" />
-               <motion.div 
-                 animate={{ rotate: 360 }}
-                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                 className="relative"
-               >
-                 <Globe className="w-32 h-32 text-vortex-accent/20" />
-                 <div className="absolute inset-0 blur-2xl bg-vortex-accent/20 rounded-full scale-150" />
-               </motion.div>
-               <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="text-center">
-                   <p className="font-display text-2xl font-bold tracking-tighter opacity-50">ENGINEERING THE NEXT ERA</p>
-                   <p className="text-vortex-accent font-mono text-sm opacity-30 mt-2">vortex_core_v1.0.4</p>
+               <video 
+                 src="https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/futuristic-ai-humanoid-figure-with-glowing-circuit.mp4"
+                 autoPlay 
+                 loop 
+                 muted 
+                 playsInline 
+                 className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+               <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
+                 <div className="text-center z-10">
+                   <p className="font-display text-2xl font-bold tracking-tighter text-white drop-shadow-[0_0_15px_rgba(0,229,255,0.5)]">ENGINEERING THE NEXT ERA</p>
+                   <p className="text-vortex-accent font-mono text-sm opacity-80 mt-2 tracking-[0.3em]">vortex_core_v1.0.4</p>
                  </div>
                </div>
                
                {/* Tech brackets */}
-               <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-vortex-accent/50" />
-               <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-vortex-accent/50" />
-               <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-vortex-accent/50" />
-               <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-vortex-accent/50" />
+               <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-vortex-accent/50 z-20" />
+               <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-vortex-accent/50 z-20" />
+               <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-vortex-accent/50 z-20" />
+               <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-vortex-accent/50 z-20" />
             </div>
 
             {/* Services Grid */}
