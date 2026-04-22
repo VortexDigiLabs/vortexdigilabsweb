@@ -109,27 +109,24 @@ export default function BrandOverview() {
               </p>
             </div>
 
-            {/* Vision Block */}
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
+            {/* Vision Box */}
+            <div className="bg-vortex-bg-secondary/50 border-l-4 border-vortex-accent p-8 rounded-r-xl backdrop-blur-sm">
+              <div className="flex items-center gap-3 mb-4">
                 <Eye className="w-6 h-6 text-vortex-accent" />
                 <h3 className="font-brand text-xl font-bold uppercase tracking-widest text-vortex-accent">Our Vision</h3>
               </div>
-              <p className="text-vortex-text-secondary">
-                A world where every website is an experience—a destination rather than a webpage. We envision the complete normalization of spatial web design, where 3D interactivity is standard, not exceptional.
+              <p className="text-silver/80 leading-relaxed italic">
+                "A world where every website is an experience—a destination rather than a webpage. We envision the complete normalization of spatial web design, where 3D interactivity is standard, not exceptional."
               </p>
             </div>
 
-            {/* Brand Values Statement */}
-            <div className="relative pl-10 border-l-[6px] border-cyan flex flex-col justify-center py-8">
-               <div className="flex items-center gap-4 mb-8">
-                 <div className="relative">
-                   <Target className="text-cyan w-10 h-10" />
-                   <div className="absolute inset-0 bg-cyan/20 blur-xl rounded-full" />
-                 </div>
-                 <h3 className="text-cyan font-mono text-3xl font-black tracking-tighter">OUR VALUES</h3>
+            {/* Values Box */}
+            <div className="bg-vortex-bg-secondary/50 border-l-4 border-vortex-accent p-8 rounded-r-xl backdrop-blur-sm">
+               <div className="flex items-center gap-3 mb-4">
+                 <Target className="w-6 h-6 text-vortex-accent" />
+                 <h3 className="font-brand text-xl font-bold uppercase tracking-widest text-vortex-accent">Our Values</h3>
                </div>
-               <p className="text-silver/90 text-2xl font-sans italic leading-relaxed tracking-tight">
+               <p className="text-silver/80 leading-relaxed italic">
                  "To lead with integrity by blending cutting-edge innovation with absolute transparency. We prioritize user-centric design, sustainable digital growth, and the relentless pursuit of excellence. For us, technology is the tool, but human-first results are the mission that defines every project we build."
                </p>
             </div>
