@@ -20,6 +20,7 @@
   }
 }
 
+/* Tailwind v4 Theme Configuration */
 @theme {
   --font-sans: "Inter", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Kanit", sans-serif;
