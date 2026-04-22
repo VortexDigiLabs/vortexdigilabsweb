@@ -130,13 +130,6 @@ export default function BrandOverview() {
                  playsInline 
                  className="absolute inset-0 w-full h-full object-cover brightness-110 contrast-125"
                />
-               <div className="absolute inset-0 bg-gradient-to-br from-vortex-black/60 via-transparent to-vortex-black/60" />
-               <div className="absolute inset-0 flex items-center justify-center">
-                 <div className="text-center p-6 z-10">
-                   <p className="font-display text-2xl font-bold tracking-tighter text-silver drop-shadow-[0_0_10px_rgba(0,229,255,0.3)] leading-tight">VORTEX CORE SECURITY</p>
-                   <p className="text-vortex-accent font-mono text-xs mt-3 uppercase tracking-[0.2em] font-bold drop-shadow-[0_0_8px_rgba(0,229,255,0.5)]">verified_nexus_protocol</p>
-                 </div>
-               </div>
                
                {/* Tech brackets */}
                <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-vortex-accent/40 z-20" />
