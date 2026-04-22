@@ -214,7 +214,7 @@ export default function BrandOverview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-24 pt-12 border-t border-vortex-border-subtle grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center"
+          className="mt-12 md:mt-24 pt-8 md:pt-12 border-t border-vortex-border-subtle grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 text-center"
         >
           {stats.map((stat) => (
             <div key={stat.label} className="flex flex-col gap-2">

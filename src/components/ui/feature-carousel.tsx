@@ -160,12 +160,12 @@ export function FeatureCarousel() {
   };
 
   return (
-    <section id="features" className="w-full bg-charcoal py-24">
-      <div className="w-full max-w-7xl mx-auto md:p-8">
-        <div className="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-[600px] lg:aspect-video border border-cyan/20 shadow-[0_0_40px_rgba(0,229,255,0.1)]">
-          <div className="w-full lg:w-[40%] min-h-[350px] md:min-h-[450px] lg:h-full relative z-30 flex flex-col items-start justify-center overflow-hidden px-8 md:px-16 lg:pl-16 bg-black/50 backdrop-blur-md">
-            <div className="absolute inset-x-0 top-0 h-12 md:h-20 lg:h-16 bg-gradient-to-b from-black via-black/80 to-transparent z-40" />
-            <div className="absolute inset-x-0 bottom-0 h-12 md:h-20 lg:h-16 bg-gradient-to-t from-black via-black/80 to-transparent z-40" />
+    <section id="features" className="w-full bg-charcoal py-12 md:py-24">
+      <div className="w-full max-w-7xl mx-auto p-4 md:p-8">
+        <div className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-[500px] lg:aspect-video border border-cyan/20 shadow-[0_0_40px_rgba(0,229,255,0.1)]">
+          <div className="w-full lg:w-[40%] min-h-[300px] md:min-h-[400px] lg:h-full relative z-30 flex flex-col items-start justify-center overflow-hidden px-6 md:px-16 lg:pl-16 bg-black/50 backdrop-blur-md">
+            <div className="absolute inset-x-0 top-0 h-12 md:h-16 lg:h-16 bg-gradient-to-b from-black via-black/80 to-transparent z-40" />
+            <div className="absolute inset-x-0 bottom-0 h-12 md:h-16 lg:h-16 bg-gradient-to-t from-black via-black/80 to-transparent z-40" />
             <div className="relative w-full h-full flex items-center justify-center lg:justify-start z-20">
               {FEATURES.map((feature, index) => {
                 const isActive = index === currentIndex;
@@ -225,8 +225,8 @@ export function FeatureCarousel() {
             </div>
           </div>
 
-          <div className="flex-1 min-h-[500px] md:min-h-[600px] lg:h-full relative bg-black/80 flex items-center justify-center py-16 md:py-24 lg:py-16 px-6 md:px-12 lg:px-10 overflow-hidden border-t lg:border-t-0 lg:border-l border-cyan/20">
-            <div className="relative w-full max-w-[420px] aspect-[4/5] flex items-center justify-center">
+          <div className="flex-1 min-h-[400px] md:min-h-[500px] lg:h-full relative bg-black/80 flex items-center justify-center py-12 md:py-24 lg:py-16 px-4 md:px-12 lg:px-10 overflow-hidden border-t lg:border-t-0 lg:border-l border-cyan/20">
+            <div className="relative w-full max-w-[320px] md:max-w-[420px] aspect-[4/5] flex items-center justify-center">
               {FEATURES.map((feature, index) => {
                 const status = getCardStatus(index);
                 const isActive = status === "active";
