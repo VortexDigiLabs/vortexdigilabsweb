@@ -320,7 +320,7 @@ body {
 
 /* Featured Card (Silver) */
 .pricing-plan--featured {
-  border: 1.5px solid #0AFFB0;
+  border: 1.5px solid #00E5FF;
 }
 
 @media (min-width: 800px) {
@@ -339,7 +339,7 @@ body {
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: #0AFFB0;
+  background: #00E5FF;
   color: #0B0C10;
   font-size: 11px;
   font-weight: 700;
@@ -361,7 +361,7 @@ body {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #66FFD2;
+  color: #00E5FF;
 }
 
 .plan-subtitle {
@@ -403,7 +403,7 @@ body {
 .btn-get-started {
   display: block;
   width: 100%;
-  background: #0AFFB0;
+  background: #00E5FF;
   color: #0B0C10;
   font-weight: 700;
   font-size: 14px;
@@ -426,9 +426,9 @@ body {
 }
 
 .btn-get-started:hover {
-  background: #08E09E;
+  background: #00C4D9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(10, 255, 176, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
 }
 
 /* Feature List — pushed to bottom */
@@ -467,8 +467,8 @@ body {
 
 .pricing-plan-extras ul li::before {
   content: "✓";
-  background: rgba(10, 255, 176, 0.15);
-  color: #0AFFB0;
+  background: rgba(0, 229, 255, 0.15);
+  color: #00E5FF;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -528,7 +528,7 @@ body {
 }
 
 .mobile-menu-overlay .close-btn:hover {
-  color: #0AFFB0;
+  color: #00E5FF;
 }
 
 .mobile-menu-overlay a {
@@ -543,7 +543,7 @@ body {
 }
 
 .mobile-menu-overlay a:hover {
-  color: #0AFFB0;
+  color: #00E5FF;
 }
 
 /* Prevent scrolling when menu is open */
