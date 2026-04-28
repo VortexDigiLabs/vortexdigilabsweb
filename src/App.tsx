@@ -40,6 +40,7 @@ function HomePage() {
         <BrandOverview />
         <GallerySection />
         <FeatureCarousel />
+        <PricingSection />
       </main>
       <Footer />
     </div>
