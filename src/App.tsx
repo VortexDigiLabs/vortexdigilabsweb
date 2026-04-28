@@ -11,6 +11,7 @@ import BrandOverview from './components/BrandOverview';
 import HexGallery from './components/HexGallery';
 import FeatureCarousel from './components/ui/feature-carousel';
 import NexusAIWizard from './components/NexusAIWizard';
+import PricingSection from './components/PricingSection';
 import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
