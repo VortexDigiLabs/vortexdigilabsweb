@@ -14,7 +14,7 @@ export default function PricingSection() {
               <div className="plan-title">Copper</div>
               <div className="plan-subtitle">Entry Level</div>
               <div className="plan-price">
-                <div className="price">R2,000 – R5,000</div>
+                <div className="price">R1,499 – R4,999</div>
               </div>
               <div className="plan-description">
                 <span>A clean, professional starter site to get your business online fast.</span>
@@ -49,7 +49,7 @@ export default function PricingSection() {
               <div className="plan-title">Bronze</div>
               <div className="plan-subtitle">Starter</div>
               <div className="plan-price">
-                <div className="price">R5,500 – R9,500</div>
+                <div className="price">R4,999 – R9,499</div>
               </div>
               <div className="plan-description">
                 <span>More room to showcase your services with Google Maps integration.</span>
@@ -87,7 +87,7 @@ export default function PricingSection() {
               <div className="plan-title">Silver</div>
               <div className="plan-subtitle">Professional</div>
               <div className="plan-price">
-                <div className="price">R9,500 – R15,000</div>
+                <div className="price">R9,499 – R14,499</div>
               </div>
               <div className="plan-description">
                 <span>Full professional build with CRM, analytics, and social integration.</span>
@@ -125,7 +125,7 @@ export default function PricingSection() {
               <div className="plan-title">Gold</div>
               <div className="plan-subtitle">Premium</div>
               <div className="plan-price">
-                <div className="price">R15,500 – R25,000</div>
+                <div className="price">R14,499 – R29,999</div>
               </div>
               <div className="plan-description">
                 <span>The complete package — e-commerce ready, blog, full optimisation.</span>
