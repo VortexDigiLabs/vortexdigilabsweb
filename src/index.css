@@ -222,3 +222,331 @@ body {
   width: 24px;
   height: 24px;
 }
+
+/* ========================================
+   PRICING SECTION
+   ======================================== */
+
+.price-section {
+  background: #0B0C10;
+  padding-top: 60px;
+  padding-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 800px) {
+  .price-section {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+}
+
+.pricing-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Section Headline */
+.pricing-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.pricing-header h2 {
+  color: #FFFFFF;
+  font-weight: 600;
+  letter-spacing: -1px;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.pricing-header p {
+  color: #9CA3AF;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 12px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* Plans Grid */
+.pricing-plans {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+@media (min-width: 800px) {
+  .pricing-plans {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+    justify-content: center;
+  }
+}
+
+/* Individual Plan Card */
+.pricing-plan {
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #0E0F14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (min-width: 800px) {
+  .pricing-plan {
+    max-width: 280px;
+  }
+}
+
+.pricing-plan:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Featured Card (Silver) */
+.pricing-plan--featured {
+  border: 1.5px solid #0AFFB0;
+}
+
+@media (min-width: 800px) {
+  .pricing-plan--featured {
+    transform: scale(1.04);
+    z-index: 2;
+  }
+  .pricing-plan--featured:hover {
+    transform: scale(1.04) translateY(-4px);
+  }
+}
+
+/* Featured Badge */
+.featured-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0AFFB0;
+  color: #0B0C10;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 50px;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+/* Plan Tier Content */
+.plan-tier {
+  text-align: left;
+}
+
+.plan-title {
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #66FFD2;
+}
+
+.plan-subtitle {
+  font-size: 13px;
+  color: #9CA3AF;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.plan-price {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  width: fit-content;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
+.plan-price .price {
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.2;
+  color: #FFFFFF;
+}
+
+.plan-description {
+  color: #9CA3AF;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* CTA Button */
+.plan-action {
+  margin-top: 24px;
+}
+
+.btn-get-started {
+  display: block;
+  width: 100%;
+  background: #0AFFB0;
+  color: #0B0C10;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  padding: 18px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+@media (max-width: 799px) {
+  .btn-get-started {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+}
+
+.btn-get-started:hover {
+  background: #08E09E;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(10, 255, 176, 0.3);
+}
+
+/* Feature List — pushed to bottom */
+.pricing-plan-extras {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.pricing-plan-extras ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pricing-plan-extras ul span {
+  opacity: 0.5;
+  color: #ffffff;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pricing-plan-extras ul li {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.25px;
+  padding-left: 28px;
+  color: #E5E7EB;
+  position: relative;
+}
+
+.pricing-plan-extras ul li::before {
+  content: "✓";
+  background: rgba(10, 255, 176, 0.15);
+  color: #0AFFB0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  flex-shrink: 0;
+}
+
+.pricing-plan-extras ul li + li {
+  margin-top: 12px;
+}
+
+/* ========================================
+   NAVBAR — FULLSCREEN MOBILE OVERLAY
+   ======================================== */
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0B0C10;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-menu-overlay .close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 8px;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-overlay .close-btn:hover {
+  color: #0AFFB0;
+}
+
+.mobile-menu-overlay a {
+  font-size: 24px;
+  color: #FFFFFF;
+  margin: 20px 0;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.mobile-menu-overlay a:hover {
+  color: #0AFFB0;
+}
+
+/* Prevent scrolling when menu is open */
+body.menu-open {
+  overflow: hidden;
+}
