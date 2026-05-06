@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { SquareArrowOutUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
@@ -122,22 +122,12 @@ export function CardStack<T extends CardStackItem>({
     wrapIndex(initialIndex, len),
   );
   const [hovering, setHovering] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState<T | null>(null);
-  const [canCloseOnMove, setCanCloseOnMove] = React.useState(false);
 
   // keep active in bounds if items change
   React.useEffect(() => {
     setActive((a) => wrapIndex(a, len));
   }, [len]);
 
-  React.useEffect(() => {
-    if (selectedItem) {
-      const timer = setTimeout(() => setCanCloseOnMove(true), 500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanCloseOnMove(false);
-    }
-  }, [selectedItem]);
 
   React.useEffect(() => {
     if (!len) return;
@@ -177,7 +167,6 @@ export function CardStack<T extends CardStackItem>({
     if (reduceMotion) return;
     if (!len) return;
     if (pauseOnHover && hovering) return;
-    if (selectedItem) return;
 
     const id = window.setInterval(
       () => {
@@ -209,6 +198,32 @@ export function CardStack<T extends CardStackItem>({
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
+      {/* Navigation Arrows */}
+      <div className="absolute inset-y-0 left-0 right-0 z-40 pointer-events-none flex items-center justify-between px-4 md:px-12">
+        <button
+          onClick={(e) => { e.stopPropagation(); prev(); }}
+          className={cn(
+            "p-4 rounded-full bg-black/40 border border-white/10 text-white backdrop-blur-md transition-all pointer-events-auto",
+            "hover:bg-cyan hover:border-cyan hover:text-black hover:scale-110",
+            !canGoPrev && "opacity-0 pointer-events-none"
+          )}
+          aria-label="Previous card"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); next(); }}
+          className={cn(
+            "p-4 rounded-full bg-black/40 border border-white/10 text-white backdrop-blur-md transition-all pointer-events-auto",
+            "hover:bg-cyan hover:border-cyan hover:text-black hover:scale-110",
+            !canGoNext && "opacity-0 pointer-events-none"
+          )}
+          aria-label="Next card"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+
       {/* Stage */}
       <div
         className="relative w-full"
@@ -324,9 +339,7 @@ export function CardStack<T extends CardStackItem>({
                   // translateZ via style transform (kept stable w/ motion values above)
                   // We apply translateZ by using a CSS transform in a child wrapper.
                   onClick={() => {
-                    if (isActive) {
-                      setSelectedItem(item);
-                    } else {
+                    if (!isActive) {
                       setActive(i);
                     }
                   }}
@@ -386,49 +399,6 @@ export function CardStack<T extends CardStackItem>({
           ) : null}
         </div>
       ) : null}
-
-      {/* Fullscreen Popup */}
-      <AnimatePresence>
-        {selectedItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out"
-            onClick={() => setSelectedItem(null)}
-            onMouseMove={() => {
-              if (canCloseOnMove) setSelectedItem(null);
-            }}
-          >
-            <motion.div
-              layoutId={`media-${selectedItem.id}`}
-              className="relative max-w-[90vw] md:max-w-[60vw] max-h-[90vh] md:max-h-[60vh] rounded-xl overflow-hidden shadow-2xl"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedItem(null);
-              }}
-            >
-              {selectedItem.videoSrc ? (
-                <video
-                  src={selectedItem.videoSrc}
-                  className="w-full h-full object-contain"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              ) : selectedItem.imageSrc ? (
-                <img
-                  src={selectedItem.imageSrc}
-                  alt={selectedItem.title}
-                  className="w-full h-full object-contain"
-                  draggable={false}
-                />
-              ) : null}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

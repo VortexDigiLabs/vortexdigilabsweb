@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { SquareArrowOutUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
@@ -122,22 +122,12 @@ export function CardStack<T extends CardStackItem>({
     wrapIndex(initialIndex, len),
   );
   const [hovering, setHovering] = React.useState(false);
-  const [selectedItem, setSelectedItem] = React.useState<T | null>(null);
-  const [canCloseOnMove, setCanCloseOnMove] = React.useState(false);
 
   // keep active in bounds if items change
   React.useEffect(() => {
     setActive((a) => wrapIndex(a, len));
   }, [len]);
 
-  React.useEffect(() => {
-    if (selectedItem) {
-      const timer = setTimeout(() => setCanCloseOnMove(true), 500);
-      return () => clearTimeout(timer);
-    } else {
-      setCanCloseOnMove(false);
-    }
-  }, [selectedItem]);
 
   React.useEffect(() => {
     if (!len) return;
@@ -177,7 +167,6 @@ export function CardStack<T extends CardStackItem>({
     if (reduceMotion) return;
     if (!len) return;
     if (pauseOnHover && hovering) return;
-    if (selectedItem) return;
 
     const id = window.setInterval(
       () => {
@@ -209,6 +198,32 @@ export function CardStack<T extends CardStackItem>({
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
+      {/* Navigation Arrows */}
+      <div className="absolute inset-y-0 left-0 right-0 z-40 pointer-events-none flex items-center justify-between px-4 md:px-12">
+        <button
+          onClick={(e) => { e.stopPropagation(); prev(); }}
+          className={cn(
+            "p-4 rounded-full bg-black/40 border border-white/10 text-white backdrop-blur-md transition-all pointer-events-auto",
+            "hover:bg-cyan hover:border-cyan hover:text-black hover:scale-110",
+            !canGoPrev && "opacity-0 pointer-events-none"
+          )}
+          aria-label="Previous card"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); next(); }}
+          className={cn(
+            "p-4 rounded-full bg-black/40 border border-white/10 text-white backdrop-blur-md transition-all pointer-events-auto",
+            "hover:bg-cyan hover:border-cyan hover:text-black hover:scale-110",
+            !canGoNext && "opacity-0 pointer-events-none"
+          )}
+          aria-label="Next card"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+
       {/* Stage */}
       <div
         className="relative w-full"
@@ -324,9 +339,7 @@ export function CardStack<T extends CardStackItem>({
                   // translateZ via style transform (kept stable w/ motion values above)
                   // We apply translateZ by using a CSS transform in a child wrapper.
                   onClick={() => {
-                    if (isActive) {
-                      setSelectedItem(item);
-                    } else {
+                    if (!isActive) {
                       setActive(i);
                     }
                   }}
@@ -375,91 +388,6 @@ export function CardStack<T extends CardStackItem>({
           </div>
         </div>
       ) : null}
-
-      {/* Fullscreen Popup */}
-      <AnimatePresence>
-        {selectedItem && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out"
-            onClick={() => setSelectedItem(null)}
-            onMouseMove={() => {
-              if (canCloseOnMove) setSelectedItem(null);
-            }}
-          >
-            <motion.div
-              layoutId={`media-${selectedItem.id}`}
-              className="relative max-w-[95vw] md:max-w-[75vw] max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl bg-charcoal border border-white/10"
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              {/* Media Container */}
-              <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
-                <div className="flex-1 bg-black flex items-center justify-center overflow-hidden">
-                  {selectedItem.videoSrc ? (
-                    <video
-                      src={selectedItem.videoSrc}
-                      className="w-full h-full object-contain"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    />
-                  ) : selectedItem.imageSrc ? (
-                    <motion.img
-                      src={selectedItem.imageSrc}
-                      alt={selectedItem.title}
-                      className="w-full h-full object-contain"
-                      initial={{ scale: 1.1 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                      draggable={false}
-                    />
-                  ) : null}
-                </div>
-                
-                {/* Info Panel */}
-                <div className="w-full md:w-80 p-6 flex flex-col justify-center bg-charcoal border-t md:border-t-0 md:border-l border-white/10">
-                  <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
-                    {selectedItem.title}
-                  </h3>
-                  {selectedItem.description && (
-                    <p className="text-silver/80 text-sm leading-relaxed mb-6">
-                      {selectedItem.description}
-                    </p>
-                  )}
-                  {selectedItem.href && (
-                    <a 
-                      href={selectedItem.href}
-                      className="inline-flex items-center gap-2 text-cyan font-mono text-xs tracking-widest hover:text-white transition-colors group"
-                    >
-                      EXPLORE PROJECT <SquareArrowOutUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
-                  )}
-                  
-                  <button 
-                    onClick={() => setSelectedItem(null)}
-                    className="mt-8 text-xs font-mono text-silver/40 hover:text-white transition-colors"
-                  >
-                    [ CLOSE WINDOW ]
-                  </button>
-                </div>
-              </div>
-              
-              {/* Close Button X */}
-              <button 
-                onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white/70 hover:bg-white/20 hover:text-white backdrop-blur-md transition-all z-20"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
