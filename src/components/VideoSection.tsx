@@ -14,19 +14,19 @@ const VIDEOS = [
   { id: 'v8', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082371/bmda3o4eq1aux93vekf1.mp4', title: 'ECHO LOGIC', description: 'Recursive algorithmic patterns and digital echo systems.' }
 ];
 
-const VideoCard = ({ video, onClick }: { video: typeof VIDEOS[0], onClick: () => void }) => {
+const VideoCard = ({ video, onClick, isModalOpen }: { video: typeof VIDEOS[0], onClick: () => void, isModalOpen: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(videoRef, { amount: 0.6 });
 
   useEffect(() => {
     if (videoRef.current) {
-      if (isInView) {
+      if (isInView && !isModalOpen) {
         videoRef.current.play().catch(e => console.log("Auto-play blocked:", e));
       } else {
         videoRef.current.pause();
       }
     }
-  }, [isInView]);
+  }, [isInView, isModalOpen]);
 
   return (
     <motion.div 
@@ -42,6 +42,7 @@ const VideoCard = ({ video, onClick }: { video: typeof VIDEOS[0], onClick: () =>
         loop
         muted
         playsInline
+        preload="metadata"
       />
       
       {/* Overlay */}
@@ -131,7 +132,11 @@ export default function VideoSection() {
       >
         {VIDEOS.map((vid) => (
           <div key={vid.id} className="snap-center">
-            <VideoCard video={vid} onClick={() => setSelectedVideo(vid)} />
+            <VideoCard 
+              video={vid} 
+              onClick={() => setSelectedVideo(vid)} 
+              isModalOpen={!!selectedVideo}
+            />
           </div>
         ))}
       </div>
@@ -162,12 +167,14 @@ export default function VideoSection() {
               onClick={(e) => e.stopPropagation()}
             >
               <video
+                key={selectedVideo.id}
                 src={selectedVideo.src}
                 className="w-full h-full object-contain"
                 autoPlay
                 controls
                 playsInline
                 loop
+                preload="auto"
               />
               <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/40 to-transparent">
                 <h3 className="text-3xl font-bold text-white mb-2 uppercase tracking-tight">{selectedVideo.title}</h3>

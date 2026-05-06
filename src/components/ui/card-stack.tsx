@@ -409,6 +409,7 @@ function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
               loop
               muted
               playsInline
+              preload="metadata"
             />
           </motion.div>
         ) : item.imageSrc ? (
