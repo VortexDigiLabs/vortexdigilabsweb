@@ -391,29 +391,71 @@ export function CardStack<T extends CardStackItem>({
           >
             <motion.div
               layoutId={`media-${selectedItem.id}`}
-              className="relative max-w-[90vw] md:max-w-[60vw] max-h-[90vh] md:max-h-[60vh] rounded-xl overflow-hidden shadow-2xl"
+              className="relative max-w-[95vw] md:max-w-[75vw] max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl bg-charcoal border border-white/10"
               onClick={(e) => {
                 e.stopPropagation();
-                setSelectedItem(null);
               }}
             >
-              {selectedItem.videoSrc ? (
-                <video
-                  src={selectedItem.videoSrc}
-                  className="w-full h-full object-contain"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              ) : selectedItem.imageSrc ? (
-                <img
-                  src={selectedItem.imageSrc}
-                  alt={selectedItem.title}
-                  className="w-full h-full object-contain"
-                  draggable={false}
-                />
-              ) : null}
+              {/* Media Container */}
+              <div className="flex flex-col md:flex-row h-full max-h-[90vh]">
+                <div className="flex-1 bg-black flex items-center justify-center overflow-hidden">
+                  {selectedItem.videoSrc ? (
+                    <video
+                      src={selectedItem.videoSrc}
+                      className="w-full h-full object-contain"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : selectedItem.imageSrc ? (
+                    <motion.img
+                      src={selectedItem.imageSrc}
+                      alt={selectedItem.title}
+                      className="w-full h-full object-contain"
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      draggable={false}
+                    />
+                  ) : null}
+                </div>
+                
+                {/* Info Panel */}
+                <div className="w-full md:w-80 p-6 flex flex-col justify-center bg-charcoal border-t md:border-t-0 md:border-l border-white/10">
+                  <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
+                    {selectedItem.title}
+                  </h3>
+                  {selectedItem.description && (
+                    <p className="text-silver/80 text-sm leading-relaxed mb-6">
+                      {selectedItem.description}
+                    </p>
+                  )}
+                  {selectedItem.href && (
+                    <a 
+                      href={selectedItem.href}
+                      className="inline-flex items-center gap-2 text-cyan font-mono text-xs tracking-widest hover:text-white transition-colors group"
+                    >
+                      EXPLORE PROJECT <SquareArrowOutUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </a>
+                  )}
+                  
+                  <button 
+                    onClick={() => setSelectedItem(null)}
+                    className="mt-8 text-xs font-mono text-silver/40 hover:text-white transition-colors"
+                  >
+                    [ CLOSE WINDOW ]
+                  </button>
+                </div>
+              </div>
+              
+              {/* Close Button X */}
+              <button 
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white/70 hover:bg-white/20 hover:text-white backdrop-blur-md transition-all z-20"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </motion.div>
           </motion.div>
         )}
@@ -424,7 +466,7 @@ export function CardStack<T extends CardStackItem>({
 
 function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full group">
       {/* image/video */}
       <div className="absolute inset-0">
         {item.videoSrc ? (
@@ -450,8 +492,17 @@ function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
               src={item.imageSrc}
               alt={item.title}
               className="h-full w-full object-cover"
-              animate={{ scale: [1, 1.15, 1], x: ['0%', '-2%', '0%'], y: ['0%', '-2%', '0%'] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              animate={{ 
+                scale: [1, 1.12, 1],
+                rotate: [0, 1, 0, -1, 0],
+                x: ['0%', '-1%', '1%', '0%'],
+                y: ['0%', '1%', '-1%', '0%']
+              }}
+              transition={{ 
+                duration: 25, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
               draggable={false}
               loading="eager"
             />
@@ -464,18 +515,24 @@ function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
       </div>
 
       {/* subtle gradient overlay at bottom for text readability */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-500 group-hover:via-black/50" />
 
       {/* content */}
-      <div className="relative z-10 flex h-full flex-col justify-end p-5">
-        <div className="truncate text-xl font-semibold text-white">
-          {item.title}
-        </div>
-        {item.description ? (
-          <div className="mt-1 line-clamp-2 text-sm text-white/80">
-            {item.description}
+      <div className="relative z-10 flex h-full flex-col justify-end p-6">
+        <motion.div 
+          initial={{ y: 5, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="space-y-1"
+        >
+          <div className="truncate text-xl font-bold text-white tracking-tight">
+            {item.title}
           </div>
-        ) : null}
+          {item.description ? (
+            <div className="mt-1 line-clamp-2 text-xs text-silver/70 font-medium">
+              {item.description}
+            </div>
+          ) : null}
+        </motion.div>
       </div>
     </div>
   );
