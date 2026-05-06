@@ -16,8 +16,8 @@ import Footer from './components/Footer';
 import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
 import GallerySection from './components/GallerySection';
-import DemoPage from './pages/demo';
 import AssetsPage from './pages/AssetsPage';
+import ImageArchive from './components/ImageArchive';
 
 function HomePage() {
   const location = useLocation();
@@ -41,6 +41,7 @@ function HomePage() {
         <BrandOverview />
         <GallerySection />
         <FeatureCarousel />
+        <ImageArchive />
         <PricingSection />
       </main>
       <Footer />
