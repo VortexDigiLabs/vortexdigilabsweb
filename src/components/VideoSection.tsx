@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 
 const VIDEOS = [
   { id: 'v1', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082593/hyl4rk0mqayz4rui0ywy.mp4', title: 'PULSE RISING', description: 'Immersive visuals and pulsating rhythms from our latest festival production.' },
@@ -13,7 +14,7 @@ const VIDEOS = [
   { id: 'v8', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082371/bmda3o4eq1aux93vekf1.mp4', title: 'ECHO LOGIC', description: 'Recursive algorithmic patterns and digital echo systems.' }
 ];
 
-const VideoCard = ({ video }: { video: typeof VIDEOS[0] }) => {
+const VideoCard = ({ video, onClick }: { video: typeof VIDEOS[0], onClick: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const isInView = useInView(videoRef, { amount: 0.6 });
 
@@ -29,9 +30,10 @@ const VideoCard = ({ video }: { video: typeof VIDEOS[0] }) => {
 
   return (
     <motion.div 
-      className="relative flex-shrink-0 w-[85vw] md:w-[600px] aspect-video rounded-2xl overflow-hidden group border border-white/10 bg-black/40 backdrop-blur-sm"
+      className="relative flex-shrink-0 w-[85vw] md:w-[600px] aspect-video rounded-2xl overflow-hidden group border border-white/10 bg-black/40 backdrop-blur-sm cursor-pointer"
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onClick}
     >
       <video
         ref={videoRef}
@@ -69,6 +71,7 @@ const VideoCard = ({ video }: { video: typeof VIDEOS[0] }) => {
 
 export default function VideoSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [selectedVideo, setSelectedVideo] = useState<typeof VIDEOS[0] | null>(null);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -128,10 +131,52 @@ export default function VideoSection() {
       >
         {VIDEOS.map((vid) => (
           <div key={vid.id} className="snap-center">
-            <VideoCard video={vid} />
+            <VideoCard video={vid} onClick={() => setSelectedVideo(vid)} />
           </div>
         ))}
       </div>
+
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-12"
+            onClick={() => setSelectedVideo(null)}
+          >
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute top-8 right-8 text-white hover:text-cyan p-2 bg-white/5 rounded-full border border-white/10 transition-colors z-[110]"
+              onClick={(e) => { e.stopPropagation(); setSelectedVideo(null); }}
+            >
+              <X className="w-8 h-8" />
+            </motion.button>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-6xl aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <video
+                src={selectedVideo.src}
+                className="w-full h-full object-contain"
+                autoPlay
+                controls
+                playsInline
+                loop
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/40 to-transparent">
+                <h3 className="text-3xl font-bold text-white mb-2 uppercase tracking-tight">{selectedVideo.title}</h3>
+                <p className="text-silver/70 max-w-2xl italic">{selectedVideo.description}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Helper text */}
       <div className="max-w-7xl mx-auto px-4 mt-8 flex justify-center md:justify-start">
