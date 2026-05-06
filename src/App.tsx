@@ -17,6 +17,7 @@ import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
 import GallerySection from './components/GallerySection';
 import DemoPage from './pages/demo';
+import AssetsPage from './pages/AssetsPage';
 
 function HomePage() {
   const location = useLocation();
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/vault" element={<VaultPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/demo" element={<DemoPage />} />
+        <Route path="/assets" element={<AssetsPage />} />
       </Routes>
     </Router>
   );
