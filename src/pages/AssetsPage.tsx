@@ -1,27 +1,36 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import {
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-  listAll,
-  deleteObject,
-  getMetadata,
-} from 'firebase/storage';
-import { storage } from '../lib/firebase';
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_UPLOAD_URL } from '../lib/cloudinary';
 
 interface AssetItem {
+  id: string;
   name: string;
   url: string;
-  fullPath: string;
   type: string;
   size: number;
   uploaded: string;
+  publicId: string;
 }
 
 interface UploadTask {
+  id: string;
   name: string;
   progress: number;
   status: 'uploading' | 'done' | 'error';
+}
+
+const STORAGE_KEY = 'vdl_assets';
+
+function loadStoredAssets(): AssetItem[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveAssets(assets: AssetItem[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(assets));
 }
 
 function formatBytes(bytes: number) {
@@ -44,87 +53,95 @@ export default function AssetsPage() {
   const [assets, setAssets] = useState<AssetItem[]>([]);
   const [uploads, setUploads] = useState<UploadTask[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
-  const [deletingPath, setDeletingPath] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'image' | 'video' | 'other'>('all');
   const [previewAsset, setPreviewAsset] = useState<AssetItem | null>(null);
+  const [search, setSearch] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const loadAssets = useCallback(async () => {
-    try {
-      setLoading(true);
-      const storageRef = ref(storage, 'assets/');
-      const result = await listAll(storageRef);
-      const items: AssetItem[] = await Promise.all(
-        result.items.map(async (itemRef) => {
-          const url = await getDownloadURL(itemRef);
-          const meta = await getMetadata(itemRef);
-          return {
-            name: itemRef.name,
-            url,
-            fullPath: itemRef.fullPath,
-            type: meta.contentType || 'application/octet-stream',
-            size: meta.size,
-            uploaded: meta.timeCreated,
-          };
-        })
-      );
-      items.sort((a, b) => new Date(b.uploaded).getTime() - new Date(a.uploaded).getTime());
-      setAssets(items);
-    } catch (err) {
-      console.error('Failed to load assets:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    loadAssets();
-  }, [loadAssets]);
+    setAssets(loadStoredAssets());
+  }, []);
 
   const uploadFiles = useCallback((files: FileList | File[]) => {
     const fileArray = Array.from(files);
+
     fileArray.forEach((file) => {
-      const taskName = file.name;
-      setUploads((prev) => [...prev, { name: taskName, progress: 0, status: 'uploading' }]);
+      const taskId = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
 
-      const storageRef = ref(storage, `assets/${Date.now()}_${file.name}`);
-      const task = uploadBytesResumable(storageRef, file);
+      setUploads((prev) => [
+        ...prev,
+        { id: taskId, name: file.name, progress: 0, status: 'uploading' },
+      ]);
 
-      task.on(
-        'state_changed',
-        (snap) => {
-          const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', CLOUDINARY_UPLOAD_URL);
+
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
           setUploads((prev) =>
-            prev.map((u) => (u.name === taskName ? { ...u, progress: pct } : u))
+            prev.map((u) => (u.id === taskId ? { ...u, progress: pct } : u))
           );
-        },
-        () => {
-          setUploads((prev) =>
-            prev.map((u) => (u.name === taskName ? { ...u, status: 'error' } : u))
-          );
-        },
-        async () => {
-          setUploads((prev) =>
-            prev.map((u) => (u.name === taskName ? { ...u, status: 'done', progress: 100 } : u))
-          );
-          await loadAssets();
-          setTimeout(() => {
-            setUploads((prev) => prev.filter((u) => u.name !== taskName));
-          }, 2000);
         }
-      );
+      });
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          const newAsset: AssetItem = {
+            id: taskId,
+            name: file.name,
+            url: data.secure_url,
+            type: file.type || 'application/octet-stream',
+            size: data.bytes,
+            uploaded: new Date().toISOString(),
+            publicId: data.public_id,
+          };
+
+          setAssets((prev) => {
+            const updated = [newAsset, ...prev];
+            saveAssets(updated);
+            return updated;
+          });
+
+          setUploads((prev) =>
+            prev.map((u) =>
+              u.id === taskId ? { ...u, status: 'done', progress: 100 } : u
+            )
+          );
+
+          setTimeout(() => {
+            setUploads((prev) => prev.filter((u) => u.id !== taskId));
+          }, 2500);
+        } else {
+          setUploads((prev) =>
+            prev.map((u) => (u.id === taskId ? { ...u, status: 'error' } : u))
+          );
+        }
+      });
+
+      xhr.addEventListener('error', () => {
+        setUploads((prev) =>
+          prev.map((u) => (u.id === taskId ? { ...u, status: 'error' } : u))
+        );
+      });
+
+      xhr.send(formData);
     });
-  }, [loadAssets]);
+  }, []);
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragging(false);
-      if (e.dataTransfer.files.length > 0) {
-        uploadFiles(e.dataTransfer.files);
-      }
+      if (e.dataTransfer.files.length > 0) uploadFiles(e.dataTransfer.files);
     },
     [uploadFiles]
   );
@@ -133,13 +150,11 @@ export default function AssetsPage() {
     e.preventDefault();
     setIsDragging(true);
   };
-
   const handleDragLeave = () => setIsDragging(false);
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      uploadFiles(e.target.files);
-    }
+    if (e.target.files && e.target.files.length > 0) uploadFiles(e.target.files);
+    e.target.value = '';
   };
 
   const copyUrl = (url: string) => {
@@ -148,25 +163,36 @@ export default function AssetsPage() {
     setTimeout(() => setCopiedUrl(null), 2000);
   };
 
-  const deleteAsset = async (asset: AssetItem) => {
-    if (!window.confirm(`Delete "${asset.name}"?`)) return;
-    setDeletingPath(asset.fullPath);
-    try {
-      await deleteObject(ref(storage, asset.fullPath));
-      setAssets((prev) => prev.filter((a) => a.fullPath !== asset.fullPath));
-    } catch (err) {
-      console.error('Delete failed:', err);
-    } finally {
-      setDeletingPath(null);
-    }
+  const deleteAsset = (asset: AssetItem) => {
+    if (!window.confirm(`Remove "${asset.name}" from your library?`)) return;
+    setDeletingId(asset.id);
+    setAssets((prev) => {
+      const updated = prev.filter((a) => a.id !== asset.id);
+      saveAssets(updated);
+      return updated;
+    });
+    if (previewAsset?.id === asset.id) setPreviewAsset(null);
+    setDeletingId(null);
   };
 
   const filteredAssets = assets.filter((a) => {
-    if (filter === 'image') return a.type.startsWith('image/');
-    if (filter === 'video') return a.type.startsWith('video/');
-    if (filter === 'other') return !a.type.startsWith('image/') && !a.type.startsWith('video/');
-    return true;
+    const matchesFilter =
+      filter === 'all' ||
+      (filter === 'image' && a.type.startsWith('image/')) ||
+      (filter === 'video' && a.type.startsWith('video/')) ||
+      (filter === 'other' && !a.type.startsWith('image/') && !a.type.startsWith('video/'));
+    const matchesSearch = a.name.toLowerCase().includes(search.toLowerCase());
+    return matchesFilter && matchesSearch;
   });
+
+  const countFor = (f: 'image' | 'video' | 'other') =>
+    assets.filter((a) =>
+      f === 'image'
+        ? a.type.startsWith('image/')
+        : f === 'video'
+        ? a.type.startsWith('video/')
+        : !a.type.startsWith('image/') && !a.type.startsWith('video/')
+    ).length;
 
   return (
     <div className="assets-page">
@@ -177,7 +203,7 @@ export default function AssetsPage() {
             <span className="assets-logo">⬡</span>
             <div>
               <h1>My Assets</h1>
-              <p>Vortex Digi Labs — Firebase Storage</p>
+              <p>Vortex Digi Labs — Cloudinary Media Library</p>
             </div>
           </div>
           <div className="assets-stats">
@@ -210,16 +236,14 @@ export default function AssetsPage() {
           <div className="drop-zone-title">
             {isDragging ? 'Drop to upload' : 'Drag & Drop files here'}
           </div>
-          <div className="drop-zone-sub">
-            or click to browse — images, videos, audio, PDFs
-          </div>
+          <div className="drop-zone-sub">or click to browse — images, videos, audio, PDFs</div>
         </div>
 
         {/* Active Uploads */}
         {uploads.length > 0 && (
           <div className="upload-queue">
             {uploads.map((u) => (
-              <div key={u.name} className={`upload-item upload-item--${u.status}`}>
+              <div key={u.id} className={`upload-item upload-item--${u.status}`}>
                 <div className="upload-item-name">{u.name}</div>
                 <div className="upload-progress-bar">
                   <div className="upload-progress-fill" style={{ width: `${u.progress}%` }} />
@@ -232,50 +256,54 @@ export default function AssetsPage() {
           </div>
         )}
 
-        {/* Filter Tabs */}
-        <div className="filter-tabs">
-          {(['all', 'image', 'video', 'other'] as const).map((f) => (
+        {/* Toolbar */}
+        <div className="assets-toolbar">
+          <div className="filter-tabs">
             <button
-              key={f}
-              className={`filter-tab ${filter === f ? 'filter-tab--active' : ''}`}
-              onClick={() => setFilter(f)}
+              className={`filter-tab ${filter === 'all' ? 'filter-tab--active' : ''}`}
+              onClick={() => setFilter('all')}
             >
-              {f === 'all' ? 'All Files' : f === 'image' ? '🖼 Images' : f === 'video' ? '🎬 Videos' : '📁 Other'}
-              <span className="filter-tab-count">
-                {f === 'all'
-                  ? assets.length
-                  : assets.filter((a) =>
-                      f === 'image'
-                        ? a.type.startsWith('image/')
-                        : f === 'video'
-                        ? a.type.startsWith('video/')
-                        : !a.type.startsWith('image/') && !a.type.startsWith('video/')
-                    ).length}
-              </span>
+              All Files <span className="filter-tab-count">{assets.length}</span>
             </button>
-          ))}
+            <button
+              className={`filter-tab ${filter === 'image' ? 'filter-tab--active' : ''}`}
+              onClick={() => setFilter('image')}
+            >
+              🖼 Images <span className="filter-tab-count">{countFor('image')}</span>
+            </button>
+            <button
+              className={`filter-tab ${filter === 'video' ? 'filter-tab--active' : ''}`}
+              onClick={() => setFilter('video')}
+            >
+              🎬 Videos <span className="filter-tab-count">{countFor('video')}</span>
+            </button>
+            <button
+              className={`filter-tab ${filter === 'other' ? 'filter-tab--active' : ''}`}
+              onClick={() => setFilter('other')}
+            >
+              📁 Other <span className="filter-tab-count">{countFor('other')}</span>
+            </button>
+          </div>
+          <input
+            className="assets-search"
+            type="text"
+            placeholder="Search files..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
 
-        {/* Asset Grid */}
-        {loading ? (
-          <div className="assets-loading">
-            <div className="loading-spinner" />
-            <span>Loading assets...</span>
-          </div>
-        ) : filteredAssets.length === 0 ? (
+        {/* Grid */}
+        {filteredAssets.length === 0 ? (
           <div className="assets-empty">
             <div className="assets-empty-icon">📭</div>
-            <div>No assets yet. Start by dropping some files above.</div>
+            <div>{assets.length === 0 ? 'No assets yet. Drop some files above.' : 'No files match your filter.'}</div>
           </div>
         ) : (
           <div className="assets-grid">
             {filteredAssets.map((asset) => (
-              <div key={asset.fullPath} className="asset-card">
-                {/* Thumbnail */}
-                <div
-                  className="asset-thumb"
-                  onClick={() => setPreviewAsset(asset)}
-                >
+              <div key={asset.id} className="asset-card">
+                <div className="asset-thumb" onClick={() => setPreviewAsset(asset)}>
                   {asset.type.startsWith('image/') ? (
                     <img src={asset.url} alt={asset.name} loading="lazy" />
                   ) : asset.type.startsWith('video/') ? (
@@ -283,12 +311,8 @@ export default function AssetsPage() {
                   ) : (
                     <div className="asset-thumb-icon">{getFileIcon(asset.type)}</div>
                   )}
-                  <div className="asset-thumb-overlay">
-                    <span>Preview</span>
-                  </div>
+                  <div className="asset-thumb-overlay">Preview</div>
                 </div>
-
-                {/* Info */}
                 <div className="asset-info">
                   <div className="asset-name" title={asset.name}>
                     {asset.name.length > 28 ? asset.name.slice(0, 25) + '…' : asset.name}
@@ -298,23 +322,19 @@ export default function AssetsPage() {
                     <span>{new Date(asset.uploaded).toLocaleDateString()}</span>
                   </div>
                 </div>
-
-                {/* Actions */}
                 <div className="asset-actions">
                   <button
                     className={`asset-btn asset-btn--copy ${copiedUrl === asset.url ? 'asset-btn--copied' : ''}`}
                     onClick={() => copyUrl(asset.url)}
-                    title="Copy URL"
                   >
                     {copiedUrl === asset.url ? '✓ Copied' : '🔗 Copy URL'}
                   </button>
                   <button
                     className="asset-btn asset-btn--delete"
                     onClick={() => deleteAsset(asset)}
-                    disabled={deletingPath === asset.fullPath}
-                    title="Delete"
+                    disabled={deletingId === asset.id}
                   >
-                    {deletingPath === asset.fullPath ? '…' : '🗑'}
+                    🗑
                   </button>
                 </div>
               </div>
@@ -341,7 +361,10 @@ export default function AssetsPage() {
               <span>{previewAsset.type}</span>
               <span>{new Date(previewAsset.uploaded).toLocaleString()}</span>
             </div>
-            <button className="preview-copy-btn" onClick={() => copyUrl(previewAsset.url)}>
+            <button
+              className="preview-copy-btn"
+              onClick={() => copyUrl(previewAsset.url)}
+            >
               {copiedUrl === previewAsset.url ? '✓ Copied!' : '🔗 Copy URL'}
             </button>
           </div>
