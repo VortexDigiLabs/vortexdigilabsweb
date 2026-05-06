@@ -3,16 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 
 const VIDEOS = [
-  { id: 'v1', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/CATS%20(1).mp4', title: 'CATS PROJECT' },
-  { id: 'v2', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Platteland.mp4', title: 'PLATTELAND' },
-  { id: 'v3', src: "https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/Fettys%20Bilton%20Showcase%20Vid.mp4", title: 'FETTYS SHOWCASE' },
-  { id: 'v4', src: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/public/Vortex%20Digi%20Labs%20-%20Website/DJ%20Coby%20Jinx%202.mp4', title: 'DJ COBY JINX' },
+  { id: 'v1', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082593/hyl4rk0mqayz4rui0ywy.mp4', title: 'QUANTUM SHIFT' },
+  { id: 'v2', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082574/siu8fd0joplzizqstfdh.mp4', title: 'CYBER PULSE' },
+  { id: 'v3', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082533/wuyv3wxyz7jaafsuoaj5.mp4', title: 'DIGITAL FLUX' },
+  { id: 'v4', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082511/siqikkwcak8qetpqcbo2.mp4', title: 'NEURAL NETWORK' },
   { id: 'v5', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/31.03.2026_20.23.42_REC.mp4', title: 'CORE RECORDING' },
   { id: 'v6', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Fetty\'s%20Deli_compress_lv2.mp4', title: 'FETTYS DELI' },
   { id: 'v7', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/KAHANA_compress_lv2.mp4', title: 'KAHANA LUXURY' },
   { id: 'v8', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Video%20Project%2010.mp4', title: 'VAULT PROJECT 10' },
-  { id: 'v9', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater.gif', title: 'UNDERWATER VIZ' },
-  { id: 'v10', src: 'https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Vortex%20Digi%20labs%20Main%20Website/Underwater%20Flow.gif', title: 'FLOW DYNAMICS' }
+  { id: 'v9', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082498/fwq6hupyz9ynfkynr9vy.mp4', title: 'VORTEX STREAM' },
+  { id: 'v10', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082479/uhmjmrlp7kcicnksxxaa.mp4', title: 'BIO RHYTHM' },
+  { id: 'v11', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082473/ruhug5awcq6j8rdr3wub.mp4', title: 'PLASMA CORE' },
+  { id: 'v12', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082371/bmda3o4eq1aux93vekf1.mp4', title: 'ECHO LOGIC' }
 ];
 
 export default function VideoSection() {
