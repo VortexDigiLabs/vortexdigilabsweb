@@ -102,26 +102,26 @@ export default function VideoSection() {
             <div className="w-12 h-[1px] bg-cyan" />
             <span className="text-cyan font-mono text-xs tracking-[0.4em] uppercase">Intelligence Archive</span>
           </motion.div>
-          <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter uppercase">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white tracking-tighter uppercase">
             PORTFOLIO <span className="text-cyan">MATRIX</span>
           </h2>
         </div>
         
         {/* Navigation Arrows */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-4 md:mt-0">
           <button 
             onClick={() => scroll('left')}
-            className="p-4 rounded-full border border-white/10 bg-white/5 hover:bg-cyan hover:border-cyan hover:text-charcoal transition-all duration-300 group"
+            className="p-3 md:p-4 rounded-full border border-white/10 bg-white/5 hover:bg-cyan hover:border-cyan hover:text-charcoal transition-all duration-300 group"
             aria-label="Previous Project"
           >
-            <ChevronLeft className="w-6 h-6 transition-transform group-active:scale-90" />
+            <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 transition-transform group-active:scale-90" />
           </button>
           <button 
             onClick={() => scroll('right')}
-            className="p-4 rounded-full border border-white/10 bg-white/5 hover:bg-cyan hover:border-cyan hover:text-charcoal transition-all duration-300 group"
+            className="p-3 md:p-4 rounded-full border border-white/10 bg-white/5 hover:bg-cyan hover:border-cyan hover:text-charcoal transition-all duration-300 group"
             aria-label="Next Project"
           >
-            <ChevronRight className="w-6 h-6 transition-transform group-active:scale-90" />
+            <ChevronRight className="w-5 h-5 md:w-6 md:h-6 transition-transform group-active:scale-90" />
           </button>
         </div>
       </div>
@@ -143,45 +143,10 @@ export default function VideoSection() {
 
       <AnimatePresence>
         {selectedVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 md:p-12"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <motion.button
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="absolute top-8 right-8 text-white hover:text-cyan p-2 bg-white/5 rounded-full border border-white/10 transition-colors z-[110]"
-              onClick={(e) => { e.stopPropagation(); setSelectedVideo(null); }}
-            >
-              <X className="w-8 h-8" />
-            </motion.button>
-
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-6xl aspect-video rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <video
-                key={selectedVideo.id}
-                src={selectedVideo.src}
-                className="w-full h-full object-contain"
-                autoPlay
-                controls
-                playsInline
-                loop
-                preload="auto"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/40 to-transparent">
-                <h3 className="text-3xl font-bold text-white mb-2 uppercase tracking-tight">{selectedVideo.title}</h3>
-                <p className="text-silver/70 max-w-2xl italic">{selectedVideo.description}</p>
-              </div>
-            </motion.div>
-          </motion.div>
+          <VideoModal 
+            video={selectedVideo} 
+            onClose={() => setSelectedVideo(null)} 
+          />
         )}
       </AnimatePresence>
 
@@ -193,4 +158,67 @@ export default function VideoSection() {
       </div>
     </section>
   );
+}
+
+const VideoModal = ({ video, onClose }: { video: typeof VIDEOS[0], onClose: () => void }) => {
+  const [isReady, setIsReady] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-3xl p-4 md:p-12"
+      onClick={onClose}
+    >
+      <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        className="absolute top-4 right-4 md:top-8 md:right-8 text-white hover:text-cyan p-2 bg-white/5 rounded-full border border-white/10 transition-colors z-[110]"
+        onClick={(e) => { e.stopPropagation(); onClose(); }}
+      >
+        <X className="w-6 h-6 md:w-8 md:h-8" />
+      </motion.button>
+
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="relative w-full max-w-6xl aspect-video rounded-xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {!isReady && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-20">
+            <div className="w-12 h-12 border-4 border-cyan border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+        
+        <video
+          key={video.id}
+          src={video.src}
+          className={cn(
+            "w-full h-full object-contain transition-opacity duration-500",
+            isReady ? "opacity-100" : "opacity-0"
+          )}
+          autoPlay
+          controls
+          playsInline
+          loop
+          preload="auto"
+          onCanPlayThrough={() => setIsReady(true)}
+        />
+
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-black via-black/60 to-transparent">
+          <h3 className="text-xl md:text-3xl font-bold text-white mb-1 md:mb-2 uppercase tracking-tight">{video.title}</h3>
+          <p className="text-silver/70 text-xs md:text-base max-w-2xl italic font-light line-clamp-2 md:line-clamp-none">
+            {video.description}
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+function cn(...classes: Array<string | undefined | null | false>) {
+  return classes.filter(Boolean).join(" ");
 }

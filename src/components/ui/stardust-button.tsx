@@ -33,10 +33,10 @@ export const StardustButton = ({
   };
 
   const wrapStyle: React.CSSProperties = {
-    fontSize: '25px',
+    fontSize: window.innerWidth < 768 ? '16px' : '25px',
     fontWeight: 500,
     color: 'rgba(129, 216, 255, 0.9)',
-    padding: '32px 45px',
+    padding: window.innerWidth < 768 ? '16px 24px' : '32px 45px',
     borderRadius: 'inherit',
     position: 'relative',
     overflow: 'hidden',
