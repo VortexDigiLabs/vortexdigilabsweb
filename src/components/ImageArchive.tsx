@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation, useMotionValue, useTransform, animate } from 'framer-motion';
 import { X, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ARCHIVE_IMAGES = [
@@ -41,6 +41,12 @@ export interface ScrollingRowHandle {
   scrollBy: (amount: number) => void;
 }
 
+// Utility for wrapping values
+const wrap = (min: number, max: number, v: number) => {
+  const range = max - min;
+  return ((((v - min) % range) + range) % range) + min;
+};
+
 const ScrollingRow = forwardRef<ScrollingRowHandle, { 
   images: typeof ARCHIVE_IMAGES, 
   direction?: 'left' | 'right',
@@ -49,26 +55,52 @@ const ScrollingRow = forwardRef<ScrollingRowHandle, {
 }>(({ images, direction = 'left', speed = 40, onSelect }, ref) => {
   const [trackWidth, setTrackWidth] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
-  const manualControls = useAnimation();
-  const manualX = useRef(0);
+  
+  // Motion values for auto and manual scroll
+  const autoX = useMotionValue(0);
+  const manualX = useMotionValue(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Expose manual scroll method
   useImperativeHandle(ref, () => ({
     scrollBy: (amount: number) => {
-      manualX.current += amount;
-      manualControls.start({ 
-        x: manualX.current, 
-        transition: { duration: 0.8, ease: [0.23, 1, 0.32, 1] } 
+      const current = manualX.get();
+      animate(manualX, current + amount, { 
+        duration: 0.8, 
+        ease: [0.23, 1, 0.32, 1] 
       });
     }
   }));
 
+  // Measure content width (1/3 of the triple-duplicated track)
   useEffect(() => {
     if (trackRef.current) {
-      // images are duplicated 3 times for the endless loop
       setTrackWidth(trackRef.current.scrollWidth / 3);
     }
   }, [images]);
+
+  // Infinite auto-scroll animation
+  useEffect(() => {
+    if (trackWidth === 0 || isPaused) return;
+
+    const controls = animate(autoX, direction === 'left' ? -trackWidth : trackWidth, {
+      duration: speed,
+      ease: "linear",
+      repeat: Infinity,
+      from: 0,
+    });
+
+    return controls.stop;
+  }, [trackWidth, speed, direction, isPaused]);
+
+  // Combine autoX and manualX and wrap them to stay within the viewport
+  const wrappedX = useTransform([autoX, manualX], ([v1, v2]) => {
+    if (trackWidth === 0) return 0;
+    const combined = v1 + v2;
+    // We wrap within the middle set of images [-trackWidth * 2, -trackWidth]
+    // to ensure we always have buffer on both sides.
+    return wrap(-trackWidth * 2, -trackWidth, combined);
+  });
 
   return (
     <div 
@@ -77,45 +109,29 @@ const ScrollingRow = forwardRef<ScrollingRowHandle, {
       onMouseLeave={() => setIsPaused(false)}
     >
       <motion.div 
-        animate={manualControls} 
-        initial={{ x: 0 }}
-        className="pointer-events-auto"
+        ref={trackRef}
+        style={{ x: wrappedX }}
+        className="flex gap-6 whitespace-nowrap pointer-events-auto"
       >
-        <motion.div
-          ref={trackRef}
-          animate={trackWidth === 0 ? {} : {
-            x: direction === 'left' ? [0, -trackWidth] : [-trackWidth, 0],
-          }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: speed,
-              ease: "linear",
-            },
-          }}
-          className="flex gap-6 whitespace-nowrap"
-        >
-          {[...images, ...images, ...images].map((img, idx) => (
-            <div
-              key={`${img.id}-${idx}`}
-              className="relative w-64 md:w-80 flex-shrink-0 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
-              onClick={() => onSelect(img)}
-            >
-              <img
-                src={img.url}
-                alt={img.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110 opacity-80 group-hover/card:opacity-100"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
-                <span className="text-cyan font-mono text-[10px] tracking-widest uppercase mb-1">Archive Asset</span>
-                <h4 className="text-white font-bold text-lg">{img.title}</h4>
-                <Maximize2 className="absolute top-4 right-4 w-4 h-4 text-white/50" />
-              </div>
+        {[...images, ...images, ...images].map((img, idx) => (
+          <div
+            key={`${img.id}-${idx}`}
+            className="relative w-64 md:w-80 flex-shrink-0 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
+            onClick={() => onSelect(img)}
+          >
+            <img
+              src={img.url}
+              alt={img.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110 opacity-80 group-hover/card:opacity-100"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
+              <span className="text-cyan font-mono text-[10px] tracking-widest uppercase mb-1">Archive Asset</span>
+              <h4 className="text-white font-bold text-lg">{img.title}</h4>
+              <Maximize2 className="absolute top-4 right-4 w-4 h-4 text-white/50" />
             </div>
-          ))}
-        </motion.div>
+          </div>
+        ))}
       </motion.div>
     </div>
   );
@@ -129,13 +145,13 @@ export default function ImageArchive() {
   const row2Ref = useRef<ScrollingRowHandle>(null);
 
   const handleManualScroll = (direction: 'left' | 'right') => {
-    const scrollAmount = 600;
-    // Row 1 moves left, Row 2 moves right
+    const scrollAmount = 800; // Increased for better impact
+    // Moving images to the right means increasing x
     if (row1Ref.current) {
-      row1Ref.current.scrollBy(direction === 'right' ? -scrollAmount : scrollAmount);
+      row1Ref.current.scrollBy(direction === 'right' ? scrollAmount : -scrollAmount);
     }
     if (row2Ref.current) {
-      row2Ref.current.scrollBy(direction === 'right' ? -scrollAmount : scrollAmount);
+      row2Ref.current.scrollBy(direction === 'right' ? scrollAmount : -scrollAmount);
     }
   };
 
@@ -201,6 +217,47 @@ export default function ImageArchive() {
           onSelect={setSelectedImage} 
         />
       </div>
+
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[150] flex items-center justify-center bg-black/98 backdrop-blur-3xl p-4 md:p-12"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute top-6 right-6 text-white/50 hover:text-white p-3 rounded-full bg-white/5 border border-white/10 transition-all z-[160]"
+              onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
+            >
+              <X className="w-6 h-6 md:w-8 md:h-8" />
+            </button>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-5xl max-h-[90vh] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedImage.url}
+                alt={selectedImage.title}
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/40 to-transparent">
+                <span className="text-cyan font-mono text-xs tracking-widest uppercase mb-1 block">Asset Reference</span>
+                <h3 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-tight">{selectedImage.title}</h3>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
 
       <AnimatePresence>
         {selectedImage && (
