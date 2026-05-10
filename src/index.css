@@ -17,6 +17,17 @@
     --vortex-accent-green: #00FF41;
     
     --vortex-glow-cyan: 0 0 20px rgba(0, 255, 255, 0.3);
+    
+    /* Button Responsive Variables */
+    --button-font-size: 25px;
+    --button-padding: 32px 45px;
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --button-font-size: 16px;
+      --button-padding: 16px 24px;
+    }
   }
 }
 

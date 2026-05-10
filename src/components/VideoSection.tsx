@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
+import { cn } from '../lib/utils';
 
 const VIDEOS = [
   { id: 'v1', src: 'https://res.cloudinary.com/ddfuc0ktg/video/upload/v1778082593/hyl4rk0mqayz4rui0ywy.mp4', title: 'PULSE RISING', description: 'Immersive visuals and pulsating rhythms from our latest festival production.' },
@@ -218,7 +219,3 @@ const VideoModal = ({ video, onClose }: { video: typeof VIDEOS[0], onClose: () =
     </motion.div>
   );
 };
-
-function cn(...classes: Array<string | undefined | null | false>) {
-  return classes.filter(Boolean).join(" ");
-}
