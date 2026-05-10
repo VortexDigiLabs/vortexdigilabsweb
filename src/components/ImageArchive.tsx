@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Maximize2 } from 'lucide-react';
+import { X, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ARCHIVE_IMAGES = [
   { id: 1, url: 'https://res.cloudinary.com/ddfuc0ktg/image/upload/v1778087451/diq2qo5wkyvc1ummicyk.png', title: 'Neural Synthesis' },
@@ -37,32 +37,64 @@ const ARCHIVE_IMAGES = [
   { id: 32, url: 'https://res.cloudinary.com/ddfuc0ktg/image/upload/v1778429280/tyltocfe4bods3anifen.jpg', title: 'Infinite Loop' },
 ];
 
-const ScrollingRow = ({ images, direction = 'left', speed = 40, onSelect }: { 
+const ScrollingRow = ({ images, direction = 'left', speed = 40, onSelect, rowRef }: { 
   images: typeof ARCHIVE_IMAGES, 
   direction?: 'left' | 'right',
   speed?: number,
-  onSelect: (img: typeof ARCHIVE_IMAGES[0]) => void
+  onSelect: (img: typeof ARCHIVE_IMAGES[0]) => void,
+  rowRef: React.RefObject<HTMLDivElement>
 }) => {
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    let animationFrameId: number;
+    let lastTime = performance.now();
+
+    const scroll = (currentTime: number) => {
+      if (rowRef.current) {
+        const deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        const container = rowRef.current;
+        // Base pixels per second calculation
+        const pixelsPerSecond = 50; // Constant speed
+        const delta = (pixelsPerSecond / 1000) * deltaTime;
+
+        if (direction === 'left') {
+          container.scrollLeft += delta;
+          if (container.scrollLeft >= container.scrollWidth / 3) {
+            container.scrollLeft = 0;
+          }
+        } else {
+          container.scrollLeft -= delta;
+          if (container.scrollLeft <= 0) {
+            container.scrollLeft = container.scrollWidth / 3;
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [direction, speed, isPaused, rowRef]);
+
   return (
-    <div className="flex overflow-hidden group py-4">
-      <motion.div
-        animate={{
-          x: direction === 'left' ? [0, -1920] : [-1920, 0],
-        }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: speed,
-            ease: "linear",
-          },
-        }}
-        className="flex gap-6 whitespace-nowrap"
+    <div 
+      className="flex overflow-hidden group py-4 select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div
+        ref={rowRef}
+        className="flex gap-6 overflow-x-hidden whitespace-nowrap scroll-smooth"
       >
         {[...images, ...images, ...images].map((img, idx) => (
           <div
             key={`${img.id}-${idx}`}
-            className="relative w-64 md:w-80 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
+            className="relative w-64 md:w-80 flex-shrink-0 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
             onClick={() => onSelect(img)}
           >
             <img
@@ -78,13 +110,31 @@ const ScrollingRow = ({ images, direction = 'left', speed = 40, onSelect }: {
             </div>
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 };
 
 export default function ImageArchive() {
   const [selectedImage, setSelectedImage] = useState<typeof ARCHIVE_IMAGES[0] | null>(null);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
+
+  const handleManualScroll = (direction: 'left' | 'right') => {
+    const scrollAmount = 400;
+    if (row1Ref.current) {
+      row1Ref.current.scrollBy({ 
+        left: direction === 'right' ? scrollAmount : -scrollAmount, 
+        behavior: 'smooth' 
+      });
+    }
+    if (row2Ref.current) {
+      row2Ref.current.scrollBy({ 
+        left: direction === 'right' ? -scrollAmount : scrollAmount, 
+        behavior: 'smooth' 
+      });
+    }
+  };
 
   return (
     <section className="py-24 bg-charcoal relative overflow-hidden border-t border-white/5">
@@ -109,21 +159,42 @@ export default function ImageArchive() {
         </motion.div>
       </div>
 
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-charcoal to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-charcoal to-transparent z-10" />
+      <div className="relative group/container">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-charcoal to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-charcoal to-transparent z-10 pointer-events-none" />
         
+        {/* Navigation Buttons */}
+        <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 hidden md:block">
+          <button 
+            onClick={() => handleManualScroll('left')}
+            className="p-4 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white/50 hover:text-cyan hover:border-cyan/50 transition-all shadow-2xl group/btn"
+          >
+            <ChevronLeft className="w-6 h-6 group-hover/btn:-translate-x-1 transition-transform" />
+          </button>
+        </div>
+        
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 z-20 opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 hidden md:block">
+          <button 
+            onClick={() => handleManualScroll('right')}
+            className="p-4 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white/50 hover:text-cyan hover:border-cyan/50 transition-all shadow-2xl group/btn"
+          >
+            <ChevronRight className="w-6 h-6 group-hover/btn:translate-x-1 transition-transform" />
+          </button>
+        </div>
+
         <ScrollingRow 
           images={ARCHIVE_IMAGES} 
           direction="left" 
           speed={50} 
           onSelect={setSelectedImage} 
+          rowRef={row1Ref}
         />
         <ScrollingRow 
           images={[...ARCHIVE_IMAGES].reverse()} 
           direction="right" 
           speed={60} 
           onSelect={setSelectedImage} 
+          rowRef={row2Ref}
         />
       </div>
 
