@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { X, Maximize2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ARCHIVE_IMAGES = [
@@ -37,102 +37,105 @@ const ARCHIVE_IMAGES = [
   { id: 32, url: 'https://res.cloudinary.com/ddfuc0ktg/image/upload/v1778429280/tyltocfe4bods3anifen.jpg', title: 'Infinite Loop' },
 ];
 
-const ScrollingRow = ({ images, direction = 'left', speed = 40, onSelect, rowRef }: { 
+export interface ScrollingRowHandle {
+  scrollBy: (amount: number) => void;
+}
+
+const ScrollingRow = forwardRef<ScrollingRowHandle, { 
   images: typeof ARCHIVE_IMAGES, 
   direction?: 'left' | 'right',
   speed?: number,
-  onSelect: (img: typeof ARCHIVE_IMAGES[0]) => void,
-  rowRef: React.RefObject<HTMLDivElement>
-}) => {
+  onSelect: (img: typeof ARCHIVE_IMAGES[0]) => void
+}>(({ images, direction = 'left', speed = 40, onSelect }, ref) => {
+  const [trackWidth, setTrackWidth] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const manualControls = useAnimation();
+  const manualX = useRef(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  useImperativeHandle(ref, () => ({
+    scrollBy: (amount: number) => {
+      manualX.current += amount;
+      manualControls.start({ 
+        x: manualX.current, 
+        transition: { duration: 0.8, ease: [0.23, 1, 0.32, 1] } 
+      });
+    }
+  }));
+
   useEffect(() => {
-    if (isPaused) return;
-
-    let animationFrameId: number;
-    let lastTime = performance.now();
-
-    const scroll = (currentTime: number) => {
-      if (rowRef.current) {
-        const deltaTime = currentTime - lastTime;
-        lastTime = currentTime;
-
-        const container = rowRef.current;
-        // Base pixels per second calculation
-        const pixelsPerSecond = 50; // Constant speed
-        const delta = (pixelsPerSecond / 1000) * deltaTime;
-
-        if (direction === 'left') {
-          container.scrollLeft += delta;
-          if (container.scrollLeft >= container.scrollWidth / 3) {
-            container.scrollLeft = 0;
-          }
-        } else {
-          container.scrollLeft -= delta;
-          if (container.scrollLeft <= 0) {
-            container.scrollLeft = container.scrollWidth / 3;
-          }
-        }
-      }
-      animationFrameId = requestAnimationFrame(scroll);
-    };
-
-    animationFrameId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [direction, speed, isPaused, rowRef]);
+    if (trackRef.current) {
+      // images are duplicated 3 times for the endless loop
+      setTrackWidth(trackRef.current.scrollWidth / 3);
+    }
+  }, [images]);
 
   return (
     <div 
-      className="flex overflow-hidden group py-4 select-none"
+      className="flex overflow-hidden group py-4 select-none pointer-events-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div
-        ref={rowRef}
-        className="flex gap-6 overflow-x-hidden whitespace-nowrap scroll-smooth"
+      <motion.div 
+        animate={manualControls} 
+        initial={{ x: 0 }}
+        className="pointer-events-auto"
       >
-        {[...images, ...images, ...images].map((img, idx) => (
-          <div
-            key={`${img.id}-${idx}`}
-            className="relative w-64 md:w-80 flex-shrink-0 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
-            onClick={() => onSelect(img)}
-          >
-            <img
-              src={img.url}
-              alt={img.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110 opacity-80 group-hover/card:opacity-100"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
-              <span className="text-cyan font-mono text-[10px] tracking-widest uppercase mb-1">Archive Asset</span>
-              <h4 className="text-white font-bold text-lg">{img.title}</h4>
-              <Maximize2 className="absolute top-4 right-4 w-4 h-4 text-white/50" />
+        <motion.div
+          ref={trackRef}
+          animate={trackWidth === 0 ? {} : {
+            x: direction === 'left' ? [0, -trackWidth] : [-trackWidth, 0],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: speed,
+              ease: "linear",
+            },
+          }}
+          className="flex gap-6 whitespace-nowrap"
+        >
+          {[...images, ...images, ...images].map((img, idx) => (
+            <div
+              key={`${img.id}-${idx}`}
+              className="relative w-64 md:w-80 flex-shrink-0 aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer border border-white/5 bg-white/5 backdrop-blur-sm group/card"
+              onClick={() => onSelect(img)}
+            >
+              <img
+                src={img.url}
+                alt={img.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110 opacity-80 group-hover/card:opacity-100"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 p-6 flex flex-col justify-end">
+                <span className="text-cyan font-mono text-[10px] tracking-widest uppercase mb-1">Archive Asset</span>
+                <h4 className="text-white font-bold text-lg">{img.title}</h4>
+                <Maximize2 className="absolute top-4 right-4 w-4 h-4 text-white/50" />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </motion.div>
+      </motion.div>
     </div>
   );
-};
+});
+
+ScrollingRow.displayName = 'ScrollingRow';
 
 export default function ImageArchive() {
   const [selectedImage, setSelectedImage] = useState<typeof ARCHIVE_IMAGES[0] | null>(null);
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
+  const row1Ref = useRef<ScrollingRowHandle>(null);
+  const row2Ref = useRef<ScrollingRowHandle>(null);
 
   const handleManualScroll = (direction: 'left' | 'right') => {
-    const scrollAmount = 400;
+    const scrollAmount = 600;
+    // Row 1 moves left, Row 2 moves right
     if (row1Ref.current) {
-      row1Ref.current.scrollBy({ 
-        left: direction === 'right' ? scrollAmount : -scrollAmount, 
-        behavior: 'smooth' 
-      });
+      row1Ref.current.scrollBy(direction === 'right' ? -scrollAmount : scrollAmount);
     }
     if (row2Ref.current) {
-      row2Ref.current.scrollBy({ 
-        left: direction === 'right' ? -scrollAmount : scrollAmount, 
-        behavior: 'smooth' 
-      });
+      row2Ref.current.scrollBy(direction === 'right' ? -scrollAmount : scrollAmount);
     }
   };
 
@@ -160,6 +163,7 @@ export default function ImageArchive() {
       </div>
 
       <div className="relative group/container">
+        {/* Gradient Masks */}
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-charcoal to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-charcoal to-transparent z-10 pointer-events-none" />
         
@@ -183,18 +187,18 @@ export default function ImageArchive() {
         </div>
 
         <ScrollingRow 
+          ref={row1Ref}
           images={ARCHIVE_IMAGES} 
           direction="left" 
-          speed={50} 
+          speed={100} 
           onSelect={setSelectedImage} 
-          rowRef={row1Ref}
         />
         <ScrollingRow 
+          ref={row2Ref}
           images={[...ARCHIVE_IMAGES].reverse()} 
           direction="right" 
-          speed={60} 
+          speed={120} 
           onSelect={setSelectedImage} 
-          rowRef={row2Ref}
         />
       </div>
 
