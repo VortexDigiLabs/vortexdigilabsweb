@@ -190,14 +190,14 @@ export default function ImageArchive() {
           ref={row1Ref}
           images={ARCHIVE_IMAGES} 
           direction="left" 
-          speed={143} 
+          speed={286} 
           onSelect={setSelectedImage} 
         />
         <ScrollingRow 
           ref={row2Ref}
           images={[...ARCHIVE_IMAGES].reverse()} 
           direction="right" 
-          speed={171} 
+          speed={342} 
           onSelect={setSelectedImage} 
         />
       </div>
