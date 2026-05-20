@@ -47,18 +47,18 @@ const VideoCard = ({ video, onClick, isModalOpen }: { video: typeof VIDEOS[0], o
       />
       
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent p-6 flex flex-col justify-end">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent p-3 sm:p-6 flex flex-col justify-end">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-[1px] bg-cyan" />
-            <span className="text-cyan font-mono text-[10px] tracking-[0.3em] uppercase">Project Node</span>
+          <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+            <div className="w-5 sm:w-8 h-[1px] bg-cyan" />
+            <span className="text-cyan font-mono text-[8px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.3em] uppercase">Project Node</span>
           </div>
-          <h3 className="text-2xl font-bold text-white tracking-tight mb-2 uppercase">{video.title}</h3>
-          <p className="text-silver/70 text-sm max-w-md line-clamp-2 font-light italic">
+          <h3 className="text-sm sm:text-lg md:text-2xl font-bold text-white tracking-tight mb-1 sm:mb-2 uppercase">{video.title}</h3>
+          <p className="text-silver/70 text-[10px] sm:text-sm max-w-md line-clamp-1 sm:line-clamp-2 font-light italic">
             {video.description}
           </p>
         </motion.div>
