@@ -16,54 +16,54 @@ const options = [
     icon: GraduationCap,
     main: 'Canva Teacher',
     sub: 'Essentials Certificate',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Canva%20Teacher%20Essentials.PNG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9DYW52YSBUZWFjaGVyIEVzc2VudGlhbHMuUE5HIiwiaWF0IjoxNzczMjQ5NzU3LCJleHAiOjI2MzcyNDk3NTd9.8cvr5wK0hjco0O17jDvHt_u2uOiHYQOmcURMcQgRbb4',
+    bgUrl: '/credentials/Canva Teacher Essentials.PNG',
     color: '#ED5565',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Canva%20-%20teacher-essentials-certificate.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9DYW52YSAtIHRlYWNoZXItZXNzZW50aWFscy1jZXJ0aWZpY2F0ZS5wZGYiLCJpYXQiOjE3NzMyNDg0NjQsImV4cCI6MjYzNzI0ODQ2NH0.0LtiBHpS8x9bvPJi-KSFSH7f2cxPXZVcOj_pOj7uRyM'
+    link: '/credentials/Canva Teacher Essentials.PNG'
   },
   {
     id: 2,
     icon: Palette,
     main: 'Canva Essentials',
     sub: 'Graphic Design',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Canva%20Essentials.PNG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9DYW52YSBFc3NlbnRpYWxzLlBORyIsImlhdCI6MTc3MzI0OTY5NywiZXhwIjoyNjM3MjQ5Njk3fQ.2HUTzmca4FpiOVtgqhyCA1f9PmrUDh70hwOJ1qiOtYM',
+    bgUrl: '/credentials/Canva Essentials.PNG',
     color: '#FC6E51',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Canva-essentials-certificate.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9DYW52YS1lc3NlbnRpYWxzLWNlcnRpZmljYXRlLnBkZiIsImlhdCI6MTc3MzI0ODQ4MSwiZXhwIjoyNjM3MjQ4NDgxfQ.YZ-czndxthLpPtuALq0xwmJVkp5gS-3gbMSUz-4Ka_Y'
+    link: '/credentials/Canva-essentials-certificate.pdf'
   },
   {
     id: 3,
     icon: HardHat,
     main: 'OSHA',
     sub: 'Occupational Safety',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/OSHA%20Certificate.PNG?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9PU0hBIENlcnRpZmljYXRlLlBORyIsImlhdCI6MTc3MzI1MDIzNCwiZXhwIjoyNjM3MjUwMjM0fQ.y5seuEzNpCYr72ZQv9traBKnusgENAc0ydM-2_icR4k',
+    bgUrl: '',
     color: '#FFCE54',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/OSHA%20CERTIF.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9PU0hBIENFUlRJRi5wZGYiLCJpYXQiOjE3NzMyNDg1NTksImV4cCI6MjYzNzI0ODU1OX0.oxPRUi07Ma4xfSE2ODX3ng-ZDBHfzasDr7iSYUeFD_g'
+    link: '/credentials/OSHA CERTIF.pdf'
   },
   {
     id: 4,
     icon: Bot,
     main: 'HuggingFace',
     sub: 'AI & Machine Learning',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/HuggingFace%20Certificate.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9IdWdnaW5nRmFjZSBDZXJ0aWZpY2F0ZS5qcGVnIiwiaWF0IjoxNzczMjQ5Nzc0LCJleHAiOjI2MzcyNDk3NzR9.kI4vfIHYtEPJK1hLB103YBcrR_LBeTTtudJbbJpfUpE',
+    bgUrl: '/credentials/HuggingFace Certificate.jpeg',
     color: '#2ECC71',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/HuggingFace%20Certificate.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9IdWdnaW5nRmFjZSBDZXJ0aWZpY2F0ZS5qcGVnIiwiaWF0IjoxNzczMjQ4NTE5LCJleHAiOjI2MzcyNDg1MTl9.GT4MIRXNyIxf859XP8C8Hp8E_lYWQhwp3r1S8T8hEVo'
+    link: '/credentials/HuggingFace Certificate.jpeg'
   },
   {
     id: 5,
     icon: Cpu,
     main: 'Outskill AI',
     sub: 'Mastermind',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Outskill%20Certificate%20%20AI%20Mastermind.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9PdXRza2lsbCBDZXJ0aWZpY2F0ZSAgQUkgTWFzdGVybWluZC5wbmciLCJpYXQiOjE3NzMyNDk4MTIsImV4cCI6MjYzNzI0OTgxMn0.fh0CfBGUzOsvdPbh8Di0P9vNuKFQe_Ss4cpVyvrVo_8',
+    bgUrl: '/credentials/Outskill Certificate AI Mastermind.png',
     color: '#EC87C0',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Outskill%20Certificate%20%20AI%20Mastermind.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9PdXRza2lsbCBDZXJ0aWZpY2F0ZSAgQUkgTWFzdGVybWluZC5wbmciLCJpYXQiOjE3NzMyNDg1NzksImV4cCI6MjYzNzI0ODU3OX0.KM251vskNABJpqyGenhFWjaN3JeS4IIosQDdn4AlGZQ'
+    link: '/credentials/Outskill Certificate AI Mastermind.png'
   },
   {
     id: 6,
     icon: Landmark,
     main: 'WITS',
     sub: 'University',
-    bgUrl: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/Wits.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9XaXRzLnBuZyIsImlhdCI6MTc3MzI0OTgyOCwiZXhwIjoyNjM3MjQ5ODI4fQ.wTGextCdvtN4GVRSqtLbYcEl5K-tJ62o5ZxylDkQexw',
+    bgUrl: '',
     color: '#4A89DC',
-    link: 'https://huprbedahpwszatolkce.supabase.co/storage/v1/object/sign/Credentials/WITS%20PDF.pdf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ODI5Y2JlNC02MWI3LTQ2NjAtYmNiYi0wZTk3YWQ0NjY5NzAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJDcmVkZW50aWFscy9XSVRTIFBERi5wZGYiLCJpYXQiOjE3NzMyNDg2MTIsImV4cCI6MjYzNzI0ODYxMn0.U2nGILG_L-SwUZ82eDNDpTnZoHa5M6Gh9C7wia36_EI'
+    link: '/credentials/WITS PDF.pdf'
   }
 ];
 
