@@ -8,7 +8,7 @@ import { VideoModal } from './ui/VideoModal';
 
 export default function Hero() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const videoUrl = "https://bxmgsjtsxygxfgvpnnjh.supabase.co/storage/v1/object/public/Website/Vortex%20Digi%20Labs%20-%20Intro.mp4";
+  const videoUrl = "/credentials/Vortex Digi Labs - Intro (mini).mp4";
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
