@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import NexusAIWizard from '../components/NexusAIWizard';
+import ArchitectureDiscovery from '../components/ArchitectureDiscovery';
 import Footer from '../components/Footer';
 
 export default function ContactPage() {
@@ -9,10 +9,10 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver selection:bg-cyan/30 selection:text-white">
+    <div className="min-h-screen bg-[#07080b] text-silver selection:bg-cyan/30 selection:text-white">
       <Navbar />
       <main className="pt-20">
-        <NexusAIWizard />
+        <ArchitectureDiscovery />
       </main>
       <Footer />
     </div>

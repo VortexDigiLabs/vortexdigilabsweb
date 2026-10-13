@@ -1,14 +1,129 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vortex Digi Labs</title>
+    <title>Vortex Digi Labs | Agentic AI Systems, Interactive 3D & Autonomous Workflow Engineering</title>
+    <meta name="description" content="We engineer autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations." />
+    <meta name="keywords" content="Agentic AI, Interactive 3D, WebXR, Digital Twin, Autonomous Workflows, Industrial Simulation, Technical Training, Three.js, Multi-Model Orchestration, South Africa AI Studio" />
+    <meta name="author" content="Vortex Digi Labs" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://vortexdigilabsweb.vercel.app/" />
+    <meta property="og:title" content="Vortex Digi Labs | Agentic AI Systems & Interactive 3D Studio" />
+    <meta property="og:description" content="We engineer autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations." />
+    <meta property="og:image" content="/favicon.svg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Vortex Digi Labs | Agentic AI Systems & Interactive 3D Studio" />
+    <meta property="twitter:description" content="We engineer autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations." />
+
+    <!-- Machine-Readable Discovery Layer -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Documentation" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- JSON-LD Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://vortexdigilabsweb.vercel.app/#organization",
+          "name": "Vortex Digi Labs",
+          "alternateName": "VDL",
+          "url": "https://vortexdigilabsweb.vercel.app",
+          "logo": "https://vortexdigilabsweb.vercel.app/favicon.svg",
+          "description": "Elite Agentic AI Engineering and Interactive 3D Studio engineering autonomous agentic pipelines, WebXR simulators, and technical training environments.",
+          "founder": {
+            "@type": "Person",
+            "name": "Terence Dean Allen",
+            "jobTitle": "Lead Systems Architect & Founder"
+          },
+          "email": "vortexdigilabs@gmail.com",
+          "telephone": "+27658024718",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "ZA"
+          },
+          "knowsAbout": [
+            "Agentic AI Pipelines",
+            "Autonomous Workflow Engineering",
+            "Interactive 3D WebXR Simulators",
+            "Digital Twin Development",
+            "Multi-Model LLM Orchestration",
+            "Industrial Curriculum Modernisation"
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Solutions Lab Pillars",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@id": "https://vortexdigilabsweb.vercel.app/#service-3d-digital-twins"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@id": "https://vortexdigilabsweb.vercel.app/#service-agentic-workflows"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@id": "https://vortexdigilabsweb.vercel.app/#service-enterprise-enablement"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://vortexdigilabsweb.vercel.app/#service-3d-digital-twins",
+          "name": "Interactive 3D & Digital Twin Pilots",
+          "provider": {
+            "@id": "https://vortexdigilabsweb.vercel.app/#organization"
+          },
+          "serviceType": "WebGL & WebXR Simulation Engineering",
+          "description": "WebGL and Three.js interactive equipment suites, industrial simulation, and technical curriculum transformation with zero-install browser runtime rendering.",
+          "areaServed": "Global"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://vortexdigilabsweb.vercel.app/#service-agentic-workflows",
+          "name": "Autonomous Agentic Workflows",
+          "provider": {
+            "@id": "https://vortexdigilabsweb.vercel.app/#organization"
+          },
+          "serviceType": "Agentic AI Orchestration & Process Automation",
+          "description": "Multi-model AI orchestration, bespoke task automation, self-healing task runners, and operational data pipelines connecting web frontends to enterprise backends.",
+          "areaServed": "Global"
+        },
+        {
+          "@type": "Service",
+          "@id": "https://vortexdigilabsweb.vercel.app/#service-enterprise-enablement",
+          "name": "Enterprise AI Enablement & Training",
+          "provider": {
+            "@id": "https://vortexdigilabsweb.vercel.app/#organization"
+          },
+          "serviceType": "Technical Upskilling & Atlas Syllabus",
+          "description": "Practical executive enablement, technical workshops based on the Atlas syllabus, hands-on operational agent tooling, prompt architecture, and enterprise compliance standards.",
+          "areaServed": "Global"
+        }
+      ]
+    }
+    </script>
   </head>
-  <body>
+  <body class="bg-charcoal text-silver antialiased selection:bg-cyan/30 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

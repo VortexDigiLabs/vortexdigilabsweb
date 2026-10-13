@@ -94,9 +94,9 @@ const ScrollingRow = forwardRef<ScrollingRowHandle, {
   }, [trackWidth, speed, direction, isPaused]);
 
   // Combine autoX and manualX and wrap them to stay within the viewport
-  const wrappedX = useTransform([autoX, manualX], ([v1, v2]) => {
+  const wrappedX = useTransform([autoX, manualX], ([v1, v2]: any[]) => {
     if (trackWidth === 0) return 0;
-    const combined = v1 + v2;
+    const combined = (Number(v1) || 0) + (Number(v2) || 0);
     // We wrap within the middle set of images [-trackWidth * 2, -trackWidth]
     // to ensure we always have buffer on both sides.
     return wrap(-trackWidth * 2, -trackWidth, combined);
