@@ -1,82 +1,108 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Box, 
   Workflow, 
   GraduationCap, 
-  CheckCircle2, 
-  ArrowUpRight, 
-  Layers, 
-  Cpu, 
-  ShieldCheck, 
-  Activity,
-  Zap,
+  Check, 
+  ChevronRight,
   Terminal,
-  FileCode2,
-  Sparkles
+  Layers,
+  ShieldCheck,
+  Cpu
 } from 'lucide-react';
 
-interface PillarCardProps {
-  number: string;
-  title: string;
+interface Discipline {
+  id: string;
+  name: string;
   tagline: string;
-  focus: string;
-  highlights: string[];
-  techStack: string[];
-  icon: React.ReactNode;
-  accentColor: 'blue' | 'crimson' | 'indigo';
-  badge: string;
+  description: string;
+  deliverables: string[];
+  specs: { label: string; value: string }[];
+  stack: string[];
+  indicatorClass: string;
+  terminalSnippet: string;
 }
 
-const PILLARS: PillarCardProps[] = [
+const DISCIPLINES: Discipline[] = [
   {
-    number: "01",
-    title: "Interactive 3D & Digital Twin Pilots",
-    tagline: "High-Fidelity Browser Spatial Computing",
-    focus: "WebGL/Three.js interactive equipment suites, industrial simulation, and technical curriculum transformation.",
-    highlights: [
-      "Legacy 2D-to-3D vector overhauls converting static schematics to spatial models",
-      "High-fidelity browser runtime rendering optimized under 1.5 MB budgets",
-      "Zero-install interactive training modules with WebXR and mobile touch support"
+    id: '3d-twins',
+    name: 'Interactive 3D & Digital Twin Pilots',
+    tagline: 'High-Fidelity Browser Spatial Computing',
+    description: 'We convert static engineering CAD schematics and legacy training diagrams into zero-install, 60fps browser WebXR simulators and digital twin pilots with full touch and VR support.',
+    deliverables: [
+      'Legacy 2D-to-3D vector overhauls converting static print manuals into interactive spatial assemblies',
+      'Runtime budget optimization with Draco mesh compression delivering full models under 1.4 MB',
+      'Zero-install interactive training pilots with WebXR and mobile touch responsiveness'
     ],
-    techStack: ["Three.js", "WebXR", "GLTF / GLB", "Blender Pipeline", "GLSL Shaders", "Vector CAD"],
-    icon: <Box className="w-7 h-7 text-[#00B6FF]" />,
-    accentColor: "blue",
-    badge: "Spatial Simulation Engine"
+    specs: [
+      { label: 'Runtime Engine', value: 'Three.js / WebGL 2.0 / WebXR' },
+      { label: 'Geometry Target', value: '< 1.4 MB Draco Compressed GLB' },
+      { label: 'Platform Support', value: 'Zero-Install Edge Browser (Desktop/Mobile)' },
+      { label: 'Compliance', value: 'WCAG 2.1 Alt-Text & Screen-Reader Synchronized' }
+    ],
+    stack: ['Three.js', 'WebXR', 'GLTF/GLB', 'Blender Pipeline', 'GLSL Shaders', 'Vector CAD'],
+    indicatorClass: 'led-blue',
+    terminalSnippet: `$ vdl-pipeline inspect --target="bucket-elevator-v4.cad"
+✓ Draco mesh compression applied: 14.8MB -> 1.18MB (-92%)
+✓ Sub-assembly hierarchy parsed: 48 operational nodes
+✓ WebXR touch controls linked: 60fps locked on mobile safari & chrome`
   },
   {
-    number: "02",
-    title: "Autonomous Agentic Workflows",
-    tagline: "Resilient Multi-Model Orchestration",
-    focus: "Multi-model AI orchestration, bespoke task automation, and API integration.",
-    highlights: [
-      "Self-healing task runners and continuous background verification loops",
-      "Cost and latency-aware routing across local and cloud LLMs (Claude, GPT, DeepSeek, Ollama)",
-      "Operational data pipelines connecting web frontends to mission-critical business backends"
+    id: 'agentic-workflows',
+    name: 'Autonomous Agentic Workflows',
+    tagline: 'Multi-Model AI Orchestration & Task Runners',
+    description: 'We architect autonomous background agent loops that connect web interfaces to core operational backends with continuous validation, self-healing retries, and cost/latency-aware routing.',
+    deliverables: [
+      'Self-healing task runners and continuous background verification loops with deterministic recovery',
+      'Cost- and latency-aware routing across local and frontier models (Claude, DeepSeek, GPT-4o, Ollama)',
+      'Operational event webhooks connecting user frontends directly to dispatch operators'
     ],
-    techStack: ["LangChain", "Autonomous Agents", "Event Webhooks", "DeepSeek R1", "Claude 3.7", "PostgreSQL"],
-    icon: <Workflow className="w-7 h-7 text-[#FF1E43]" />,
-    accentColor: "crimson",
-    badge: "Agentic Task Runners"
+    specs: [
+      { label: 'Architecture', value: 'Serverless Event-Driven State Machine' },
+      { label: 'Dispatch Target', value: '< 650ms to WhatsApp Operator' },
+      { label: 'Schema Strategy', value: 'Strict Type-Safe Pydantic / Zod Output Validation' },
+      { label: 'Reliability', value: 'Auto-Retry Event Queue with Dead-Letter Storage' }
+    ],
+    stack: ['Autonomous Agents', 'LangChain', 'Event Webhooks', 'DeepSeek R1', 'Claude 3.7', 'PostgreSQL'],
+    indicatorClass: 'led-crimson',
+    terminalSnippet: `POST /api/orchestrator/dispatch-order HTTP/2
+{
+  "orderId": "VDL-9042",
+  "routingEngine": "edge-priority-queue",
+  "whatsappPayload": "DISPATCH_AUTHORIZED"
+} -> 200 OK (38ms latency, zero human bottleneck)`
   },
   {
-    number: "03",
-    title: "Enterprise AI Enablement & Training",
-    tagline: "Workforce Upskilling & Governance",
-    focus: "Practical executive enablement, technical workshops (Atlas syllabus), and workforce upskilling.",
-    highlights: [
-      "Hands-on operational agent tooling tailored for engineering teams and operators",
-      "Rigorous prompt architecture, schema enforcement, and automated eval harnesses",
-      "Enterprise compliance standards, data privacy isolation, and security protocols"
+    id: 'enterprise-enablement',
+    name: 'Enterprise AI Enablement & Training',
+    tagline: 'Practical Upskilling & Governance',
+    description: 'We deliver hands-on technical enablement and executive workshops based on the Atlas syllabus, transforming operational workforces through safe, auditable agent tooling and prompt architecture.',
+    deliverables: [
+      'Hands-on operational agent tooling tailored for engineering operators and technical managers',
+      'Rigorous prompt architecture, schema enforcement, and automated eval test harnesses',
+      'Enterprise compliance standards, data privacy isolation, and auditable operational logs'
     ],
-    techStack: ["Atlas Syllabus", "Structured Outputs", "Prompt Engineering", "OSHA / ISO Aligned", "Audit Trails"],
-    icon: <GraduationCap className="w-7 h-7 text-[#2437FF]" />,
-    accentColor: "indigo",
-    badge: "Atlas Curriculum"
+    specs: [
+      { label: 'Curriculum Base', value: 'Atlas Technical Modernisation Syllabus' },
+      { label: 'Evaluation', value: 'Automated CI/CD Eval Harness for Prompt Reliability' },
+      { label: 'Data Security', value: 'Zero-Retention Zero-Training Enterprise Boundaries' },
+      { label: 'Standardization', value: 'OSHA / ISO Aligned Technical Verification' }
+    ],
+    stack: ['Atlas Syllabus', 'Structured Outputs', 'Prompt Architecture', 'CI/CD Evals', 'Audit Trails'],
+    indicatorClass: 'led-blue',
+    terminalSnippet: `[VDL-Atlas] Running Evaluation Suite against v2.4 Prompt Schemas...
+✓ Deterministic JSON Schema Compliance: 100% (500/500 tests)
+✓ Hallucination Boundary Score: 0.002 (Within ISO Target)
+✓ Executive & Apprentice Syllabus Modules: Ready for Deployment`
   }
 ];
 
 export default function CoreCapabilities() {
+  const [activeTab, setActiveTab] = useState<string>('3d-twins');
+
+  const activeDiscipline = DISCIPLINES.find((d) => d.id === activeTab) || DISCIPLINES[0];
+
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -85,134 +111,161 @@ export default function CoreCapabilities() {
   return (
     <section 
       id="solutions" 
-      className="relative w-full py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-200/80 overflow-hidden"
-      aria-label="Core Capabilities and Strategic Pillars"
+      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 hairline-t bg-[#FCFDFF]"
+      aria-label="Core Engineering Disciplines"
     >
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-[#00B6FF] mb-3 font-semibold">
-              <span className="w-2 h-2 rounded-full bg-[#00B6FF]" />
-              <span>Core Engineering Disciplines</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight font-heading text-slate-900">
-              Architectural <span className="brand-gradient-text">Capabilities</span>
-            </h2>
-            <p className="mt-4 text-slate-700 text-base md:text-lg font-normal leading-relaxed">
-              Replacing fragmented agency services with three dedicated engineering disciplines designed to deploy robust, production-grade autonomous systems and spatial pilots.
-            </p>
+        {/* Section Header: Minimal, Authoritative, No Clichés */}
+        <div className="max-w-3xl mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100/90 border border-slate-200/80 text-slate-700 text-xs font-medium mb-4">
+            <span className="led-blue" />
+            <span>Studio Capabilities</span>
           </div>
-
-          <div className="font-mono text-xs text-slate-500 hidden md:block text-right">
-            <div>FRAMEWORK: SOLUTIONS LAB V2</div>
-            <div>CANVAS: LUMINOUS SPATIAL</div>
-          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-title text-slate-900 leading-tight font-heading">
+            Architectural disciplines built for industrial scale.
+          </h2>
+          <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
+            We replace generic agency handoffs with three dedicated technical disciplines designed to deploy robust, production-grade autonomous systems and spatial pilots.
+          </p>
         </div>
 
-        {/* 3 Pillars Grid (Luminous Frosted Glass Containers) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {PILLARS.map((pillar, idx) => {
-            const isBlue = pillar.accentColor === 'blue';
-            const isCrimson = pillar.accentColor === 'crimson';
+        {/* Studio Disciplines Interactive Matrix */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Navigation: Discipline Tabs */}
+          <div className="lg:col-span-4 flex flex-col gap-3">
+            {DISCIPLINES.map((discipline) => {
+              const isActive = discipline.id === activeTab;
+              return (
+                <button
+                  key={discipline.id}
+                  onClick={() => setActiveTab(discipline.id)}
+                  className={`text-left p-5 rounded-xl transition-all duration-200 border cursor-pointer ${
+                    isActive
+                      ? 'bg-white border-slate-300 shadow-sm'
+                      : 'bg-slate-50/60 border-slate-200/60 hover:bg-white hover:border-slate-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`inline-block ${discipline.indicatorClass}`} />
+                    <span className="text-[11px] font-mono text-slate-400 font-medium">DISCIPLINE</span>
+                  </div>
+                  <h3 className="text-base font-bold text-slate-900 tracking-tight mb-1">
+                    {discipline.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                    {discipline.tagline}
+                  </p>
+                </button>
+              );
+            })}
 
-            return (
-              <motion.article
-                key={pillar.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.15 }}
-                className={`relative flex flex-col justify-between rounded-3xl p-8 transition-all duration-300 luminous-glass-card group ${
-                  isBlue
-                    ? 'hover:border-[#00B6FF]/60'
-                    : isCrimson
-                    ? 'hover:border-[#FF1E43]/60'
-                    : 'hover:border-[#2437FF]/60'
-                }`}
+            <div className="p-5 rounded-xl border border-dashed border-slate-200 bg-white/50 mt-2">
+              <div className="text-xs font-semibold text-slate-800 mb-1">Custom Architectural Sprints</div>
+              <p className="text-xs text-slate-500 mb-3 leading-relaxed">
+                Need a hybrid architecture combining WebXR with local multi-model LLM agents?
+              </p>
+              <button
+                onClick={scrollToContact}
+                className="text-xs font-semibold text-slate-900 hover:text-[#00B6FF] inline-flex items-center gap-1 transition-colors cursor-pointer"
               >
-                {/* Pillar Header & Geometric Indicator */}
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <span className="font-mono text-3xl font-black text-slate-300 group-hover:text-slate-500 transition-colors">
-                      {pillar.number}
-                    </span>
-                    <span className={`px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider font-semibold border ${
-                      isBlue
-                        ? 'bg-[#00B6FF]/10 text-[#00B6FF] border-[#00B6FF]/30'
-                        : isCrimson
-                        ? 'bg-[#FF1E43]/10 text-[#FF1E43] border-[#FF1E43]/30'
-                        : 'bg-[#2437FF]/10 text-[#2437FF] border-[#2437FF]/30'
-                    }`}>
-                      {pillar.badge}
-                    </span>
-                  </div>
+                <span>Initiate scoping consultation</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
 
-                  {/* Icon & Title */}
-                  <div className="mb-4">
-                    <div className="p-3.5 w-fit rounded-2xl bg-white border border-slate-200/90 shadow-sm mb-4 group-hover:scale-105 transition-transform">
-                      {pillar.icon}
+          {/* Right Area: In-Depth Discipline Workbench */}
+          <div className="lg:col-span-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeDiscipline.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="studio-panel rounded-2xl p-6 sm:p-8"
+              >
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 hairline-b">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className={activeDiscipline.indicatorClass} />
+                      <span className="text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold">
+                        {activeDiscipline.tagline}
+                      </span>
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold font-heading uppercase tracking-tight text-slate-900 mb-2">
-                      {pillar.title}
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-heading">
+                      {activeDiscipline.name}
                     </h3>
-                    <p className={`text-xs font-mono tracking-wider uppercase font-bold mb-4 ${
-                      isBlue ? 'text-[#00B6FF]' : isCrimson ? 'text-[#FF1E43]' : 'text-[#2437FF]'
-                    }`}>
-                      {pillar.tagline}
-                    </p>
                   </div>
 
-                  {/* Focus Description */}
-                  <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/70 mb-6 text-sm text-slate-700 leading-relaxed font-sans">
-                    <strong className="text-slate-900 block font-mono text-[11px] uppercase tracking-wider mb-1">
-                      Primary Focus:
-                    </strong>
-                    {pillar.focus}
-                  </div>
+                  <button
+                    onClick={scrollToContact}
+                    className="btn-studio-primary px-4 py-2 rounded-lg text-xs font-semibold self-start sm:self-auto cursor-pointer"
+                  >
+                    Scope Pilot
+                  </button>
+                </div>
 
-                  {/* Key Highlights */}
-                  <div className="space-y-3 mb-8">
-                    <span className="font-mono text-xs uppercase tracking-wider text-slate-500 font-bold block">
-                      Architectural Highlights:
-                    </span>
-                    {pillar.highlights.map((highlight, hIdx) => (
-                      <div key={hIdx} className="flex items-start gap-2.5 text-xs text-slate-700 font-medium">
-                        <CheckCircle2 className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-                          isBlue ? 'text-[#00B6FF]' : isCrimson ? 'text-[#FF1E43]' : 'text-[#2437FF]'
-                        }`} />
-                        <span className="leading-snug">{highlight}</span>
+                {/* Narrative Focus */}
+                <p className="text-slate-700 text-sm sm:text-base leading-relaxed my-6">
+                  {activeDiscipline.description}
+                </p>
+
+                {/* Deliverables / Architectural Highlights */}
+                <div className="mb-6">
+                  <div className="text-xs font-semibold text-slate-900 mb-3 tracking-tight">
+                    Architectural Deliverables
+                  </div>
+                  <div className="space-y-2.5">
+                    {activeDiscipline.deliverables.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
+                        <Check className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                        <span className="leading-normal">{item}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Bottom Tech Stack Tags & Action */}
-                <div className="pt-6 border-t border-slate-200/80">
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {pillar.techStack.map((tech) => (
-                      <span 
-                        key={tech}
-                        className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-slate-100 border border-slate-200 text-slate-600 font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* High-visibility dark text on silver/glass button */}
-                  <button
-                    onClick={scrollToContact}
-                    className="w-full flex items-center justify-between px-5 py-3 rounded-xl bg-white hover:bg-slate-900 text-slate-900 hover:text-white text-xs font-mono uppercase tracking-wider font-bold transition-all border border-slate-300 hover:border-slate-900 shadow-sm group/btn cursor-pointer"
-                  >
-                    <span>Deploy Solution Discovery</span>
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-                  </button>
+                {/* Specs Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 mb-6">
+                  {activeDiscipline.specs.map((spec, idx) => (
+                    <div key={idx}>
+                      <div className="text-[11px] text-slate-500 font-medium">{spec.label}</div>
+                      <div className="text-xs font-semibold text-slate-900 mt-0.5">{spec.value}</div>
+                    </div>
+                  ))}
                 </div>
-              </motion.article>
-            );
-          })}
+
+                {/* Live Pipeline Telemetry Preview */}
+                <div className="rounded-xl bg-slate-950 text-slate-200 p-4 font-mono text-xs overflow-x-auto shadow-inner">
+                  <div className="flex items-center justify-between text-slate-400 text-[10px] pb-2 mb-2 hairline-b border-slate-800">
+                    <span>OPERATIONAL VERIFICATION TRACE</span>
+                    <span>VDL-CORE // PRODUCTION</span>
+                  </div>
+                  <pre className="whitespace-pre-wrap leading-relaxed text-slate-300">
+                    {activeDiscipline.terminalSnippet}
+                  </pre>
+                </div>
+
+                {/* Tech Stack Pills */}
+                <div className="mt-6 pt-5 hairline-t flex flex-wrap items-center gap-2">
+                  <span className="text-xs text-slate-500 font-medium mr-2">Production Stack:</span>
+                  {activeDiscipline.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white border border-slate-200 text-slate-700 font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
         </div>
 
       </div>
