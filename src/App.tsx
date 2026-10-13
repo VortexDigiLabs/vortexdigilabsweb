@@ -7,11 +7,13 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import VerifiedCredentials from './components/VerifiedCredentials';
 import CoreCapabilities from './components/CoreCapabilities';
 import EnterpriseCaseStudies from './components/EnterpriseCaseStudies';
+import MediaPipelineShowcase from './components/MediaPipelineShowcase';
 import ArchitectureDiscovery from './components/ArchitectureDiscovery';
 import Footer from './components/Footer';
-import LuminousBackground from './components/effects/LuminousBackground';
+import CosmicBackground from './components/effects/CosmicBackground';
 import CursorVortex from './components/effects/CursorVortex';
 import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
@@ -35,31 +37,37 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="relative min-h-screen text-slate-900 selection:bg-[#00B6FF]/25 selection:text-[#0F172A]">
-      {/* 1. Animated Living Spatial Canvas Background */}
-      <LuminousBackground />
+    <div className="relative min-h-screen text-slate-200 selection:bg-[#FF2E2E]/30 selection:text-white bg-[#090A0F]">
+      {/* 1. Obsidian Cosmic Background with Stellar Dust & Grid */}
+      <CosmicBackground />
 
       {/* 2. Interactive Cursor Particle Vortex (1000ms Lifetime) */}
       <CursorVortex />
 
-      {/* 3. Luminous Translucent Topbar */}
+      {/* 3. Centered Floating Glass Navigation Capsule */}
       <Navbar />
 
       <main className="relative z-10">
-        {/* Luminous Hero Section (Spatial Minimalist) */}
+        {/* Hero Section: Split Viewport with Celestial Particle Globe */}
         <Hero />
 
-        {/* 3-Pillar Core Capabilities */}
+        {/* Verified Credentials & Engineering Telemetry Strip */}
+        <VerifiedCredentials />
+
+        {/* 4 Core Solutions Architecture (Bespoke Glass Cards) */}
         <CoreCapabilities />
 
-        {/* Enterprise Case Studies (#pilots) */}
+        {/* Sector Deployments & Industrial Proof (Anonymised Dossiers) */}
         <EnterpriseCaseStudies />
 
-        {/* Architecture Discovery Engagement Framework (#contact) */}
+        {/* Proprietary Media Pipeline Showcase */}
+        <MediaPipelineShowcase />
+
+        {/* Discovery Booking Terminal */}
         <ArchitectureDiscovery />
       </main>
 
-      {/* Luminous Footer */}
+      {/* Terminal Obsidian Footer */}
       <Footer />
     </div>
   );

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import Hero3DCanvas from './3d/Hero3DCanvas';
+import { ArrowRight, Terminal } from 'lucide-react';
+import CelestialGlobeCanvas from './3d/CelestialGlobeCanvas';
 
 export default function Hero() {
   const scrollToSection = (id: string) => {
@@ -10,99 +11,93 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="relative pt-28 sm:pt-36 pb-20 sm:pb-28 overflow-hidden">
+    <section id="hero" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center pt-28 pb-16 overflow-hidden">
       
-      {/* Subtle Spatial Light Emittance */}
-      <div 
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-[#00B6FF]/8 via-transparent to-[#FF1E43]/6 blur-[150px] rounded-full pointer-events-none -z-10" 
-        aria-hidden="true"
-      />
+      {/* Ambient Red and Blue Space Blooms (matching image_9.png) */}
+      <div className="absolute top-1/4 left-1/12 w-[500px] h-[500px] bg-[#FF2E2E]/8 blur-[160px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-1/3 right-1/12 w-[550px] h-[550px] bg-[#00B6FF]/8 blur-[170px] rounded-full pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* Left Column: Authoritative Editorial Statement */}
+          {/* Left Column: Typographic Content (7 cols) */}
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex flex-col items-start text-left"
           >
-            {/* Studio Discipline Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100/80 border border-slate-200/80 text-slate-700 text-xs font-medium mb-6">
-              <span className="led-blue" />
-              <span>Production-Grade AI & Spatial Computing</span>
+            {/* System Ticker Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 font-mono text-[11px] mb-6 backdrop-blur-md">
+              <span className="ping-green" />
+              <span className="tracking-wider uppercase text-white font-semibold">
+                SYSTEM STATUS // ONLINE
+              </span>
+              <span className="text-white/20">::</span>
+              <span className="text-[#FF2E2E] tracking-wider font-semibold">
+                REGION: AFRICA / GLOBAL
+              </span>
             </div>
 
-            {/* Main Headline: Bold, Architectural, Zero AI Gimmicks */}
-            <h1 className="text-4xl sm:text-5xl md:text-[58px] font-extrabold tracking-hero text-slate-900 leading-[1.08] mb-6 font-heading">
-              Engineering autonomous agentic systems and interactive 3D WebXR simulators.
+            {/* Main Headline (Directly matching image_9.png) */}
+            <h1 className="text-3xl sm:text-5xl md:text-[54px] font-black tracking-tight text-white uppercase leading-[1.08] mb-6 font-heading">
+              AGENTIC AI SYSTEMS,{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-400 to-red-600 drop-shadow-[0_0_20px_rgba(255,46,46,0.35)]">
+                INTERACTIVE 3D
+              </span>
+              , AND AUTONOMOUS WORKFLOW ENGINEERING
             </h1>
 
-            {/* Sub-headline: Clear, direct, professional */}
-            <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-sans max-w-2xl mb-9">
-              We deploy custom multi-model agent pipelines, zero-install 3D equipment pilots, and modernized technical training environments for industrial and enterprise operations.
+            {/* Subtitle */}
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-sans max-w-2xl mb-8">
+              Bespoke AI orchestrations, browser-native digital twins, and enterprise enablement for forward-leaning teams. High-end glassmorphic interfaces, cybernetic blue and rich metallic red accents.
             </p>
 
-            {/* Studio Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-12">
+            {/* Action Suite */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-10">
               <button
-                onClick={() => scrollToSection('contact')}
-                className="btn-studio-primary px-7 py-3.5 rounded-lg text-sm font-semibold tracking-wide inline-flex items-center justify-center cursor-pointer"
+                onClick={() => scrollToSection('discovery')}
+                className="btn-glass-cta px-8 py-4 rounded-full font-mono font-bold text-xs uppercase tracking-wider inline-flex items-center justify-center cursor-pointer"
               >
-                Book Architecture Discovery
+                BOOK DISCOVERY
               </button>
 
               <button
-                onClick={() => scrollToSection('solutions')}
-                className="btn-studio-secondary px-6 py-3.5 rounded-lg text-sm font-semibold tracking-wide inline-flex items-center justify-center cursor-pointer"
+                onClick={() => scrollToSection('capabilities')}
+                className="btn-glass-secondary px-7 py-4 rounded-full font-mono text-xs uppercase tracking-wider font-semibold inline-flex items-center justify-center cursor-pointer group"
               >
-                Inspect Disciplines
+                <span>EXPLORE CAPABILITIES</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-2 transition-transform duration-200 group-hover:translate-x-1 text-[#FF2E2E]" />
               </button>
             </div>
 
-            {/* Studio Engineering Architectural Specs — Clean Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 hairline-t w-full">
-              <div>
-                <div className="text-xs font-semibold text-slate-900 tracking-tight">Zero-Install Runtime</div>
-                <div className="text-xs text-slate-500 mt-1 leading-normal">
-                  WebGL & WebXR interactive modules optimized under 1.4 MB
-                </div>
+            {/* Monospace Telemetry Strip */}
+            <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-white/10 w-full max-w-xl font-mono text-[11px] text-slate-400">
+              <div className="flex items-center gap-1.5">
+                <span className="ping-blue" />
+                <span>LATENCY: 12ms</span>
               </div>
-              <div>
-                <div className="text-xs font-semibold text-slate-900 tracking-tight">Multi-Model Agents</div>
-                <div className="text-xs text-slate-500 mt-1 leading-normal">
-                  Self-healing event workflows connecting web to backends
-                </div>
+              <span className="text-white/20">//</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-slate-300">CORE: GEMINI EXP</span>
               </div>
-              <div>
-                <div className="text-xs font-semibold text-slate-900 tracking-tight">Industrial Standards</div>
-                <div className="text-xs text-slate-500 mt-1 leading-normal">
-                  OSHA & ISO aligned curriculum with WCAG alt-text compliance
-                </div>
+              <span className="text-white/20">//</span>
+              <div className="flex items-center gap-1.5">
+                <span className="ping-crimson" />
+                <span className="text-white">STREAM: ACTIVE</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Interactive Studio 3D Workbench */}
+          {/* Right Column: 3D Celestial Particle Globe (5 cols) */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 w-full flex justify-center"
           >
-            <div className="relative w-full aspect-square max-w-[480px] lg:max-w-none lg:h-[530px] rounded-2xl studio-panel overflow-hidden">
-              {/* Header Telemetry Bar */}
-              <div className="absolute top-0 left-0 right-0 z-20 px-4 py-2.5 hairline-b bg-white/80 backdrop-blur-md flex items-center justify-between text-[11px] font-mono text-slate-600">
-                <div className="flex items-center gap-2">
-                  <span className="led-blue" />
-                  <span className="font-semibold text-slate-800">SPATIAL SANDBOX</span>
-                </div>
-                <span className="text-slate-600">WEBXR // THREE.JS</span>
-              </div>
-
-              {/* 3D WebGL Canvas */}
-              <Hero3DCanvas className="w-full h-full pt-8" />
+            <div className="relative w-full aspect-square max-w-[500px] lg:max-w-none lg:h-[540px] rounded-3xl overflow-hidden group">
+              <CelestialGlobeCanvas className="w-full h-full" />
             </div>
           </motion.div>
 

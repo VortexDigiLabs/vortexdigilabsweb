@@ -9,26 +9,18 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.classList.add('menu-open');
-    } else {
-      document.body.classList.remove('menu-open');
-    }
-    return () => document.body.classList.remove('menu-open');
-  }, [isMobileMenuOpen]);
-
   const navLinks = [
-    { name: 'Disciplines', href: '/#solutions' },
-    { name: 'Field Deployments', href: '/#pilots' },
-    { name: 'Architecture Sprint', href: '/#contact' },
-    { name: 'Archive', href: '/vault' },
+    { name: 'HOME', href: '/#hero' },
+    { name: 'CAPABILITIES', href: '/#capabilities' },
+    { name: 'PILOTS', href: '/#pilots' },
+    { name: 'CREDENTIALS', href: '/#credentials' },
+    { name: 'DISCOVERY', href: '/#discovery' },
   ];
 
   const handleNavClick = (href: string) => {
@@ -44,94 +36,82 @@ export default function Navbar() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-white/90 backdrop-blur-xl border-b border-slate-200/90 shadow-sm py-3' 
-            : 'bg-white/60 backdrop-blur-md border-b border-slate-200/40 py-4'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            
-            {/* Brand Identity / Official Emblem */}
-            <Link to="/" className="flex items-center gap-3.5 group">
-              <div className="relative flex items-center">
-                <img
-                  src="/vortex-logo.png"
-                  alt="Vortex Digi Labs"
-                  className="h-10 sm:h-11 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-              </div>
-
-              <div className="hidden sm:flex flex-col border-l border-slate-200 pl-3">
-                <span className="font-heading text-[13px] font-bold tracking-tight text-slate-900 leading-none">
-                  Vortex Digi Labs
-                </span>
-                <span className="text-[11px] text-slate-600 font-medium mt-1 leading-none">
-                  Agentic AI & Interactive 3D Studio
-                </span>
-              </div>
-            </Link>
-            
-            {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-7" aria-label="Main Navigation">
-              {navLinks.map((link) => {
-                const isHashActive = location.hash === link.href.replace('/', '');
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => handleNavClick(link.href)}
-                    className={`text-[13px] font-medium tracking-tight transition-colors py-1 ${
-                      isHashActive 
-                        ? 'text-slate-950 font-semibold' 
-                        : 'text-slate-700 hover:text-slate-950'
-                    }`}
-                  >
-                    {link.name}
-                  </a>
-                );
-              })}
-
-              <div className="h-4 w-[1px] bg-slate-200" aria-hidden="true" />
-
-              {/* Status Indicator */}
-              <div className="flex items-center gap-2 text-[12px] text-slate-700 font-medium">
-                <span className="led-blue" />
-                <span>Active Studio</span>
-              </div>
-
-              {/* Primary Call to Action */}
-              <a
-                href="/#contact"
-                onClick={() => handleNavClick('/#contact')}
-                className="btn-studio-primary px-4 py-2 rounded-lg text-xs font-semibold tracking-wide inline-flex items-center justify-center"
-              >
-                Book Discovery
-              </a>
-            </nav>
-            
-            {/* Mobile Hamburger Button */}
-            <div className="md:hidden flex items-center gap-2">
-              <a
-                href="/#contact"
-                onClick={() => handleNavClick('/#contact')}
-                className="btn-studio-primary px-3 py-1.5 rounded-md text-xs font-semibold"
-              >
-                Discovery
-              </a>
-              <button
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="p-2 rounded-lg bg-slate-100/90 border border-slate-200 text-slate-800"
-                aria-label="Open navigation menu"
-              >
-                <span className="block w-4 h-[2px] bg-slate-900 mb-1" />
-                <span className="block w-4 h-[2px] bg-slate-900 mb-1" />
-                <span className="block w-4 h-[2px] bg-slate-900" />
-              </button>
+      <header className="fixed top-0 left-0 right-0 z-50 py-4 px-4 sm:px-6 lg:px-8 transition-all duration-300">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          
+          {/* Brand Wordmark (image_9.png: Left side) */}
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="flex flex-col">
+              <span className="font-heading text-sm sm:text-base font-extrabold tracking-wider text-white uppercase leading-none silver-chrome-text">
+                VORTEX DIGI LABS
+              </span>
+              <span className="font-mono text-[9px] uppercase tracking-widest text-slate-400 font-semibold mt-1">
+                // AI & 3D SYSTEMS
+              </span>
             </div>
+          </Link>
+
+          {/* Centered Floating Pill Navigation Capsule (image_9.png) */}
+          <nav 
+            className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-full nav-pill-capsule"
+            aria-label="Main Navigation"
+          >
+            {/* Top Indicator LEDs */}
+            <div className="flex items-center gap-1.5 mr-3 pr-3 border-r border-white/10" aria-hidden="true">
+              <span className="ping-crimson" />
+              <span className="ping-blue" />
+            </div>
+
+            {navLinks.map((link) => {
+              const isCurrent = location.hash === link.href.replace('/', '') || (link.name === 'HOME' && !location.hash);
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => handleNavClick(link.href)}
+                  className={`px-3.5 py-1 rounded-full text-[11px] font-mono tracking-widest transition-all ${
+                    isCurrent
+                      ? 'bg-white/15 text-white font-bold shadow-sm'
+                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* Right Action Button: Glowing Glass BOOK DISCOVERY (image_9.png) */}
+          <div className="hidden md:flex items-center">
+            <a
+              href="/#discovery"
+              onClick={() => handleNavClick('/#discovery')}
+              className="btn-glass-cta px-5 py-2.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider inline-flex items-center justify-center cursor-pointer"
+            >
+              BOOK DISCOVERY
+            </a>
           </div>
+
+          {/* Mobile Hamburger Toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <a
+              href="/#discovery"
+              onClick={() => handleNavClick('/#discovery')}
+              className="btn-glass-cta px-3 py-1.5 rounded-full text-[10px] font-mono font-bold uppercase"
+            >
+              DISCOVERY
+            </a>
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 rounded-xl bg-white/5 border border-white/10 text-white"
+              aria-label="Toggle navigation menu"
+            >
+              <span className="block w-4 h-[2px] bg-[#FF2E2E] mb-1" />
+              <span className="block w-4 h-[2px] bg-white mb-1" />
+              <span className="block w-4 h-[2px] bg-[#00B6FF]" />
+            </button>
+          </div>
+
         </div>
       </header>
 
@@ -140,32 +120,37 @@ export default function Navbar() {
         <button
           className="close-btn"
           onClick={() => setIsMobileMenuOpen(false)}
-          aria-label="Close navigation menu"
+          aria-label="Close menu"
         >
           ✕
         </button>
         <div className="flex flex-col items-center gap-7">
-          <img
-            src="/vortex-logo.png"
-            alt="Vortex Digi Labs"
-            className="h-14 w-auto object-contain mb-2"
-          />
+          <div className="flex flex-col items-center mb-2">
+            <span className="font-heading text-lg font-extrabold tracking-wider text-white uppercase">
+              VORTEX DIGI LABS
+            </span>
+            <span className="font-mono text-xs text-slate-400 mt-1">
+              // AI & 3D SYSTEMS
+            </span>
+          </div>
+
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => handleNavClick(link.href)}
-              className="text-lg font-medium text-slate-900 hover:text-[#00B6FF] transition-colors"
+              className="font-mono text-base text-slate-200 hover:text-[#FF2E2E] tracking-widest"
             >
               {link.name}
             </a>
           ))}
+
           <a
-            href="/#contact"
-            onClick={() => handleNavClick('/#contact')}
-            className="btn-studio-primary px-6 py-3 rounded-lg text-sm font-semibold tracking-wide mt-4"
+            href="/#discovery"
+            onClick={() => handleNavClick('/#discovery')}
+            className="btn-glass-cta px-6 py-3 rounded-full font-mono text-xs font-bold uppercase tracking-wider mt-4"
           >
-            Book Architecture Discovery
+            BOOK DISCOVERY
           </a>
         </div>
       </div>

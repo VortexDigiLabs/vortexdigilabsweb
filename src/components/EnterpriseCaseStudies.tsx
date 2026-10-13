@@ -1,81 +1,89 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Check, Terminal, ChevronDown } from 'lucide-react';
+import { Terminal, ChevronDown, Check, ArrowRight } from 'lucide-react';
 
-interface CaseStudy {
+interface SectorDeployment {
   id: string;
-  title: string;
-  client: string;
-  domain: string;
-  impactMetric: string;
-  impactLabel: string;
-  narrative: string;
+  sectorCode: string;
+  sectorName: string;
+  scope: string;
+  execution: string;
+  status: string;
+  metric: string;
+  metricLabel: string;
   specs: { label: string; value: string }[];
   stack: string[];
   terminalLog: string;
+  accent: 'blue' | 'crimson';
 }
 
-const CASE_STUDIES: CaseStudy[] = [
+const SECTOR_DEPLOYMENTS: SectorDeployment[] = [
   {
-    id: 'sagma-curriculum',
-    title: 'Industrial Grain Milling Curriculum Modernisation',
-    client: 'South African Grain Milling Academy (SAGMA)',
-    domain: 'Mechanical Equipment & WebXR Digital Twins',
-    impactMetric: '20 Modules',
-    impactLabel: 'Legacy Equipment Overhauled to 3D Space',
-    narrative: 'Overhaul of 20 legacy print training modules into zero-install interactive 3D WebXR equipment pilots. Replaced static 2D print diagrams with real-time browser assemblies allowing apprentices to inspect complex mill mechanical components in 360° space on standard low-spec mobile and desktop devices.',
+    id: 'heavy-agri-industrial',
+    sectorCode: 'SECTOR 01',
+    sectorName: 'Heavy Agri-Industrial & Technical Education',
+    scope: 'Industrial Curriculum Modernisation & Digital Twin Transformation',
+    execution: 'Comprehensive overhaul of 20 legacy vocational training modules. Converted decades-old hand-drawn schematics into responsive 2D/3D digital vectors and deployed an interactive zero-install WebGL grain milling machinery simulation suite to production. Engineered a complete alt-text compliance register for screen-reader synchronisation.',
+    status: 'PILOT DEPLOYED // CONTINUOUS ITERATION',
+    metric: '20 Modules',
+    metricLabel: 'Legacy Schematics Overhauled to 3D Space',
     specs: [
-      { label: 'Mesh Compression', value: 'Draco Algorithmic Compression (< 1.4 MB per Assembly)' },
-      { label: 'Accessibility', value: '100% Alt-Text & Screen-Reader Synchronized' },
-      { label: 'Rendering Target', value: '60fps Zero-Install Edge Browser Runtime' },
-      { label: 'Legacy Conversion', value: '2D Engineering CAD Schematics to Optimized GLTF' }
+      { label: 'Asset Payload', value: '< 1.4 MB per Assembly (Draco Compression)' },
+      { label: 'Accessibility', value: '100% WCAG 2.1 Alt-Text & Screen-Reader Synced' },
+      { label: 'Simulation Target', value: '60fps Zero-Install Browser WebGL Engine' },
+      { label: 'Schematic Overhaul', value: 'Static Hand-Drawn Diagrams to Dynamic Vectors' }
     ],
-    stack: ['Three.js', 'WebXR', 'Blender Pipeline', 'Vector CAD', 'WCAG 2.1'],
-    terminalLog: `$ sagma-inspect --module="bucket-elevator-v4"
+    stack: ['WebGL / Three.js', 'Draco Mesh', 'Blender Pipeline', 'Vector CAD', 'WCAG 2.1'],
+    terminalLog: `$ vdl-industrial-pipeline --inspect "bucket-elevator-v4.cad"
 [Draco] Geometry decimation: 14.8MB -> 1.18MB (-92.0%)
-[WebXR] Touch interaction bound: Pan / Orbit / Explode sub-assemblies
-[A11y] Screen-reader narration tracks: Synchronized`
+[WebGL] 60fps locked on mobile Safari & Chromium runtimes
+[WCAG] Alt-text audio narration register: 100% Synchronized`,
+    accent: 'blue'
   },
   {
-    id: 'edge-order-orchestration',
-    title: 'Edge Order Orchestration & Automated Dispatch',
-    domain: 'Real-Time Transaction Queue & WhatsApp Routing',
-    client: 'Commercial Multi-Tenant Operations',
-    impactMetric: '< 650ms',
-    impactLabel: 'End-to-End Operator Dispatch Latency',
-    narrative: 'Full-stack progressive web application driving real-time order processing and automated WhatsApp dispatch workflows. Engineered an event-driven state machine connecting frontend checkouts directly to local mobile operations without manual dispatch bottlenecks or operational downtime.',
+    id: 'hospitality-commerce',
+    sectorCode: 'SECTOR 02',
+    sectorName: 'Quick-Service Hospitality & Digital Commerce',
+    scope: 'Omnichannel Menu PWA & Automated Order Routing',
+    execution: 'High-velocity Progressive Web App deployment with dynamic visual menus, high-conversion cart architecture, and automated operational WhatsApp order dispatching. Engineered an event-driven webhook state machine connecting customer checkouts directly to local kitchen dispatchers without manual telephone overhead.',
+    status: 'PRODUCTION ACTIVE',
+    metric: '< 650ms',
+    metricLabel: 'Checkout-to-WhatsApp Dispatch Latency',
     specs: [
       { label: 'Architecture', value: 'Serverless Event-Driven State Machine' },
-      { label: 'Notification Path', value: 'Meta Cloud API Direct Webhook Integration' },
-      { label: 'Edge Resilience', value: 'ServiceWorker Offline Queue & Background Sync' },
-      { label: 'Reliability', value: 'Self-Healing Webhook Queue with Auto-Retry' }
+      { label: 'Routing Engine', value: 'Meta Cloud API Direct Webhook Integration' },
+      { label: 'Edge Caching', value: 'ServiceWorker Offline Persistence & Sync' },
+      { label: 'Failover', value: 'Self-Healing Retry Queue with Dead-Letter Storage' }
     ],
-    stack: ['React', 'Event Webhooks', 'Meta Cloud API', 'Edge Functions', 'PostgreSQL'],
+    stack: ['React / Vite', 'ServiceWorker PWA', 'Meta Cloud API', 'Edge Functions', 'PostgreSQL'],
     terminalLog: `POST /api/orchestrator/dispatch-order HTTP/2
 {
   "orderId": "VDL-9042",
   "routingEngine": "edge-priority-queue",
   "whatsappPayload": "DISPATCH_AUTHORIZED"
-} -> 200 OK (38ms latency)`
+} -> 200 OK (38ms latency)`,
+    accent: 'crimson'
   },
   {
-    id: 'generative-media-pipelines',
-    title: 'Generative Technical Media Automation',
-    domain: 'Modular Procedural Video & Technical Training AV',
-    client: 'Enterprise Technical Communications',
-    impactMetric: '10x',
-    impactLabel: 'Production Velocity vs Studio Shoots',
-    narrative: 'Synthetic instructional content and automated multi-modal production pipelines built without stock templates. Automated the ingestion of raw technical documentation to generate high-fidelity technical instructional video sequences and synchronized voice tracks.',
+    id: 'media-automation',
+    sectorCode: 'SECTOR 03',
+    sectorName: 'Automated Media & Creative Production Pipelines',
+    scope: 'Script-to-Screen Short-Form Video Automation',
+    execution: 'Custom programmatic content pipelines integrating LLM structured scripting, neural voice generation, and automated motion graphics workflows. Ingests raw operational documentation and automatically generates high-fidelity technical instructional video sequences and multi-lingual voice tracks without manual studio shoots.',
+    status: 'PIPELINE VERIFIED',
+    metric: '10x',
+    metricLabel: 'Production Velocity vs Studio Shoots',
     specs: [
-      { label: 'Pipeline Engine', value: 'Headless ComfyUI Procedural Node Graphs' },
-      { label: 'Diffusion Core', value: 'Wan 2.1 / LTX High-Resolution Latent Models' },
-      { label: 'Acoustic Model', value: 'Custom Voice Synthesis & Sub-phoneme Lip Sync' },
-      { label: 'Template Reliance', value: '0% Stock Clichés — 100% Procedural Generation' }
+      { label: 'Script Engine', value: 'Structured Gemini 2.5 Multi-Modal Prompting' },
+      { label: 'Acoustic Model', value: 'Custom Neural Voice Synthesis & Sub-Phoneme Sync' },
+      { label: 'Visual Rendering', value: 'Headless ComfyUI Node Graphs + FFmpeg Assembly' },
+      { label: 'Template Dependency', value: '0% Stock Clichés — 100% Procedural Generation' }
     ],
-    stack: ['ComfyUI', 'Wan 2.1', 'Latent Diffusion', 'FFmpeg', 'Voice Synthesis'],
-    terminalLog: `[ComfyUI-Worker-02] Ingesting Technical Markdown Spec...
-Executing Latent Diffusion -> Audio Mel Spectrogram Sync...
-Video render complete: 1080p60 H.265 (Render Time: 42s)`
+    stack: ['Gemini 2.5', 'ComfyUI', 'Neural Voice', 'FFmpeg', 'Canva Enterprise'],
+    terminalLog: `[VDL-MediaWorker] Ingesting Technical Markdown Spec...
+Executing Latent Motion -> Audio Mel Spectrogram Sync...
+Video render complete: 1080p60 H.265 (Render Time: 42s)`,
+    accent: 'blue'
   }
 ];
 
@@ -89,64 +97,71 @@ export default function EnterpriseCaseStudies() {
   return (
     <section 
       id="pilots" 
-      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 hairline-t bg-slate-50/50"
-      aria-label="Verified Field Deployments"
+      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-white/[0.08] overflow-hidden"
+      aria-label="Sector Deployments and Industrial Proof"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-slate-200/90 text-slate-700 text-xs font-medium mb-4">
-            <span className="led-blue" />
-            <span>Field Deployments</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 font-mono text-[11px] mb-4">
+            <span className="ping-crimson" />
+            <span>PROVEN SECTOR DEPLOYMENTS</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-title text-slate-900 leading-tight font-heading">
-            Verified production systems in operation.
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-heading">
+            INDUSTRIAL PROOF & SECTOR DEPLOYMENTS
           </h2>
-          <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
-            Real-world deployments bridging mechanical equipment curriculum, edge operations, and autonomous generative media systems.
+          <p className="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+            Real-world enterprise systems in production across heavy industrial manufacturing, omnichannel digital commerce, and automated generative media.
           </p>
         </div>
 
-        {/* Case Studies Dossiers */}
+        {/* Deployments List */}
         <div className="space-y-8">
-          {CASE_STUDIES.map((cs) => {
-            const isLogOpen = expandedLog === cs.id;
+          {SECTOR_DEPLOYMENTS.map((deployment) => {
+            const isCrimson = deployment.accent === 'crimson';
+            const isLogOpen = expandedLog === deployment.id;
 
             return (
               <article 
-                key={cs.id}
-                className="studio-panel rounded-2xl p-6 sm:p-10 transition-all duration-200"
+                key={deployment.id}
+                className="obsidian-glass-panel rounded-3xl p-8 sm:p-12 transition-all duration-300 hover:border-white/20"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                   
-                  {/* Left Column: Context & Metrics (4 cols) */}
+                  {/* Left Column: Sector Meta & Verified Metric */}
                   <div className="lg:col-span-4 flex flex-col justify-between h-full">
                     <div>
-                      <div className="text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold mb-1">
-                        {cs.client}
-                      </div>
-                      <div className="text-xs text-slate-600 font-medium mb-6">
-                        {cs.domain}
+                      <div className="flex items-center gap-2 mb-2 font-mono text-xs">
+                        <span className={isCrimson ? 'ping-crimson' : 'ping-blue'} />
+                        <span className="text-white font-bold tracking-wider">{deployment.sectorCode}</span>
+                        <span className="text-white/20">//</span>
+                        <span className="text-slate-400 text-[10px]">{deployment.status}</span>
                       </div>
 
-                      {/* Verified Metric Block */}
-                      <div className="p-5 rounded-xl bg-slate-100/70 border border-slate-200/80 mb-6">
-                        <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-heading">
-                          {cs.impactMetric}
+                      <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-heading mb-6">
+                        {deployment.sectorName}
+                      </h3>
+
+                      {/* Highlight Metric Card */}
+                      <div className="p-6 rounded-2xl bg-black/40 border border-white/10 mb-6">
+                        <div className={`text-4xl sm:text-5xl font-black tracking-tight font-heading ${
+                          isCrimson ? 'text-[#FF2E2E]' : 'text-[#00B6FF]'
+                        }`}>
+                          {deployment.metric}
                         </div>
-                        <div className="text-xs text-slate-600 font-medium mt-1">
-                          {cs.impactLabel}
+                        <div className="text-xs text-slate-300 font-mono mt-1.5 leading-snug">
+                          {deployment.metricLabel}
                         </div>
                       </div>
                     </div>
 
                     {/* Stack Pills */}
                     <div className="flex flex-wrap gap-1.5">
-                      {cs.stack.map((tech) => (
+                      {deployment.stack.map((tech) => (
                         <span 
                           key={tech}
-                          className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white border border-slate-200 text-slate-700 font-medium"
+                          className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-white/[0.04] border border-white/10 text-slate-300 font-medium"
                         >
                           {tech}
                         </span>
@@ -154,34 +169,34 @@ export default function EnterpriseCaseStudies() {
                     </div>
                   </div>
 
-                  {/* Right Column: Title, Narrative & Specs (8 cols) */}
+                  {/* Right Column: Scope, Narrative, Specifications & Execution Trace */}
                   <div className="lg:col-span-8">
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-4 font-heading">
-                      {cs.title}
-                    </h3>
-                    
-                    <p className="text-sm sm:text-base text-slate-700 leading-relaxed mb-6">
-                      {cs.narrative}
+                    <div className="text-xs font-mono tracking-wider uppercase text-slate-400 mb-2 font-semibold">
+                      SCOPE: {deployment.scope}
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
+                      {deployment.execution}
                     </p>
 
-                    {/* Specifications List */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 rounded-xl bg-white border border-slate-200/90 mb-5">
-                      {cs.specs.map((spec, sIdx) => (
+                    {/* Specs Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06] mb-6">
+                      {deployment.specs.map((spec, sIdx) => (
                         <div key={sIdx} className="text-xs">
-                          <span className="font-semibold text-slate-900 block">{spec.label}:</span>
-                          <span className="text-slate-600">{spec.value}</span>
+                          <span className="font-mono text-slate-400 block text-[11px] mb-0.5">{spec.label}:</span>
+                          <span className="text-white font-medium">{spec.value}</span>
                         </div>
                       ))}
                     </div>
 
-                    {/* Terminal Inspection Toggle */}
+                    {/* Terminal Inspection Button & Drawer */}
                     <div>
                       <button
-                        onClick={() => toggleLog(cs.id)}
-                        className="text-xs font-mono font-semibold text-slate-700 hover:text-slate-900 inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                        onClick={() => toggleLog(deployment.id)}
+                        className="text-xs font-mono font-semibold text-slate-300 hover:text-white inline-flex items-center gap-2 transition-colors cursor-pointer py-1"
                       >
-                        <Terminal className="w-3.5 h-3.5" />
-                        <span>{isLogOpen ? 'Hide Execution Trace' : 'Inspect Execution Trace'}</span>
+                        <Terminal className="w-3.5 h-3.5 text-[#FF2E2E]" />
+                        <span>{isLogOpen ? 'COLLAPSE EXECUTION LOG' : 'INSPECT DEPLOYMENT TELEMETRY LOG'}</span>
                         <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isLogOpen ? 'rotate-180' : ''}`} />
                       </button>
 
@@ -190,10 +205,14 @@ export default function EnterpriseCaseStudies() {
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
-                          className="mt-3 rounded-xl bg-slate-950 text-slate-200 p-4 font-mono text-xs overflow-x-auto shadow-inner"
+                          className="mt-3 rounded-2xl bg-black text-slate-300 p-5 font-mono text-xs overflow-x-auto border border-white/10 shadow-2xl"
                         >
-                          <pre className="whitespace-pre-wrap leading-relaxed text-slate-300">
-                            {cs.terminalLog}
+                          <div className="flex items-center justify-between text-slate-400 text-[10px] pb-2 mb-3 border-b border-white/10">
+                            <span>TRACE HARNESS: PRODUCTION VERIFIED</span>
+                            <span>STATUS: 200 OK</span>
+                          </div>
+                          <pre className="whitespace-pre-wrap leading-relaxed text-slate-200">
+                            {deployment.terminalLog}
                           </pre>
                         </motion.div>
                       )}

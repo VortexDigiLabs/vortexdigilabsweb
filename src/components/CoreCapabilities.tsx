@@ -1,271 +1,334 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Box, 
   Workflow, 
-  GraduationCap, 
+  Layers, 
+  Sparkles, 
+  ArrowUpRight, 
   Check, 
-  ChevronRight,
-  Terminal,
-  Layers,
-  ShieldCheck,
-  Cpu
+  Radio, 
+  Code2, 
+  Smartphone,
+  Presentation
 } from 'lucide-react';
 
-interface Discipline {
+interface Pillar {
   id: string;
-  name: string;
-  tagline: string;
+  tag: string;
+  number: string;
+  headline: string;
+  title: string;
   description: string;
+  visualType: 'wireframe' | 'nodes' | 'dashboard' | 'stack';
+  accent: 'blue' | 'crimson';
   deliverables: string[];
-  specs: { label: string; value: string }[];
-  stack: string[];
-  indicatorClass: string;
-  terminalSnippet: string;
+  techStack: string[];
 }
 
-const DISCIPLINES: Discipline[] = [
+const PILLARS: Pillar[] = [
   {
     id: '3d-twins',
-    name: 'Interactive 3D & Digital Twin Pilots',
-    tagline: 'High-Fidelity Browser Spatial Computing',
-    description: 'We convert static engineering CAD schematics and legacy training diagrams into zero-install, 60fps browser WebXR simulators and digital twin pilots with full touch and VR support.',
+    number: '01',
+    tag: 'SYSTEM // WEBGL-THREEJS',
+    title: 'Interactive 3D & Digital Twin Pilots',
+    headline: 'Browser-Based Equipment Simulation & Digital Twins',
+    description: 'Lightweight, zero-install WebGL and Three.js machinery pilots, industrial asset visualisers, and comprehensive modernisation of multi-decade technical schematics into responsive 2D/3D vectors.',
+    visualType: 'wireframe',
+    accent: 'blue',
     deliverables: [
-      'Legacy 2D-to-3D vector overhauls converting static print manuals into interactive spatial assemblies',
-      'Runtime budget optimization with Draco mesh compression delivering full models under 1.4 MB',
-      'Zero-install interactive training pilots with WebXR and mobile touch responsiveness'
+      'Zero-install WebGL/WebXR equipment inspection in 60fps browser space',
+      'Under 1.4 MB Draco geometry budgets ensuring instant mobile loading',
+      'Complete vector schematic overhaul with 100% alt-text accessibility'
     ],
-    specs: [
-      { label: 'Runtime Engine', value: 'Three.js / WebGL 2.0 / WebXR' },
-      { label: 'Geometry Target', value: '< 1.4 MB Draco Compressed GLB' },
-      { label: 'Platform Support', value: 'Zero-Install Edge Browser (Desktop/Mobile)' },
-      { label: 'Compliance', value: 'WCAG 2.1 Alt-Text & Screen-Reader Synchronized' }
-    ],
-    stack: ['Three.js', 'WebXR', 'GLTF/GLB', 'Blender Pipeline', 'GLSL Shaders', 'Vector CAD'],
-    indicatorClass: 'led-blue',
-    terminalSnippet: `$ vdl-pipeline inspect --target="bucket-elevator-v4.cad"
-✓ Draco mesh compression applied: 14.8MB -> 1.18MB (-92%)
-✓ Sub-assembly hierarchy parsed: 48 operational nodes
-✓ WebXR touch controls linked: 60fps locked on mobile safari & chrome`
+    techStack: ['Three.js', 'WebXR', 'Blender GLB', 'Draco Mesh', 'GLSL Shaders']
   },
   {
-    id: 'agentic-workflows',
-    name: 'Autonomous Agentic Workflows',
-    tagline: 'Multi-Model AI Orchestration & Task Runners',
-    description: 'We architect autonomous background agent loops that connect web interfaces to core operational backends with continuous validation, self-healing retries, and cost/latency-aware routing.',
+    id: 'agentic-systems',
+    number: '02',
+    tag: 'ORCHESTRATION // MULTI-MODEL',
+    title: 'Autonomous Workflows & Agentic Systems',
+    headline: 'Custom Knowledge Bases & Task Orchestration',
+    description: 'Enterprise private RAG architectures built on Google AI Studio, Gemini API, and NotebookLM. Eliminates hallucinations by grounding models strictly in company handbooks, SOPs, and proprietary databases.',
+    visualType: 'nodes',
+    accent: 'crimson',
     deliverables: [
-      'Self-healing task runners and continuous background verification loops with deterministic recovery',
-      'Cost- and latency-aware routing across local and frontier models (Claude, DeepSeek, GPT-4o, Ollama)',
-      'Operational event webhooks connecting user frontends directly to dispatch operators'
+      'Self-healing background agent loops with automated retry logic',
+      'Zero-retention private RAG grounded in enterprise standard operating procedures',
+      'Multi-model fallback routing across Gemini, Claude, and local Ollama weights'
     ],
-    specs: [
-      { label: 'Architecture', value: 'Serverless Event-Driven State Machine' },
-      { label: 'Dispatch Target', value: '< 650ms to WhatsApp Operator' },
-      { label: 'Schema Strategy', value: 'Strict Type-Safe Pydantic / Zod Output Validation' },
-      { label: 'Reliability', value: 'Auto-Retry Event Queue with Dead-Letter Storage' }
-    ],
-    stack: ['Autonomous Agents', 'LangChain', 'Event Webhooks', 'DeepSeek R1', 'Claude 3.7', 'PostgreSQL'],
-    indicatorClass: 'led-crimson',
-    terminalSnippet: `POST /api/orchestrator/dispatch-order HTTP/2
-{
-  "orderId": "VDL-9042",
-  "routingEngine": "edge-priority-queue",
-  "whatsappPayload": "DISPATCH_AUTHORIZED"
-} -> 200 OK (38ms latency, zero human bottleneck)`
+    techStack: ['Google AI Studio', 'Gemini API', 'NotebookLM', 'LangChain', 'PostgreSQL']
   },
   {
-    id: 'enterprise-enablement',
-    name: 'Enterprise AI Enablement & Training',
-    tagline: 'Practical Upskilling & Governance',
-    description: 'We deliver hands-on technical enablement and executive workshops based on the Atlas syllabus, transforming operational workforces through safe, auditable agent tooling and prompt architecture.',
+    id: 'rapid-prototyping',
+    number: '03',
+    tag: 'DEVELOPMENT // RAPID PROTOTYPE',
+    title: 'High-Velocity Application Prototyping',
+    headline: 'Progressive Web Apps, Dashboards & Micro-Tools',
+    description: 'Rapid-cadence application development translating operational concepts into production-grade PWAs, internal dashboards, and Android-compatible tools using modern agentic workflows and instant Vercel cloud edge deployment.',
+    visualType: 'dashboard',
+    accent: 'blue',
     deliverables: [
-      'Hands-on operational agent tooling tailored for engineering operators and technical managers',
-      'Rigorous prompt architecture, schema enforcement, and automated eval test harnesses',
-      'Enterprise compliance standards, data privacy isolation, and auditable operational logs'
+      'Production-ready PWA deployments with offline ServiceWorker caching',
+      'Real-time transaction queue and automated WhatsApp dispatch pipelines',
+      'Clean TypeScript architectures ready for instant Vercel/Cloudflare edge scaling'
     ],
-    specs: [
-      { label: 'Curriculum Base', value: 'Atlas Technical Modernisation Syllabus' },
-      { label: 'Evaluation', value: 'Automated CI/CD Eval Harness for Prompt Reliability' },
-      { label: 'Data Security', value: 'Zero-Retention Zero-Training Enterprise Boundaries' },
-      { label: 'Standardization', value: 'OSHA / ISO Aligned Technical Verification' }
+    techStack: ['React / Vite', 'Next.js', 'ServiceWorker PWA', 'Vercel Edge', 'Meta Cloud API']
+  },
+  {
+    id: 'ai-enablement',
+    number: '04',
+    tag: 'HUMAN-IN-THE-LOOP // WORKSHOPS',
+    title: 'Enterprise AI Enablement & Creative Upskilling',
+    headline: 'Workforce Enablement, Canva Systems & Media Pipelines',
+    description: 'Pragmatic training for executives and non-technical staff. We demystify LLMs, configure team Canva systems, and build automated script-to-screen production pipelines for generative video, neural voice synthesis, and dynamic visuals.',
+    visualType: 'stack',
+    accent: 'crimson',
+    deliverables: [
+      'Executive and operational prompt engineering workshops tailored for non-coders',
+      'Structured Canva enterprise design systems for brand-safe generation',
+      'Script-to-screen programmatic video pipelines with neural voice cloning'
     ],
-    stack: ['Atlas Syllabus', 'Structured Outputs', 'Prompt Architecture', 'CI/CD Evals', 'Audit Trails'],
-    indicatorClass: 'led-blue',
-    terminalSnippet: `[VDL-Atlas] Running Evaluation Suite against v2.4 Prompt Schemas...
-✓ Deterministic JSON Schema Compliance: 100% (500/500 tests)
-✓ Hallucination Boundary Score: 0.002 (Within ISO Target)
-✓ Executive & Apprentice Syllabus Modules: Ready for Deployment`
+    techStack: ['Atlas Syllabus', 'Canva Systems', 'Neural Voice', 'ComfyUI', 'Executive Enablement']
   }
 ];
 
 export default function CoreCapabilities() {
-  const [activeTab, setActiveTab] = useState<string>('3d-twins');
-
-  const activeDiscipline = DISCIPLINES.find((d) => d.id === activeTab) || DISCIPLINES[0];
-
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
+  const scrollToDiscovery = () => {
+    const el = document.getElementById('discovery');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section 
-      id="solutions" 
-      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 hairline-t bg-[#FCFDFF]"
-      aria-label="Core Engineering Disciplines"
+      id="capabilities" 
+      className="relative w-full py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-white/[0.08] overflow-hidden"
+      aria-label="Core Solutions Architecture"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Section Header: Minimal, Authoritative, No Clichés */}
-        <div className="max-w-3xl mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100/90 border border-slate-200/80 text-slate-700 text-xs font-medium mb-4">
-            <span className="led-blue" />
-            <span>Studio Capabilities</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-title text-slate-900 leading-tight font-heading">
-            Architectural disciplines built for industrial scale.
-          </h2>
-          <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
-            We replace generic agency handoffs with three dedicated technical disciplines designed to deploy robust, production-grade autonomous systems and spatial pilots.
-          </p>
-        </div>
-
-        {/* Studio Disciplines Interactive Matrix */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Navigation: Discipline Tabs */}
-          <div className="lg:col-span-4 flex flex-col gap-3">
-            {DISCIPLINES.map((discipline) => {
-              const isActive = discipline.id === activeTab;
-              return (
-                <button
-                  key={discipline.id}
-                  onClick={() => setActiveTab(discipline.id)}
-                  className={`text-left p-5 rounded-xl transition-all duration-200 border cursor-pointer ${
-                    isActive
-                      ? 'bg-white border-slate-300 shadow-sm'
-                      : 'bg-slate-50/60 border-slate-200/60 hover:bg-white hover:border-slate-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`inline-block ${discipline.indicatorClass}`} />
-                    <span className="text-[11px] font-mono text-slate-400 font-medium">DISCIPLINE</span>
-                  </div>
-                  <h3 className="text-base font-bold text-slate-900 tracking-tight mb-1">
-                    {discipline.name}
-                  </h3>
-                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                    {discipline.tagline}
-                  </p>
-                </button>
-              );
-            })}
-
-            <div className="p-5 rounded-xl border border-dashed border-slate-200 bg-white/50 mt-2">
-              <div className="text-xs font-semibold text-slate-800 mb-1">Custom Architectural Sprints</div>
-              <p className="text-xs text-slate-500 mb-3 leading-relaxed">
-                Need a hybrid architecture combining WebXR with local multi-model LLM agents?
-              </p>
-              <button
-                onClick={scrollToContact}
-                className="text-xs font-semibold text-slate-900 hover:text-[#00B6FF] inline-flex items-center gap-1 transition-colors cursor-pointer"
-              >
-                <span>Initiate scoping consultation</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+        {/* Telemetry Header Strip (Directly matching image_9.png) */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-12 border-b border-white/10 gap-3">
+          <div className="flex items-center gap-2.5 font-mono text-xs">
+            <span className="text-white font-semibold">Twin Viewport // Online</span>
+            <div className="flex items-center gap-1" aria-hidden="true">
+              <span className="w-2 h-1 bg-[#00B6FF] rounded-xs" />
+              <span className="w-2 h-1 bg-[#00B6FF] rounded-xs" />
+              <span className="w-2 h-1 bg-[#00B6FF]/50 rounded-xs" />
             </div>
           </div>
 
-          {/* Right Area: In-Depth Discipline Workbench */}
-          <div className="lg:col-span-8">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeDiscipline.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.25, ease: 'easeOut' }}
-                className="studio-panel rounded-2xl p-6 sm:p-8"
+          <div className="flex items-center gap-2 font-mono text-[11px] text-slate-400">
+            <div className="flex items-center gap-1" aria-hidden="true">
+              <span className="w-2 h-1 bg-[#FF2E2E] rounded-xs" />
+              <span className="w-2 h-1 bg-[#FF2E2E] rounded-xs" />
+            </div>
+            <span>Telemetry: OTTC / Telemetry 11.83 KB :: 4 ARCHITECTURAL PILLARS</span>
+          </div>
+        </div>
+
+        {/* Section Title */}
+        <div className="max-w-3xl mb-16">
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight text-white font-heading">
+            CORE SOLUTIONS ARCHITECTURE
+          </h2>
+          <p className="mt-4 text-slate-300 text-base sm:text-lg leading-relaxed">
+            Engineered systems bridging browser-native 3D twins, multi-model private agent pipelines, rapid application prototyping, and enterprise workforce enablement.
+          </p>
+        </div>
+
+        {/* 4 Bespoke Glass Cards Grid (image_9.png Style) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {PILLARS.map((pillar) => {
+            const isCrimson = pillar.accent === 'crimson';
+
+            return (
+              <article
+                key={pillar.id}
+                className={`obsidian-glass-panel rounded-3xl p-8 sm:p-10 flex flex-col justify-between group transition-all duration-300 ${
+                  isCrimson ? 'hover:border-[#FF2E2E]/40' : 'hover:border-[#00B6FF]/40'
+                }`}
               >
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 hairline-b">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className={activeDiscipline.indicatorClass} />
-                      <span className="text-xs font-mono uppercase tracking-wider text-slate-500 font-semibold">
-                        {activeDiscipline.tagline}
+                <div>
+                  {/* Card Micro-Header with Status Ping */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-mono text-xs uppercase tracking-widest text-slate-400 font-semibold">
+                      {pillar.tag}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={isCrimson ? 'ping-crimson' : 'ping-blue'} />
+                      <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider">
+                        ONLINE
                       </span>
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-heading">
-                      {activeDiscipline.name}
-                    </h3>
                   </div>
 
-                  <button
-                    onClick={scrollToContact}
-                    className="btn-studio-primary px-4 py-2 rounded-lg text-xs font-semibold self-start sm:self-auto cursor-pointer"
-                  >
-                    Scope Pilot
-                  </button>
-                </div>
-
-                {/* Narrative Focus */}
-                <p className="text-slate-700 text-sm sm:text-base leading-relaxed my-6">
-                  {activeDiscipline.description}
-                </p>
-
-                {/* Deliverables / Architectural Highlights */}
-                <div className="mb-6">
-                  <div className="text-xs font-semibold text-slate-900 mb-3 tracking-tight">
-                    Architectural Deliverables
+                  {/* Title & Headline */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-heading mb-2">
+                    {pillar.title}
+                  </h3>
+                  
+                  <div className={`text-xs font-mono tracking-wider uppercase font-semibold mb-4 ${
+                    isCrimson ? 'text-[#FF2E2E]' : 'text-[#00B6FF]'
+                  }`}>
+                    {pillar.headline}
                   </div>
-                  <div className="space-y-2.5">
-                    {activeDiscipline.deliverables.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
-                        <Check className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                        <span className="leading-normal">{item}</span>
+
+                  <p className="text-sm text-slate-300 leading-relaxed font-sans mb-6">
+                    {pillar.description}
+                  </p>
+
+                  {/* Visual Cue Diagram (image_9.png Wireframes & Schematics) */}
+                  <div className="rounded-2xl bg-black/40 border border-white/[0.08] p-5 mb-6 relative overflow-hidden">
+                    {pillar.visualType === 'wireframe' && (
+                      <div className="h-28 flex flex-col justify-between">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-slate-400">
+                          <span>Fine WebGL wireframes</span>
+                          <span className="text-[#00B6FF] flex items-center gap-1">
+                            <span className="ping-blue" />
+                            <span>Mesh: Draco 1.18MB</span>
+                          </span>
+                        </div>
+                        {/* Wireframe Graphic Simulation */}
+                        <div className="w-full h-14 relative flex items-center justify-center">
+                          <svg className="w-full h-full text-[#00B6FF]/40" viewBox="0 0 300 60" fill="none">
+                            <path d="M0,45 Q75,10 150,35 T300,20" stroke="currentColor" strokeWidth="1.5" />
+                            <path d="M0,55 Q75,25 150,45 T300,30" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+                            <circle cx="75" cy="22" r="3.5" fill="#00B6FF" />
+                            <circle cx="150" cy="35" r="3.5" fill="#00B6FF" />
+                            <circle cx="225" cy="24" r="3.5" fill="#00B6FF" />
+                          </svg>
+                        </div>
+                        <div className="font-mono text-[10px] text-slate-400">
+                          Technical graphics // 360° Browser Runtime
+                        </div>
+                      </div>
+                    )}
+
+                    {pillar.visualType === 'nodes' && (
+                      <div className="h-28 flex flex-col justify-between">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-slate-400">
+                          <span>Nodes / pipeline orchestration</span>
+                          <span className="text-[#FF2E2E] flex items-center gap-1">
+                            <span className="ping-crimson" />
+                            <span>Active RAG Stream</span>
+                          </span>
+                        </div>
+                        {/* Connected Node-Path Graph */}
+                        <div className="w-full h-14 relative flex items-center justify-center">
+                          <svg className="w-full h-full text-[#FF2E2E]/40" viewBox="0 0 300 60" fill="none">
+                            <path d="M20,30 L90,15 L170,45 L240,25 L285,30" stroke="currentColor" strokeWidth="1.5" />
+                            <circle cx="20" cy="30" r="4" fill="#FF2E2E" />
+                            <circle cx="90" cy="15" r="4" fill="#00B6FF" />
+                            <circle cx="170" cy="45" r="4" fill="#FF2E2E" />
+                            <circle cx="240" cy="25" r="4" fill="#00B6FF" />
+                            <circle cx="285" cy="30" r="4" fill="#FF2E2E" />
+                          </svg>
+                        </div>
+                        <div className="font-mono text-[10px] text-slate-400">
+                          Gemini 2.5 + NotebookLM Sovereign Context
+                        </div>
+                      </div>
+                    )}
+
+                    {pillar.visualType === 'dashboard' && (
+                      <div className="h-28 flex flex-col justify-between">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-slate-400">
+                          <span>Edge viewport // PWA Stream</span>
+                          <span className="text-emerald-400 flex items-center gap-1">
+                            <span className="ping-green" />
+                            <span>Vercel Edge &lt; 40ms</span>
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2 my-auto">
+                          <div className="p-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-center">
+                            <div className="text-[10px] text-slate-400 font-mono">DISPATCH</div>
+                            <div className="text-xs font-bold text-white font-mono">&lt;650ms</div>
+                          </div>
+                          <div className="p-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-center">
+                            <div className="text-[10px] text-slate-400 font-mono">STATUS</div>
+                            <div className="text-xs font-bold text-[#00B6FF] font-mono">SYNCED</div>
+                          </div>
+                          <div className="p-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-center">
+                            <div className="text-[10px] text-slate-400 font-mono">OFFLINE</div>
+                            <div className="text-xs font-bold text-emerald-400 font-mono">ACTIVE</div>
+                          </div>
+                        </div>
+                        <div className="font-mono text-[10px] text-slate-400">
+                          Automated WhatsApp dispatch & mobile ordering
+                        </div>
+                      </div>
+                    )}
+
+                    {pillar.visualType === 'stack' && (
+                      <div className="h-28 flex flex-col justify-between">
+                        <div className="flex items-center justify-between font-mono text-[10px] text-slate-400">
+                          <span>Isometric syllabus & pipeline</span>
+                          <span className="text-[#FF2E2E] flex items-center gap-1">
+                            <span className="ping-crimson" />
+                            <span>Enterprise Atlas</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-around my-auto">
+                          <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+                            <span className="w-2 h-2 rounded-xs bg-[#FF2E2E]" />
+                            <span>Executive Workshop</span>
+                          </div>
+                          <span className="text-white/20">→</span>
+                          <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+                            <span className="w-2 h-2 rounded-xs bg-[#00B6FF]" />
+                            <span>Canva Systems</span>
+                          </div>
+                          <span className="text-white/20">→</span>
+                          <div className="flex items-center gap-2 text-xs font-mono text-slate-300">
+                            <span className="w-2 h-2 rounded-xs bg-white" />
+                            <span>AV Pipeline</span>
+                          </div>
+                        </div>
+                        <div className="font-mono text-[10px] text-slate-400">
+                          Script-to-Screen Automated Production
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Deliverables Bullet List */}
+                  <div className="space-y-2.5 mb-8">
+                    {pillar.deliverables.map((item, dIdx) => (
+                      <div key={dIdx} className="flex items-start gap-2.5 text-xs text-slate-300 font-medium">
+                        <Check className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${
+                          isCrimson ? 'text-[#FF2E2E]' : 'text-[#00B6FF]'
+                        }`} />
+                        <span>{item}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Specs Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-xl bg-slate-50/80 border border-slate-200/80 mb-6">
-                  {activeDiscipline.specs.map((spec, idx) => (
-                    <div key={idx}>
-                      <div className="text-[11px] text-slate-500 font-medium">{spec.label}</div>
-                      <div className="text-xs font-semibold text-slate-900 mt-0.5">{spec.value}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Live Pipeline Telemetry Preview */}
-                <div className="rounded-xl bg-slate-950 text-slate-200 p-4 font-mono text-xs overflow-x-auto shadow-inner">
-                  <div className="flex items-center justify-between text-slate-400 text-[10px] pb-2 mb-2 hairline-b border-slate-800">
-                    <span>OPERATIONAL VERIFICATION TRACE</span>
-                    <span>VDL-CORE // PRODUCTION</span>
+                {/* Bottom Tech Stack Tags & CTA */}
+                <div className="pt-6 border-t border-white/10">
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {pillar.techStack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2.5 py-1 rounded-md text-[10px] font-mono bg-white/[0.04] border border-white/[0.08] text-slate-300 font-medium"
+                      >
+                        {tech}
+                      </span>
+                    ))}
                   </div>
-                  <pre className="whitespace-pre-wrap leading-relaxed text-slate-300">
-                    {activeDiscipline.terminalSnippet}
-                  </pre>
-                </div>
 
-                {/* Tech Stack Pills */}
-                <div className="mt-6 pt-5 hairline-t flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-slate-500 font-medium mr-2">Production Stack:</span>
-                  {activeDiscipline.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white border border-slate-200 text-slate-700 font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  <button
+                    onClick={scrollToDiscovery}
+                    className="w-full flex items-center justify-between px-5 py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] text-white text-xs font-mono uppercase tracking-wider font-bold transition-all border border-white/10 hover:border-white/30 cursor-pointer group/btn"
+                  >
+                    <span>INITIATE PILLAR DISCOVERY</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 text-[#FF2E2E]" />
+                  </button>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
+              </article>
+            );
+          })}
         </div>
 
       </div>

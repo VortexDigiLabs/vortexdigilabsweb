@@ -1,77 +1,95 @@
 # Vortex Digi Labs (VDL)
 
-> Elite Agentic AI Engineering and Interactive 3D Studio.
-> Specializing in autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations.
+> Elite Agentic AI Systems, Interactive 3D WebGL Digital Twins & Autonomous Workflow Studio.
+> Specializing in multi-model private agent pipelines, browser-native 3D equipment simulators, rapid PWA prototyping, and enterprise AI enablement.
 
 ## Overview & Brand Identity
-Vortex Digi Labs is a specialized systems engineering and spatial computing studio based in South Africa, operating globally. We bridge the gap between heavy enterprise operations and autonomous digital intelligence, converting legacy technical assets into interactive browser-native 3D twins and deploying multi-model agentic workflow pipelines.
+Vortex Digi Labs is an elite systems engineering consultancy operating from Randburg, South Africa, serving global clients. We bridge the gap between heavy enterprise operations, sovereign AI models, and browser-native spatial computing.
 
-- **Visual Architecture**: Luminous Spatial Minimalist — High-contrast light pearlescent canvas (`#FCFDFF`), metallic chrome highlights, and glowing Electric Blue (`#00B6FF`) and Crimson Red (`#FF1E43`) brand accents.
-- **Interactive Physics**: Ambient living spatial background and interactive cursor vortex particle trail (60fps, 1000ms decay).
-- **Primary Focus**: Agentic AI Systems, Interactive 3D WebXR, Autonomous Workflow Engineering
+- **Visual Architecture**: Futuristic Minimalist Space (Obsidian Space `#090A0F`, Frosted Glassmorphism, Metallic Silver/Chrome, Glowing Crimson Red `#FF2E2E` and Cybernetic Blue `#00B6FF` Accents).
+- **Interactive 3D Engine**: WebGL / Three.js Celestial Particle Globe & Equipment Digital Twins (60fps, Draco compressed under 1.4 MB).
+- **Primary Focus**: Multi-Model Agentic Systems, Google AI Ecosystem Architecture, Interactive 3D WebGL Digital Twins, High-Velocity App Prototyping, Enterprise AI Enablement.
 - **Engineering Philosophy**: Technical precision, zero-install accessibility, deterministic reliability, self-healing operational automation.
 - **Website**: https://vortexdigilabsweb.vercel.app
 - **Repository**: https://github.com/VortexDigiLabs/vortexdigilabsweb
-- **Direct Contact / Discovery**: vortexdigilabs@gmail.com | +27 65 802 4718
+- **Direct Scoping Contact**: vortexdigilabs@gmail.com | +27 65 802 4718
+- **Operational Base**: Randburg, South Africa // Serving Global Clients
 
 ---
 
-## Core Capabilities (Three Strategic Pillars)
+## Verified Credentials & Engineering Telemetry
+- **Google Certified AI Educator**: Verified curriculum authority for enterprise upskilling and non-technical workforce enablement.
+- **Google Certified Search & Performance**: Measured data-driven analytics, algorithmic performance engineering, and digital campaign infrastructure.
+- **Google Cloud & AI Studio Architecture**: Direct production deployment experience using Gemini API (Gemini 2.5 Pro / Flash), context engineering, structured JSON schemas, and NotebookLM enterprise systems.
 
-### 1. Interactive 3D & Digital Twin Pilots
-- **Focus**: WebGL/Three.js interactive equipment suites, industrial simulation, and technical curriculum transformation.
+---
+
+## Core Solutions Architecture (Four Strategic Pillars)
+
+### Pillar 1: Interactive 3D & Digital Twin Pilots (SYSTEM // WEBGL-THREEJS)
+- **Focus**: Browser-based equipment simulation, machinery visualizers, and technical curriculum transformation.
 - **Key Deliverables**:
   - Legacy 2D-to-3D vector overhauls (converting technical schematics and PDF manuals into interactive spatial assets).
-  - High-fidelity browser runtime rendering with target budgets under 1.5 MB for instantaneous edge execution.
-  - Zero-install interactive training modules supporting WebXR, orbit inspection, exploded assemblies, and telemetry overlays.
-- **Core Stack**: Three.js, WebGL, WebXR, Blender GLB optimization pipeline, CAD vector conversion, GLSL shaders.
+  - High-fidelity browser runtime rendering with target budgets under 1.4 MB (Draco mesh compression).
+  - Zero-install interactive training modules supporting WebXR, 360° orbit inspection, exploded assemblies, and telemetry overlays.
+- **Core Stack**: Three.js, WebGL 2.0, WebXR, Blender GLB optimization pipeline, CAD vector conversion, GLSL shaders.
 
-### 2. Autonomous Agentic Workflows
-- **Focus**: Multi-model AI orchestration, bespoke task automation, and enterprise API integration.
+### Pillar 2: Autonomous Workflows & Agentic Systems (ORCHESTRATION // MULTI-MODEL)
+- **Focus**: Enterprise private RAG architectures, multi-model task orchestration, and background worker loops.
 - **Key Deliverables**:
-  - Self-healing task runners and continuous background verification loops.
-  - Intelligent routing across local (Ollama/vLLM) and cloud (Claude 3.7/Sonnet, GPT-4o, Gemini 2.5 Flash/Pro, DeepSeek R1) models based on cost, latency, and context window requirements.
-  - Operational data pipelines connecting frontend user interfaces, enterprise CRMs, ERPs, webhooks, and communication hubs (WhatsApp, Slack, Email).
-- **Core Stack**: LangChain, LlamaIndex, Autonomous Agent SDKs, Fastify/Node.js, Python, Serverless edge workers, Vector databases (Pinecone/Qdrant/Chroma).
+  - Self-healing task runners and continuous background verification loops with deterministic recovery.
+  - Zero-hallucination private RAG grounded in enterprise standard operating procedures (SOPs), manuals, and databases.
+  - Cost- and latency-aware routing across Google AI Studio, Gemini API, Claude, and local Ollama weights.
+- **Core Stack**: Google AI Studio, Gemini API, NotebookLM, LangChain, PostgreSQL, Event Webhooks.
 
-### 3. Enterprise AI Enablement & Training
-- **Focus**: Practical executive enablement, technical workshops (*Atlas* syllabus), and workforce upskilling.
+### Pillar 3: High-Velocity Application Prototyping (DEVELOPMENT // RAPID PROTOTYPE)
+- **Focus**: Rapid-cadence development translating operational concepts into production-grade PWAs, internal dashboards, and Android-compatible tools.
 - **Key Deliverables**:
-  - Hands-on operational agent tooling tailored for line-of-business operators and engineers.
-  - Robust prompt architecture, structured output enforcement (Pydantic / JSON schema), and evaluation harnesses.
-  - Enterprise compliance standards, ISO/OSHA aligned safety integration, data isolation protocols, and model governance frameworks.
-- **Core Stack**: Custom evaluation rigs, Atlas Training Syllabus, structured synthesis harnesses, enterprise security guardrails.
+  - Progressive Web Apps with offline ServiceWorker caching and instant edge execution.
+  - Real-time transaction queues and automated WhatsApp order dispatching.
+  - Production TypeScript architectures deployed with instant Vercel cloud edge scaling.
+- **Core Stack**: React, Vite, Next.js, ServiceWorker PWA, Meta Cloud API, Vercel Edge.
+
+### Pillar 4: Enterprise AI Enablement & Creative Upskilling (HUMAN-IN-THE-LOOP // WORKSHOPS)
+- **Focus**: Pragmatic enablement for executives, operators, and creative teams based on the Atlas syllabus.
+- **Key Deliverables**:
+  - Hands-on operational agent tooling tailored for non-technical personnel.
+  - Team Canva design system configurations for brand-safe generation.
+  - Script-to-screen programmatic video pipelines with neural voice cloning and dynamic visuals.
+- **Core Stack**: Atlas Syllabus, Canva Enterprise, Neural Voice Models, ComfyUI, Evaluation Harnesses.
 
 ---
 
-## Enterprise Case Studies & Proof of Capability
+## Sector Deployments & Industrial Proof (Anonymised Case Studies)
 
-### Case 01: SAGMA Technical Curriculum Modernisation
-- **Domain**: Industrial Grain Milling & Mechanical Engineering Education (South African Grain Milling Academy).
-- **Impact & Metrics**: Overhaul of 20 legacy modules into interactive 3D equipment pilots and digital vector libraries with full Alt-Text compliance. Zero-install browser access for remote industrial apprentices.
-- **Technical Stack**: WebXR, Three.js, Blender GLB automated pipeline, Vector CAD, accessible semantic DOM layering.
+### Sector 01: Heavy Agri-Industrial & Technical Education
+- **Scope**: Industrial Curriculum Modernisation & Digital Twin Transformation.
+- **Execution**: Overhaul of 20 legacy vocational training modules; legacy hand-drawn schematics converted into high-fidelity 2D/3D digital vectors; interactive WebGL grain milling machinery simulation suite deployed to production with 100% WCAG alt-text compliance.
+- **Status**: PILOT DEPLOYED // CONTINUOUS ITERATION.
 
-### Case 02: Edge Order Orchestration & PWA Routing
-- **Domain**: High-Velocity Edge Operations & Commercial Fulfilment.
-- **Impact & Metrics**: Full-stack progressive web application driving real-time order processing and automated WhatsApp dispatch workflows with zero transaction loss and sub-second dispatch notification.
-- **Technical Stack**: Next.js/React, Webhooks, Twilio / Meta WhatsApp Cloud API, Edge Functions, automated notification queues.
+### Sector 02: Quick-Service Hospitality & Digital Commerce
+- **Scope**: Omnichannel Menu PWA & Automated Order Routing.
+- **Execution**: High-velocity Progressive Web App deployment with dynamic visual menus, high-conversion cart architecture, and automated WhatsApp order dispatching in under 650ms.
+- **Status**: PRODUCTION ACTIVE.
 
-### Case 03: Generative Technical Media Pipelines
-- **Domain**: Automated Multi-Modal Technical Content Assembly.
-- **Impact & Metrics**: Synthetic avatar instructional content and automated multi-modal production pipelines built without generic stock templates. Drastic production cost reduction while scaling training across regional languages.
-- **Technical Stack**: Custom ComfyUI / Wan / LTX pipelines, Voice Synthesis (Fish Audio / ElevenLabs), Automated Assembly & ffmpeg rendering pipelines.
-
----
-
-## Founder & Engineering Leadership
-- **Terence Dean Allen** — Founder, Lead Systems Architect & Creative Engineer.
-  - Specialized background combining Facilities Management (FM), OSHA industrial safety compliance, and advanced AI system engineering.
-  - Certified in Applied AI Engineering, HuggingFace LLM frameworks, and modern full-stack web platforms.
-  - Direct operator perspective: designing software specifically for operators who demand non-failing physical and digital reliability.
+### Sector 03: Automated Media & Creative Production Pipelines
+- **Scope**: Script-to-Screen Short-Form Video Automation.
+- **Execution**: Custom programmatic content pipelines integrating LLM scripting, neural voice generation, and automated motion graphics workflows, achieving 10x production velocity vs traditional studio shoots.
+- **Status**: PIPELINE VERIFIED.
 
 ---
 
-## Technical Specifications & Integration Endpoints
-- **Architecture Discovery Inquiries**: https://vortexdigilabsweb.vercel.app/#contact
-- **Interactive Pilots Viewer**: https://vortexdigilabsweb.vercel.app/#pilots
-- **Machine-Readable Index**: https://vortexdigilabsweb.vercel.app/llms.txt
+## Proprietary Media Pipeline (Script-to-Screen)
+1. **Script & Strategy**: Structured prompt engineering ingesting operational specs for deterministic screenplay generation.
+2. **Voice & Tone**: Neural voice synthesis delivering studio-quality 48kHz audio tracks.
+3. **Visual Generation**: Code-rendered motion graphics, Canva brand kits, and 3D WebGL orbits without stock footage.
+4. **Multi-Channel Dispatch**: Automated multi-format export for web, mobile, and enterprise training portals.
+
+---
+
+## Leadership & Contact
+- **Terence Dean Allen** — Founder & Lead Systems Architect.
+  - Google Certified AI Educator | Google Certified Search & Performance | Google Cloud & AI Studio Specialist.
+  - Operational Base: Randburg, South Africa // Serving Global Clients.
+  - Discovery Intake: https://vortexdigilabsweb.vercel.app/#discovery
+  - Email: vortexdigilabs@gmail.com | WhatsApp: +27 65 802 4718
