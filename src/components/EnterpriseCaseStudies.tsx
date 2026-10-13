@@ -24,7 +24,7 @@ interface CaseStudy {
   impactDetail: string;
   stack: string[];
   specs: { label: string; value: string }[];
-  accent: 'cyan' | 'amber' | 'blue';
+  accent: 'blue' | 'crimson' | 'deep-blue';
   terminalSnippet?: string;
 }
 
@@ -44,7 +44,7 @@ const CASE_STUDIES: CaseStudy[] = [
       { label: "Accessibility", value: "100% Alt-Text & Screen-Reader Synchronised" },
       { label: "Deployment", value: "Zero-Install Edge Browser Engine" }
     ],
-    accent: "cyan",
+    accent: "blue",
     terminalSnippet: `$ vdl-pipeline --convert "bucket-elevator-v4.cad"
 ✓ Draco mesh compression: 14.8MB -> 1.18MB (-92%)
 ✓ Node hierarchy verified: 48 sub-assemblies
@@ -65,7 +65,7 @@ const CASE_STUDIES: CaseStudy[] = [
       { label: "Offline Support", value: "ServiceWorker Edge Order Persistence" },
       { label: "Reliability", value: "Self-Healing Webhook Queue with Auto-Retry" }
     ],
-    accent: "amber",
+    accent: "crimson",
     terminalSnippet: `POST /api/orchestrator/dispatch-order HTTP/2
 {
   "orderId": "VDL-9042",
@@ -88,7 +88,7 @@ const CASE_STUDIES: CaseStudy[] = [
       { label: "Voice Cloning", value: "Custom Acoustic Models & Sub-phoneme Lip Sync" },
       { label: "Template Dependency", value: "0% Stock Clichés — 100% Procedural" }
     ],
-    accent: "blue",
+    accent: "deep-blue",
     terminalSnippet: `[ComfyUI-Worker-02] Ingesting Technical Markdown Spec...
 Executing Latent Diffusion -> Audio Mel Spectrogram Sync...
 Video render complete: 1080p60 H.265 (Render Time: 42s)`
@@ -96,8 +96,6 @@ Video render complete: 1080p60 H.265 (Render Time: 42s)`
 ];
 
 export default function EnterpriseCaseStudies() {
-  const [activeSnippetId, setActiveSnippetId] = useState<string>(CASE_STUDIES[0].id);
-
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -106,34 +104,30 @@ export default function EnterpriseCaseStudies() {
   return (
     <section 
       id="pilots" 
-      className="relative w-full bg-[#07080c] text-white py-24 px-4 sm:px-6 lg:px-8 border-t border-white/10 overflow-hidden"
+      className="relative w-full py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-200/80 overflow-hidden"
       aria-label="Enterprise Case Studies and Proof of Capability"
     >
-      {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-cyan/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
-
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="max-w-3xl mb-16">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-cyan mb-3">
-            <span className="w-2 h-2 rounded-full bg-cyan" />
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-[#00B6FF] mb-3 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#00B6FF]" />
             <span>Proven Enterprise Track Record</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight font-heading text-white">
-            Enterprise Proof <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-sky-300 to-amber-400">of Capability</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight font-heading text-slate-900">
+            Enterprise Proof <span className="brand-gradient-text-alt">of Capability</span>
           </h2>
-          <p className="mt-4 text-silver/70 text-base md:text-lg font-light leading-relaxed">
+          <p className="mt-4 text-slate-700 text-base md:text-lg font-normal leading-relaxed">
             Real-world deployments bridging mechanical equipment curriculum, edge operations, and autonomous generative media systems.
           </p>
         </div>
 
-        {/* Case Studies Detailed Cards */}
+        {/* Case Studies Detailed Cards (Bright Modular Panels) */}
         <div className="space-y-12">
           {CASE_STUDIES.map((cs, idx) => {
-            const isCyan = cs.accent === 'cyan';
-            const isAmber = cs.accent === 'amber';
+            const isBlue = cs.accent === 'blue';
+            const isCrimson = cs.accent === 'crimson';
 
             return (
               <motion.article
@@ -142,17 +136,17 @@ export default function EnterpriseCaseStudies() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className={`relative rounded-3xl bg-[#0c0e15] border p-6 sm:p-10 transition-all duration-300 shadow-2xl overflow-hidden ${
-                  isCyan 
-                    ? 'border-cyan/25 hover:border-cyan/50 shadow-[0_0_30px_rgba(0,229,255,0.06)]' 
-                    : isAmber
-                    ? 'border-amber-500/25 hover:border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.06)]'
-                    : 'border-sky-500/25 hover:border-sky-500/50 shadow-[0_0_30px_rgba(56,189,248,0.06)]'
+                className={`relative rounded-3xl p-8 sm:p-12 transition-all duration-300 luminous-glass-card ${
+                  isBlue 
+                    ? 'hover:border-[#00B6FF]/50' 
+                    : isCrimson
+                    ? 'hover:border-[#FF1E43]/50'
+                    : 'hover:border-[#2437FF]/50'
                 }`}
               >
-                {/* Tech Bracket */}
-                <div className="absolute top-4 right-4 font-mono text-[11px] text-silver/40 uppercase">
-                  {cs.number} // PRODUCTION ACTIVE
+                {/* Tech Bracket Indicator */}
+                <div className="absolute top-6 right-8 font-mono text-[11px] text-slate-600 font-semibold uppercase">
+                  {cs.number} // PRODUCTION VERIFIED
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -162,52 +156,52 @@ export default function EnterpriseCaseStudies() {
                     <div>
                       {/* Client / Tagline */}
                       <div className="flex flex-wrap items-center gap-3 mb-3">
-                        <span className="text-xs font-mono tracking-widest text-silver/60 uppercase">
+                        <span className="text-xs font-mono tracking-widest text-slate-600 font-bold uppercase">
                           {cs.client}
                         </span>
-                        <span className="text-silver/30">•</span>
+                        <span className="text-slate-300">•</span>
                         <span className={`text-xs font-mono font-bold tracking-wider uppercase ${
-                          isCyan ? 'text-cyan' : isAmber ? 'text-amber-400' : 'text-sky-400'
+                          isBlue ? 'text-[#00B6FF]' : isCrimson ? 'text-[#FF1E43]' : 'text-[#2437FF]'
                         }`}>
                           {cs.tagline}
                         </span>
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-2xl sm:text-3xl font-black font-heading uppercase text-white mb-4 tracking-tight">
+                      <h3 className="text-2xl sm:text-3xl font-black font-heading uppercase text-slate-900 mb-4 tracking-tight">
                         {cs.title}
                       </h3>
 
                       {/* Highlighted Metric Badge */}
-                      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/5 border border-white/10 mb-6 backdrop-blur-sm">
+                      <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 shadow-sm mb-6">
                         <span className={`w-2 h-2 rounded-full ${
-                          isCyan ? 'bg-cyan shadow-[0_0_8px_#00e5ff]' : isAmber ? 'bg-amber-400 shadow-[0_0_8px_#f59e0b]' : 'bg-sky-400 shadow-[0_0_8px_#38bdf8]'
+                          isBlue ? 'bg-[#00B6FF] shadow-[0_0_8px_#00B6FF]' : isCrimson ? 'bg-[#FF1E43] shadow-[0_0_8px_#FF1E43]' : 'bg-[#2437FF] shadow-[0_0_8px_#2437FF]'
                         }`} />
-                        <span className="font-mono text-xs uppercase tracking-wider text-silver/60">Verified Metric:</span>
-                        <span className="font-mono font-bold text-sm text-white">{cs.metric}</span>
+                        <span className="font-mono text-xs uppercase tracking-wider text-slate-500 font-bold">Verified Metric:</span>
+                        <span className="font-mono font-bold text-sm text-slate-900">{cs.metric}</span>
                       </div>
 
                       {/* Impact Detail */}
-                      <p className="text-silver/80 text-sm sm:text-base leading-relaxed mb-6 font-light font-sans">
+                      <p className="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-normal font-sans">
                         {cs.impactDetail}
                       </p>
                     </div>
 
                     {/* Stack Badges */}
                     <div>
-                      <span className="font-mono text-[11px] text-silver/40 uppercase tracking-widest block mb-2">
+                      <span className="font-mono text-[11px] text-slate-500 font-bold uppercase tracking-widest block mb-2">
                         Validated Stack:
                       </span>
                       <div className="flex flex-wrap gap-2 mb-6">
                         {cs.stack.map(item => (
                           <span 
                             key={item}
-                            className={`px-2.5 py-1 rounded text-xs font-mono border ${
-                              isCyan
-                                ? 'bg-cyan/10 border-cyan/30 text-cyan'
-                                : isAmber
-                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
-                                : 'bg-sky-500/10 border-sky-500/30 text-sky-300'
+                            className={`px-3 py-1 rounded-md text-xs font-mono border font-medium ${
+                              isBlue
+                                ? 'bg-[#00B6FF]/10 border-[#00B6FF]/30 text-[#00B6FF]'
+                                : isCrimson
+                                ? 'bg-[#FF1E43]/10 border-[#FF1E43]/30 text-[#FF1E43]'
+                                : 'bg-[#2437FF]/10 border-[#2437FF]/30 text-[#2437FF]'
                             }`}
                           >
                             {item}
@@ -217,46 +211,46 @@ export default function EnterpriseCaseStudies() {
 
                       <button
                         onClick={scrollToContact}
-                        className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-cyan hover:text-white transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider font-bold text-[#00B6FF] hover:text-[#FF1E43] transition-colors cursor-pointer"
                       >
                         <span>Request Architecture Blueprint</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
 
-                  {/* Case Specs & Interactive Terminal Telemetry (5 cols) */}
+                  {/* Specifications & Terminal (5 cols) */}
                   <div className="lg:col-span-5 flex flex-col gap-4">
                     
-                    {/* Architectural Specifications Table */}
-                    <div className="rounded-2xl bg-black/50 border border-white/10 p-5 font-mono text-xs">
-                      <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10 text-silver/40 uppercase text-[10px] tracking-wider">
+                    {/* Architectural Specifications Table (Light Alloy Style) */}
+                    <div className="rounded-2xl bg-slate-50/90 border border-slate-200/90 p-5 font-mono text-xs shadow-sm">
+                      <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200 text-slate-500 font-bold uppercase text-[10px] tracking-wider">
                         <span>Architecture Spec</span>
                         <span>Telemetry</span>
                       </div>
                       <div className="space-y-3">
                         {cs.specs.map(spec => (
                           <div key={spec.label} className="flex justify-between items-start gap-4">
-                            <span className="text-silver/60 text-[11px]">{spec.label}:</span>
-                            <span className="text-right text-white font-medium text-[11px]">{spec.value}</span>
+                            <span className="text-slate-600 text-[11px]">{spec.label}:</span>
+                            <span className="text-right text-slate-900 font-bold text-[11px]">{spec.value}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    {/* Terminal Execution Snippet */}
+                    {/* Telemetry Terminal Output */}
                     {cs.terminalSnippet && (
-                      <div className="rounded-2xl bg-[#050608] border border-cyan/20 p-4 font-mono text-[11px] overflow-x-auto shadow-inner">
-                        <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/5 text-[10px] text-silver/40">
+                      <div className="rounded-2xl bg-slate-900 border border-slate-800 p-4 font-mono text-[11px] overflow-x-auto shadow-md text-slate-100">
+                        <div className="flex items-center justify-between mb-2 pb-2 border-b border-slate-800 text-[10px] text-slate-400">
                           <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-red-500/80" />
-                            <div className="w-2 h-2 rounded-full bg-yellow-500/80" />
-                            <div className="w-2 h-2 rounded-full bg-green-500/80" />
-                            <span className="ml-2 font-mono text-silver/60">vdl-runtime // logs</span>
+                            <div className="w-2 h-2 rounded-full bg-[#FF1E43]" />
+                            <div className="w-2 h-2 rounded-full bg-amber-400" />
+                            <div className="w-2 h-2 rounded-full bg-[#00B6FF]" />
+                            <span className="ml-2 font-mono text-slate-400">vdl-runtime // telemetry</span>
                           </div>
-                          <span className="text-cyan">STATUS: VERIFIED</span>
+                          <span className="text-[#00B6FF] font-bold">STATUS: OK</span>
                         </div>
-                        <pre className="text-silver/80 whitespace-pre-wrap leading-relaxed">
+                        <pre className="text-slate-300 whitespace-pre-wrap leading-relaxed">
                           {cs.terminalSnippet}
                         </pre>
                       </div>
@@ -271,18 +265,18 @@ export default function EnterpriseCaseStudies() {
         </div>
 
         {/* Pilot Verification CTA Banner */}
-        <div className="mt-16 p-8 rounded-2xl bg-gradient-to-r from-cyan/10 via-[#0d1017] to-amber-500/10 border border-cyan/30 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="mt-16 p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-white via-slate-50 to-white border border-slate-200/90 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div>
-            <h4 className="text-xl font-bold font-heading uppercase text-white mb-1">
+            <h4 className="text-xl font-bold font-heading uppercase text-slate-900 mb-1">
               Have a complex physical or operational workflow to digitize?
             </h4>
-            <p className="text-sm text-silver/70 font-light">
+            <p className="text-sm text-slate-600 font-normal">
               We conduct initial architectural viability audits and prototype high-fidelity pilots under two-week discovery sprints.
             </p>
           </div>
           <button
             onClick={scrollToContact}
-            className="flex-shrink-0 px-6 py-3.5 rounded-xl bg-cyan text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-white hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all cursor-pointer"
+            className="flex-shrink-0 btn-electric-gradient px-7 py-4 rounded-full font-mono font-bold text-xs uppercase tracking-wider cursor-pointer"
           >
             Initiate Pilot Assessment
           </button>

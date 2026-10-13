@@ -1,21 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Layers, RotateCcw, Cpu, Eye, ShieldAlert, Sparkles } from 'lucide-react';
+import { Layers, RotateCcw, Cpu, Eye } from 'lucide-react';
 
 interface Hero3DCanvasProps {
   onInteract?: () => void;
   className?: string;
-  glbModelUrl?: string;
 }
 
-export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanvasProps) {
+export default function Hero3DCanvas({ className = '' }: Hero3DCanvasProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [wireframeMode, setWireframeMode] = useState(false);
   const [explodedMode, setExplodedMode] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [fps, setFps] = useState(60);
 
-  // References to communicate with Three.js render loop
   const stateRef = useRef({
     wireframe: false,
     exploded: false,
@@ -37,11 +35,10 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
 
     // 1. Scene setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050608, 0.04);
 
     // 2. Camera setup
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 1.2, 5.2);
+    camera.position.set(0, 1.1, 5.2);
 
     // 3. Renderer setup
     const renderer = new THREE.WebGLRenderer({
@@ -53,141 +50,145 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.1;
     container.appendChild(renderer.domElement);
 
-    // 4. Lighting - Technical Studio Dark Rig
-    const ambientLight = new THREE.AmbientLight(0x0a101d, 2.5);
+    // 4. Lighting Rig - High-Key Luminous Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const cyanKeyLight = new THREE.DirectionalLight(0x00e5ff, 4.0);
-    cyanKeyLight.position.set(5, 6, 4);
-    scene.add(cyanKeyLight);
+    const mainKeyLight = new THREE.DirectionalLight(0xffffff, 3.2);
+    mainKeyLight.position.set(6, 8, 5);
+    scene.add(mainKeyLight);
 
-    const amberFillLight = new THREE.DirectionalLight(0xf59e0b, 2.8);
-    amberFillLight.position.set(-5, -3, -4);
-    scene.add(amberFillLight);
+    // Electric Blue Key Light
+    const blueLight = new THREE.DirectionalLight(0x00b6ff, 3.6);
+    blueLight.position.set(-5, 4, 3);
+    scene.add(blueLight);
 
-    const rimLight = new THREE.PointLight(0x38bdf8, 3.5, 12);
-    rimLight.position.set(0, 4, -3);
-    scene.add(rimLight);
+    // Crimson Red Rim Light
+    const crimsonRimLight = new THREE.PointLight(0xff1e43, 4.0, 14);
+    crimsonRimLight.position.set(0, -3, -4);
+    scene.add(crimsonRimLight);
 
-    // 5. Build Dark Metallic / Carbon Kinetic Twin Model
-    const modelGroup = new THREE.Group();
-    scene.add(modelGroup);
+    // Subtle Ground Bounce Light
+    const groundBounce = new THREE.DirectionalLight(0xf1f5f9, 1.5);
+    groundBounce.position.set(0, -6, 2);
+    scene.add(groundBounce);
 
-    // Carbon / Anodized Metallic Materials
-    const darkCarbonMat = new THREE.MeshStandardMaterial({
-      color: 0x12141a,
-      metalness: 0.92,
-      roughness: 0.22,
-      wireframe: false,
+    // 5. Materials: Polished Chrome, Pearlescent White, Glowing Electric Blue & Crimson Red
+    const chromeMat = new THREE.MeshStandardMaterial({
+      color: 0xf1f5f9,
+      metalness: 0.96,
+      roughness: 0.12,
     });
 
-    const gunmetalMat = new THREE.MeshStandardMaterial({
-      color: 0x222733,
-      metalness: 0.88,
-      roughness: 0.35,
+    const pearlescentMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      metalness: 0.2,
+      roughness: 0.18,
     });
 
-    const cyberCyanMat = new THREE.MeshStandardMaterial({
-      color: 0x002b36,
-      emissive: 0x00e5ff,
-      emissiveIntensity: 0.7,
+    const electricBlueMat = new THREE.MeshStandardMaterial({
+      color: 0x0077b6,
+      emissive: 0x00b6ff,
+      emissiveIntensity: 0.85,
       metalness: 0.8,
-      roughness: 0.2,
+      roughness: 0.15,
     });
 
-    const cyberAmberMat = new THREE.MeshStandardMaterial({
-      color: 0x2d1a00,
-      emissive: 0xf59e0b,
-      emissiveIntensity: 0.8,
-      metalness: 0.7,
-      roughness: 0.2,
+    const crimsonRedMat = new THREE.MeshStandardMaterial({
+      color: 0x99001f,
+      emissive: 0xff1e43,
+      emissiveIntensity: 0.9,
+      metalness: 0.8,
+      roughness: 0.15,
     });
 
     const wireframeAccentMat = new THREE.MeshBasicMaterial({
-      color: 0x00e5ff,
+      color: 0x00b6ff,
       wireframe: true,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.35,
     });
 
-    // Mesh 1: Outer Kinetic Ring (Carbon composite)
+    // 6. Build Luminous Kinetic Digital Twin Assembly
+    const modelGroup = new THREE.Group();
+    scene.add(modelGroup);
+
+    // Mesh 1: Outer Chrome Gimbal Ring
     const outerRingGeo = new THREE.TorusGeometry(1.9, 0.05, 16, 64);
-    const outerRing = new THREE.Mesh(outerRingGeo, darkCarbonMat);
+    const outerRing = new THREE.Mesh(outerRingGeo, chromeMat);
     modelGroup.add(outerRing);
 
-    // Wireframe overlay for outer ring
     const outerRingWire = new THREE.Mesh(outerRingGeo, wireframeAccentMat);
     outerRing.add(outerRingWire);
 
-    // Mesh 2: Mid Precision Gimbal Ring (Titanium/Cyan)
+    // Mesh 2: Mid Glowing Electric Blue Ring
     const midRingGeo = new THREE.TorusGeometry(1.45, 0.045, 16, 48);
-    const midRing = new THREE.Mesh(midRingGeo, gunmetalMat);
+    const midRing = new THREE.Mesh(midRingGeo, electricBlueMat);
     modelGroup.add(midRing);
 
-    // Mesh 3: Inner Orbital Ring (Amber accents)
+    // Mesh 3: Inner Crimson Red Orbital Trajectory
     const innerRingGeo = new THREE.TorusGeometry(1.05, 0.04, 16, 36);
-    const innerRing = new THREE.Mesh(innerRingGeo, cyberAmberMat);
+    const innerRing = new THREE.Mesh(innerRingGeo, crimsonRedMat);
     modelGroup.add(innerRing);
 
-    // Mesh 4: Central Machined Faceted Core (Icosahedron Digital Twin Reactor)
-    const coreGeo = new THREE.IcosahedronGeometry(0.68, 1);
-    const core = new THREE.Mesh(coreGeo, darkCarbonMat);
+    // Mesh 4: Central Machined Faceted Chrome Cyber-Sphere (Icosahedron)
+    const coreGeo = new THREE.IcosahedronGeometry(0.7, 1);
+    const core = new THREE.Mesh(coreGeo, chromeMat);
     modelGroup.add(core);
 
     const coreWire = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.72, 1),
+      new THREE.IcosahedronGeometry(0.74, 1),
       new THREE.MeshBasicMaterial({
-        color: 0x00e5ff,
+        color: 0xff1e43,
         wireframe: true,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.5,
       })
     );
     core.add(coreWire);
 
-    // Central pulsing reactor sphere
-    const reactorGeo = new THREE.SphereGeometry(0.32, 24, 24);
-    const reactor = new THREE.Mesh(reactorGeo, cyberCyanMat);
+    // Internal Dual-Tone Pulsing Core (Pearlescent Glass Sphere)
+    const reactorGeo = new THREE.SphereGeometry(0.34, 24, 24);
+    const reactor = new THREE.Mesh(reactorGeo, electricBlueMat);
     core.add(reactor);
 
-    // Satellite Telemetry Sensor Nodes
+    // Orbiting Satellite Telemetry Sensor Nodes (Electric Blue & Crimson)
     const satellites: THREE.Mesh[] = [];
     const satGeo = new THREE.OctahedronGeometry(0.08, 0);
     const satCount = 8;
     for (let i = 0; i < satCount; i++) {
       const angle = (i / satCount) * Math.PI * 2;
       const radius = 2.2;
-      const sat = new THREE.Mesh(satGeo, i % 2 === 0 ? cyberCyanMat : cyberAmberMat);
-      sat.position.set(Math.cos(angle) * radius, (Math.sin(i * 1.5) * 0.4), Math.sin(angle) * radius);
+      const sat = new THREE.Mesh(satGeo, i % 2 === 0 ? electricBlueMat : crimsonRedMat);
+      sat.position.set(Math.cos(angle) * radius, Math.sin(i * 1.5) * 0.4, Math.sin(angle) * radius);
       modelGroup.add(sat);
       satellites.push(sat);
     }
 
-    // Particle field around the viewport (Target budget < 100 particles for high FPS)
+    // Fine floating particle clusters in Electric Blue and Crimson
     const particlesGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(140 * 3);
-    for (let i = 0; i < 140 * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 8;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 8;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 8;
+    const particlePositions = new Float32Array(120 * 3);
+    for (let i = 0; i < 120 * 3; i += 3) {
+      particlePositions[i] = (Math.random() - 0.5) * 7;
+      particlePositions[i + 1] = (Math.random() - 0.5) * 7;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 7;
     }
     particlesGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
     const particlesMat = new THREE.PointsMaterial({
-      color: 0x00e5ff,
-      size: 0.025,
+      color: 0x00b6ff,
+      size: 0.03,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.6,
     });
     const particleSystem = new THREE.Points(particlesGeo, particlesMat);
     scene.add(particleSystem);
 
-    // Track all standard materials for toggling wireframe
-    const standardMaterials = [darkCarbonMat, gunmetalMat, cyberCyanMat, cyberAmberMat];
+    const standardMaterials = [chromeMat, pearlescentMat, electricBlueMat, crimsonRedMat];
 
-    // 6. Interactive Orbit & Drag Handlers
+    // 7. Interactive Orbit & Drag Handlers
     let isDragging = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
@@ -246,7 +247,7 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('touchend', onTouchEnd);
 
-    // 7. Window Resize Observer
+    // 8. Resize Observer
     const handleResize = () => {
       if (!container) return;
       width = container.clientWidth;
@@ -259,9 +260,9 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // 8. Animation & Render Loop
+    // 9. Animation Loop
     let animationFrameId: number;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
     let frameCount = 0;
     let lastFpsUpdate = performance.now();
 
@@ -285,15 +286,15 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
         if (mat.wireframe !== isWire) mat.wireframe = isWire;
       });
 
-      // Handle Exploded Assembly Animation
+      // Exploded Assembly Mode
       const targetExplodeDistance = stateRef.current.exploded ? 0.75 : 0;
       outerRing.position.z = THREE.MathUtils.lerp(outerRing.position.z, targetExplodeDistance * 1.4, 0.06);
       midRing.position.z = THREE.MathUtils.lerp(midRing.position.z, -targetExplodeDistance * 1.1, 0.06);
       innerRing.position.y = THREE.MathUtils.lerp(innerRing.position.y, targetExplodeDistance * 0.9, 0.06);
 
-      // Auto rotation & inertial damping
+      // Auto rotation
       if (stateRef.current.autoRotate && !isDragging) {
-        targetRotationY += 0.0035;
+        targetRotationY += 0.004;
       }
 
       currentRotationX = THREE.MathUtils.lerp(currentRotationX, targetRotationX, 0.08);
@@ -303,17 +304,18 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
       modelGroup.rotation.y = currentRotationY;
 
       // Gimbal sub-rotations
-      outerRing.rotation.z = elapsedTime * 0.15;
-      midRing.rotation.x = elapsedTime * 0.25;
-      midRing.rotation.y = elapsedTime * 0.12;
-      innerRing.rotation.z = -elapsedTime * 0.35;
-      core.rotation.y = elapsedTime * 0.5;
+      outerRing.rotation.z = elapsedTime * 0.18;
+      midRing.rotation.x = elapsedTime * 0.28;
+      midRing.rotation.y = elapsedTime * 0.15;
+      innerRing.rotation.z = -elapsedTime * 0.38;
+      core.rotation.y = elapsedTime * 0.55;
       core.rotation.x = Math.sin(elapsedTime * 0.4) * 0.2;
 
       // Pulse reactor core
       const pulse = 1 + Math.sin(elapsedTime * 4) * 0.15;
       reactor.scale.set(pulse, pulse, pulse);
-      cyberCyanMat.emissiveIntensity = 0.5 + Math.sin(elapsedTime * 3) * 0.3;
+      electricBlueMat.emissiveIntensity = 0.6 + Math.sin(elapsedTime * 3) * 0.35;
+      crimsonRedMat.emissiveIntensity = 0.6 + Math.cos(elapsedTime * 3) * 0.35;
 
       // Orbit satellites
       satellites.forEach((sat, idx) => {
@@ -326,15 +328,13 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
         sat.rotation.y += 0.03;
       });
 
-      // Gentle drift for background particles
-      particleSystem.rotation.y = elapsedTime * 0.02;
+      particleSystem.rotation.y = elapsedTime * 0.025;
 
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // 9. Cleanup
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
@@ -349,56 +349,50 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
         container.removeChild(domElement);
       }
 
-      // Dispose geometries and materials
-      [outerRingGeo, midRingGeo, innerRingGeo, coreGeo, reactorGeo, satGeo, particlesGeo].forEach(
-        (g) => g.dispose()
+      [outerRingGeo, midRingGeo, innerRingGeo, coreGeo, reactorGeo, satGeo, particlesGeo].forEach((g) =>
+        g.dispose()
       );
-      [
-        darkCarbonMat,
-        gunmetalMat,
-        cyberCyanMat,
-        cyberAmberMat,
-        wireframeAccentMat,
-        particlesMat,
-      ].forEach((m) => m.dispose());
+      [chromeMat, pearlescentMat, electricBlueMat, crimsonRedMat, wireframeAccentMat, particlesMat].forEach(
+        (m) => m.dispose()
+      );
       renderer.dispose();
     };
   }, []);
 
   return (
     <div className={`relative w-full h-full select-none ${className}`}>
-      {/* 3D Canvas Mount Point */}
+      {/* 3D Canvas */}
       <div
         ref={mountRef}
         className="w-full h-full cursor-grab active:cursor-grabbing touch-none"
-        title="Interactive 3D Digital Twin Viewport (Drag to orbit, scroll to zoom)"
+        title="Interactive 3D Chrome & Glass Twin (Drag to orbit)"
       />
 
-      {/* High-Tech Telemetry HUD Overlays */}
-      <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1.5 font-mono text-[11px] text-silver/60">
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded bg-black/60 border border-cyan/30 backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-cyan animate-pulse shadow-[0_0_8px_#00e5ff]" />
-          <span className="text-cyan font-bold tracking-wider">TWIN VIEWPORT // ONLINE</span>
+      {/* Luminous Glass Telemetry Overlay */}
+      <div className="absolute top-4 left-4 pointer-events-none z-10 flex flex-col gap-1.5 font-mono text-[11px]">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/80 border border-slate-200/90 text-slate-800 shadow-sm backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-[#00B6FF] animate-pulse shadow-[0_0_8px_#00B6FF]" />
+          <span className="font-bold tracking-wider text-[11px] text-slate-900">
+            LUMINOUS TWIN // ONLINE
+          </span>
         </div>
-        <div className="flex items-center gap-3 px-2 py-0.5 text-[10px] text-silver/50 tracking-tight">
-          <span>SPEC: CAD-STD / 60FPS</span>
+        <div className="flex items-center gap-2.5 px-2.5 py-0.5 text-[10px] text-slate-500 font-medium tracking-tight">
+          <span className="text-[#00B6FF]">CHROME & GLASS SPEC</span>
           <span>•</span>
-          <span>EST. BUDGET: 0.82MB</span>
-          <span>•</span>
-          <span className="text-cyan font-medium">FPS: {fps}</span>
+          <span className="text-[#FF1E43]">FPS: {fps}</span>
         </div>
       </div>
 
+      {/* Viewport Control Buttons */}
       <div className="absolute bottom-4 right-4 pointer-events-auto z-10 flex items-center gap-2">
-        {/* Interactive Viewport Controls */}
         <button
           onClick={() => setWireframeMode(!wireframeMode)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider flex items-center gap-1.5 transition-all border backdrop-blur-md ${
+          className={`px-3 py-1.5 rounded-xl text-xs font-mono tracking-wider flex items-center gap-1.5 transition-all border backdrop-blur-md ${
             wireframeMode
-              ? 'bg-cyan/20 border-cyan text-cyan shadow-[0_0_12px_rgba(0,229,255,0.3)]'
-              : 'bg-black/60 border-white/10 text-silver/70 hover:text-cyan hover:border-cyan/40'
+              ? 'bg-[#00B6FF]/15 border-[#00B6FF] text-[#00B6FF] font-bold shadow-sm'
+              : 'bg-white/80 border-slate-200 text-slate-700 hover:border-[#00B6FF] hover:text-[#00B6FF]'
           }`}
-          title="Toggle Wireframe Schematic Layer"
+          title="Toggle Wireframe Layer"
         >
           <Layers className="w-3.5 h-3.5" />
           <span>{wireframeMode ? 'SOLID' : 'WIREFRAME'}</span>
@@ -406,10 +400,10 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
 
         <button
           onClick={() => setExplodedMode(!explodedMode)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider flex items-center gap-1.5 transition-all border backdrop-blur-md ${
+          className={`px-3 py-1.5 rounded-xl text-xs font-mono tracking-wider flex items-center gap-1.5 transition-all border backdrop-blur-md ${
             explodedMode
-              ? 'bg-amber-500/20 border-amber-500 text-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.3)]'
-              : 'bg-black/60 border-white/10 text-silver/70 hover:text-amber-400 hover:border-amber-400/40'
+              ? 'bg-[#FF1E43]/15 border-[#FF1E43] text-[#FF1E43] font-bold shadow-sm'
+              : 'bg-white/80 border-slate-200 text-slate-700 hover:border-[#FF1E43] hover:text-[#FF1E43]'
           }`}
           title="Toggle Exploded Assembly Mode"
         >
@@ -419,21 +413,24 @@ export default function Hero3DCanvas({ className = '', glbModelUrl }: Hero3DCanv
 
         <button
           onClick={() => setAutoRotate(!autoRotate)}
-          className={`p-2 rounded-lg text-xs font-mono transition-all border backdrop-blur-md ${
+          className={`p-2 rounded-xl text-xs font-mono transition-all border backdrop-blur-md ${
             autoRotate
-              ? 'bg-cyan/10 border-cyan/30 text-cyan'
-              : 'bg-black/60 border-white/10 text-silver/50 hover:text-white'
+              ? 'bg-[#00B6FF]/15 border-[#00B6FF]/40 text-[#00B6FF]'
+              : 'bg-white/80 border-slate-200 text-slate-500 hover:text-slate-900'
           }`}
-          title="Toggle Auto Rotation Orbit"
+          title="Toggle Orbit Rotation"
         >
-          <RotateCcw className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`} style={{ animationDuration: '6s' }} />
+          <RotateCcw
+            className={`w-3.5 h-3.5 ${autoRotate ? 'animate-spin' : ''}`}
+            style={{ animationDuration: '6s' }}
+          />
         </button>
       </div>
 
       {/* Orbit Interaction Hint */}
-      <div className="absolute bottom-4 left-4 pointer-events-none z-10 hidden sm:flex items-center gap-2 font-mono text-[10px] text-silver/40">
-        <Eye className="w-3 h-3 text-cyan/70" />
-        <span>CLICK & DRAG TO ORBIT SIMULATOR</span>
+      <div className="absolute bottom-4 left-4 pointer-events-none z-10 hidden sm:flex items-center gap-2 font-mono text-[10px] text-slate-500">
+        <Eye className="w-3 h-3 text-[#00B6FF]" />
+        <span>CLICK & DRAG TO ORBIT</span>
       </div>
     </div>
   );

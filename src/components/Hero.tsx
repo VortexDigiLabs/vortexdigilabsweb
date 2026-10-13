@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Cpu, Compass, Terminal, ShieldCheck, Box } from 'lucide-react';
+import { ArrowRight, Compass, ShieldCheck, Cpu, Box, Sparkles } from 'lucide-react';
 import Hero3DCanvas from './3d/Hero3DCanvas';
 
 export default function Hero() {
@@ -12,104 +12,108 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 bg-[#07080b]">
-      {/* Precision Industrial Grid Background */}
-      <div 
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(#00e5ff 1px, transparent 1px), linear-gradient(90deg, #00e5ff 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}
-      />
-
-      {/* Ambient Lighting Gradients */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-cyan/10 blur-[130px] rounded-full pointer-events-none -z-0" />
-      <div className="absolute bottom-10 right-10 w-[450px] h-[300px] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none -z-0" />
+    <section id="hero" className="relative min-h-[92vh] lg:min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
+      
+      {/* Soft Luminous Edge Ambient Backdrops */}
+      <div className="absolute -top-20 -left-20 w-[550px] h-[550px] bg-[#00B6FF]/10 blur-[130px] rounded-full pointer-events-none -z-0" />
+      <div className="absolute top-1/3 -right-20 w-[500px] h-[500px] bg-[#FF1E43]/8 blur-[140px] rounded-full pointer-events-none -z-0" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* Left Column: Mission Architectural Copy (7 cols) */}
+          {/* Left Column: Typographic Content (7 cols) */}
           <motion.div 
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="lg:col-span-7 flex flex-col items-start text-left"
           >
-            {/* System Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan/10 border border-cyan/30 text-cyan text-xs font-mono tracking-wider mb-6 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-cyan animate-pulse shadow-[0_0_8px_#00e5ff]" />
-              <span className="uppercase font-semibold tracking-widest text-[11px]">Solutions Lab • Active Engineering</span>
+            {/* System Status Pill Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/80 border border-slate-200/90 text-slate-800 text-xs font-mono tracking-wider mb-6 shadow-sm backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#00B6FF] animate-pulse shadow-[0_0_8px_#00B6FF]" />
+              <span className="text-[11px] font-bold uppercase tracking-widest text-slate-800">
+                Solutions Lab // Active Engineering
+              </span>
+              <span className="text-slate-300">•</span>
+              <span className="text-[10px] font-bold uppercase text-[#FF1E43]">
+                Luminous Spatial
+              </span>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase leading-[1.08] mb-6 font-heading">
+            {/* Primary H1 with High-Contrast Deep Slate and Electric Blue -> Crimson Gradient */}
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900 uppercase leading-[1.08] mb-6 font-heading">
               Agentic AI Systems,{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan via-sky-300 to-blue-500">
+              <span className="brand-gradient-text-alt">
                 Interactive 3D,
               </span>{' '}
               and Autonomous Workflow Engineering.
             </h1>
 
-            {/* Sub-headline */}
-            <p className="text-base sm:text-lg md:text-xl text-silver/80 leading-relaxed font-sans font-light max-w-2xl mb-8">
+            {/* Sub-headline: High-Contrast Slate 700 text */}
+            <p className="text-base sm:text-lg md:text-xl text-slate-700 leading-relaxed font-sans font-normal max-w-2xl mb-8">
               We engineer autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations.
             </p>
 
-            {/* CTAs */}
+            {/* Action Callout Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-10">
-              {/* Primary CTA */}
+              {/* Primary CTA: Intense Blue-Crimson Gradient Pill */}
               <button
                 onClick={() => scrollToSection('contact')}
-                className="group relative inline-flex items-center justify-center px-8 py-4 rounded-xl bg-cyan text-black font-mono font-bold text-sm uppercase tracking-wider transition-all duration-300 hover:bg-white hover:shadow-[0_0_25px_rgba(0,229,255,0.45)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                className="btn-electric-gradient group px-8 py-4 rounded-full font-mono font-bold text-sm uppercase tracking-wider inline-flex items-center justify-center cursor-pointer"
               >
                 <span>Book Architecture Discovery</span>
                 <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
 
-              {/* Secondary CTA */}
+              {/* Secondary CTA: Silver Metallic / Light Glass Border */}
               <button
                 onClick={() => scrollToSection('pilots')}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 border border-white/15 text-silver hover:text-cyan hover:border-cyan/40 hover:bg-cyan/5 font-mono text-sm uppercase tracking-wider transition-all duration-300 backdrop-blur-sm cursor-pointer"
+                className="btn-metallic-chrome px-7 py-4 rounded-full font-mono text-sm uppercase tracking-wider font-semibold inline-flex items-center justify-center cursor-pointer"
               >
-                <Compass className="w-4 h-4 mr-2 text-cyan" />
+                <Compass className="w-4 h-4 mr-2 text-[#00B6FF]" />
                 <span>Explore Interactive Pilots</span>
               </button>
             </div>
 
-            {/* Engineering Metrics / Badges */}
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 w-full max-w-xl font-mono text-xs text-silver/70">
-              <div>
-                <div className="text-white font-bold text-lg text-cyan font-mono">WebXR & 3D</div>
-                <div className="text-[11px] text-silver/50 tracking-tight">Zero-Install Runtime</div>
+            {/* Engineering Metrics / Badges (Frosted Glass with Chrome Border) */}
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-slate-200/90 w-full max-w-xl font-mono text-xs">
+              <div className="p-3 rounded-xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-sm">
+                <div className="text-slate-900 font-bold text-base font-heading tracking-wide text-[#00B6FF]">
+                  WebXR & 3D
+                </div>
+                <div className="text-[11px] text-slate-500 font-medium">Zero-Install Runtime</div>
               </div>
-              <div>
-                <div className="text-white font-bold text-lg text-amber-400 font-mono">Multi-Model</div>
-                <div className="text-[11px] text-silver/50 tracking-tight">Agentic Orchestration</div>
+              <div className="p-3 rounded-xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-sm">
+                <div className="text-slate-900 font-bold text-base font-heading tracking-wide text-[#FF1E43]">
+                  Multi-Model
+                </div>
+                <div className="text-[11px] text-slate-500 font-medium">Agentic Orchestration</div>
               </div>
-              <div>
-                <div className="text-white font-bold text-lg text-emerald-400 font-mono">Industrial</div>
-                <div className="text-[11px] text-silver/50 tracking-tight">Curriculum Systems</div>
+              <div className="p-3 rounded-xl bg-white/70 border border-slate-200/80 shadow-sm backdrop-blur-sm">
+                <div className="text-slate-900 font-bold text-base font-heading tracking-wide text-slate-800">
+                  Industrial
+                </div>
+                <div className="text-[11px] text-slate-500 font-medium">Curriculum Systems</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Interactive 3D Viewport (5 cols) */}
+          {/* Right Column: Luminous Interactive 3D Viewport (5 cols) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, delay: 0.15 }}
             className="lg:col-span-5 w-full flex justify-center"
           >
-            <div className="relative w-full aspect-square max-w-[500px] lg:max-w-none lg:h-[540px] rounded-2xl bg-gradient-to-b from-[#0f121a] to-[#080a0f] border border-cyan/25 shadow-[0_0_40px_rgba(0,229,255,0.12)] overflow-hidden group">
+            <div className="relative w-full aspect-square max-w-[500px] lg:max-w-none lg:h-[540px] rounded-3xl bg-gradient-to-b from-white/90 via-slate-50/80 to-slate-100/90 border border-slate-200/90 shadow-xl shadow-slate-200/60 overflow-hidden backdrop-blur-md group">
               
-              {/* Corner Architectural Brackets */}
-              <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-cyan/70 z-20 pointer-events-none" />
-              <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-cyan/70 z-20 pointer-events-none" />
-              <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-cyan/70 z-20 pointer-events-none" />
-              <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-cyan/70 z-20 pointer-events-none" />
+              {/* Corner Metallic Chrome Brackets */}
+              <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-[#00B6FF] z-20 pointer-events-none" />
+              <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-[#FF1E43] z-20 pointer-events-none" />
+              <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-[#00B6FF] z-20 pointer-events-none" />
+              <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-[#FF1E43] z-20 pointer-events-none" />
 
-              {/* 3D WebGL Canvas */}
+              {/* Modern 3D WebGL Canvas */}
               <Hero3DCanvas className="w-full h-full" />
             </div>
           </motion.div>

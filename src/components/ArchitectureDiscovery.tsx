@@ -30,7 +30,8 @@ const ENGAGEMENT_MODELS = [
       "Full architecture specification & interactive prototype wireframe",
       "Executive risk & compliance review (Atlas syllabus)"
     ],
-    recommendedFor: "Enterprises testing operational feasibility"
+    recommendedFor: "Enterprises testing operational feasibility",
+    accent: "blue"
   },
   {
     tier: "SPRINT 02",
@@ -44,7 +45,8 @@ const ENGAGEMENT_MODELS = [
       "Full WCAG / Alt-text compliance & screen-reader integration"
     ],
     recommendedFor: "Industrial training & high-velocity edge operations",
-    featured: true
+    featured: true,
+    accent: "crimson"
   },
   {
     tier: "SPRINT 03",
@@ -57,7 +59,8 @@ const ENGAGEMENT_MODELS = [
       "Sub-hour incident escalation & telemetry monitoring",
       "Zero-downtime model routing upgrades"
     ],
-    recommendedFor: "Organizations with recurring technical transformation"
+    recommendedFor: "Organizations with recurring technical transformation",
+    accent: "deep-blue"
   }
 ];
 
@@ -119,76 +122,76 @@ export default function ArchitectureDiscovery() {
   return (
     <section 
       id="contact" 
-      className="relative w-full bg-[#08090e] text-white py-24 px-4 sm:px-6 lg:px-8 border-t border-white/10 overflow-hidden"
+      className="relative w-full py-24 px-4 sm:px-6 lg:px-8 border-t border-slate-200/80 overflow-hidden"
       aria-label="Architecture Discovery and Engagement Sprint Framework"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-cyan mb-3">
-            <span className="w-2 h-2 rounded-full bg-cyan animate-pulse" />
+          <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-[#00B6FF] mb-3 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#00B6FF] animate-pulse" />
             <span>Structured Engagement Framework</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight font-heading text-white">
-            Book Architecture <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-blue-400">Discovery</span>
+          <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tight font-heading text-slate-900">
+            Book Architecture <span className="brand-gradient-text-alt">Discovery</span>
           </h2>
-          <p className="mt-4 text-silver/70 text-base md:text-lg font-light leading-relaxed">
+          <p className="mt-4 text-slate-700 text-base md:text-lg font-normal leading-relaxed">
             Eliminate technical ambiguity. We conduct structured sprints to evaluate your industrial CAD assets, agentic pipelines, and operational readiness.
           </p>
         </div>
 
-        {/* Engagement Sprints */}
+        {/* Engagement Sprints Grid (Luminous Frosted Glass Cards) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {ENGAGEMENT_MODELS.map((model) => (
             <div
               key={model.name}
-              className={`rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 backdrop-blur-sm ${
+              className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 luminous-glass-card ${
                 model.featured
-                  ? 'bg-[#0f1422] border-2 border-cyan/50 shadow-[0_0_35px_rgba(0,229,255,0.12)] relative'
-                  : 'bg-[#0a0c12] border border-white/10 hover:border-white/20'
+                  ? 'border-2 border-[#FF1E43]/60 shadow-xl shadow-red-500/10 relative'
+                  : 'hover:border-[#00B6FF]/50'
               }`}
             >
               {model.featured && (
-                <span className="absolute -top-3 right-6 px-3 py-0.5 rounded-full bg-cyan text-black font-mono text-[10px] font-bold uppercase tracking-widest shadow-md">
+                <span className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-[#FF1E43] text-white font-mono text-[10px] font-bold uppercase tracking-widest shadow-md">
                   Recommended Model
                 </span>
               )}
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-mono text-xs text-silver/40 uppercase">{model.tier}</span>
-                  <span className="font-mono text-xs text-cyan uppercase font-medium">{model.timeline}</span>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-mono text-xs text-slate-600 font-bold uppercase">{model.tier}</span>
+                  <span className="font-mono text-xs font-bold text-[#00B6FF] uppercase">{model.timeline}</span>
                 </div>
-                <h3 className="text-xl font-bold font-heading uppercase text-white mb-3">
+                <h3 className="text-xl font-bold font-heading uppercase text-slate-900 mb-3">
                   {model.name}
                 </h3>
-                <p className="text-sm text-silver/70 font-light mb-6 leading-relaxed">
+                <p className="text-sm text-slate-700 font-normal mb-6 leading-relaxed">
                   {model.description}
                 </p>
 
-                <div className="space-y-2.5 mb-8 pt-4 border-t border-white/5">
-                  <span className="font-mono text-[11px] text-silver/40 uppercase tracking-wider block">
+                <div className="space-y-2.5 mb-8 pt-4 border-t border-slate-200">
+                  <span className="font-mono text-[11px] text-slate-600 font-bold uppercase tracking-wider block">
                     Core Deliverables:
                   </span>
                   {model.deliverables.map((deliv, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs text-silver/80">
-                      <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-cyan flex-shrink-0" />
+                    <div key={i} className="flex items-start gap-2 text-xs text-slate-700 font-medium">
+                      <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-[#00B6FF] flex-shrink-0" />
                       <span>{deliv}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/5">
-                <span className="font-mono text-[10px] text-silver/40 uppercase block mb-3">
+              <div className="pt-4 border-t border-slate-200">
+                <span className="font-mono text-[10px] text-slate-600 font-bold uppercase block mb-3">
                   Best For: {model.recommendedFor}
                 </span>
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Digi Labs, I would like to schedule a ${model.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center py-2.5 rounded-lg bg-white/5 hover:bg-cyan hover:text-black border border-white/15 hover:border-cyan text-xs font-mono uppercase tracking-wider transition-all"
+                  className="w-full inline-flex items-center justify-center py-3 rounded-xl bg-slate-100 hover:bg-[#00B6FF] hover:text-white border border-slate-300 hover:border-[#00B6FF] text-xs font-mono uppercase tracking-wider font-bold transition-all text-slate-900"
                 >
                   Direct Inquiry
                 </a>
@@ -198,18 +201,17 @@ export default function ArchitectureDiscovery() {
         </div>
 
         {/* Transmission Booking Card */}
-        <div className="max-w-2xl mx-auto rounded-3xl bg-[#0c0e16] border border-cyan/30 p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cyan/5 blur-3xl rounded-full pointer-events-none" />
-
+        <div className="max-w-2xl mx-auto rounded-3xl p-8 sm:p-12 shadow-2xl luminous-glass-card relative overflow-hidden border border-slate-200/90">
+          
           {isSubmitted ? (
             <div className="text-center py-8">
-              <div className="w-16 h-16 rounded-full bg-cyan/20 border border-cyan flex items-center justify-center mx-auto mb-6 text-cyan">
+              <div className="w-16 h-16 rounded-full bg-[#00B6FF]/15 border border-[#00B6FF] flex items-center justify-center mx-auto mb-6 text-[#00B6FF]">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black font-heading uppercase text-white mb-2">
+              <h3 className="text-2xl sm:text-3xl font-black font-heading uppercase text-slate-900 mb-2">
                 Discovery Transmission Received
               </h3>
-              <p className="text-sm text-silver/70 font-mono mb-8 max-w-md mx-auto">
+              <p className="text-sm text-slate-700 font-mono mb-8 max-w-md mx-auto">
                 Our lead systems engineer will review your operational requirements and return an initial feasibility brief within 24 hours.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -217,14 +219,14 @@ export default function ArchitectureDiscovery() {
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi Vortex Digi Labs! I just booked an Architecture Discovery for ${formData.company || formData.name}.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-xl bg-[#25D366] text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-white transition-colors"
+                  className="px-6 py-3 rounded-full bg-[#25D366] text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md hover:bg-[#1ebe5b] transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>Immediate WhatsApp Sync</span>
                 </a>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="text-xs font-mono text-silver/40 hover:text-cyan uppercase"
+                  className="text-xs font-mono text-slate-500 hover:text-[#00B6FF] uppercase font-bold"
                 >
                   Submit Another Brief
                 </button>
@@ -233,20 +235,20 @@ export default function ArchitectureDiscovery() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <span className="font-mono text-xs uppercase tracking-widest text-cyan block mb-1">
+                <span className="font-mono text-xs uppercase tracking-widest text-[#00B6FF] font-bold block mb-1">
                   Architecture Discovery Intake
                 </span>
-                <h3 className="text-2xl font-black font-heading uppercase text-white">
+                <h3 className="text-2xl font-black font-heading uppercase text-slate-900">
                   Schedule Direct Technical Session
                 </h3>
-                <p className="text-xs text-silver/60 font-light mt-1">
+                <p className="text-xs text-slate-600 font-normal mt-1">
                   Connect directly with Lead Systems Architect Terence Dean Allen.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                  <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                     Your Name *
                   </label>
                   <input
@@ -255,11 +257,11 @@ export default function ArchitectureDiscovery() {
                     placeholder="e.g. Alex Mercer"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white placeholder-silver/30 focus:border-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                  <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                     Work Email *
                   </label>
                   <input
@@ -268,14 +270,14 @@ export default function ArchitectureDiscovery() {
                     placeholder="name@enterprise.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white placeholder-silver/30 focus:border-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                  <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                     Enterprise / Company
                   </label>
                   <input
@@ -283,11 +285,11 @@ export default function ArchitectureDiscovery() {
                     placeholder="Organization Name"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white placeholder-silver/30 focus:border-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                  <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                     Phone / WhatsApp
                   </label>
                   <input
@@ -295,19 +297,19 @@ export default function ArchitectureDiscovery() {
                     placeholder="+27..."
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white placeholder-silver/30 focus:border-cyan focus:outline-none transition-colors"
+                    className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                   Primary Capability Discipline
                 </label>
                 <select
                   value={formData.pillar}
                   onChange={(e) => setFormData({ ...formData, pillar: e.target.value })}
-                  className="w-full bg-[#11141e] border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-cyan focus:outline-none transition-colors"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm"
                 >
                   <option value="3d-twin">Pillar 1: Interactive 3D & Digital Twin Pilots (WebXR/Three.js)</option>
                   <option value="agentic-workflows">Pillar 2: Autonomous Agentic Workflows (Multi-Model AI Orchestration)</option>
@@ -317,7 +319,7 @@ export default function ArchitectureDiscovery() {
               </div>
 
               <div>
-                <label className="font-mono text-[11px] text-silver/60 uppercase block mb-1.5">
+                <label className="font-mono text-[11px] text-slate-700 font-bold uppercase block mb-1.5">
                   Operational Scope & Objectives
                 </label>
                 <textarea
@@ -325,12 +327,12 @@ export default function ArchitectureDiscovery() {
                   placeholder="Outline the manual bottlenecks, legacy CAD assets, or automated workflows you need engineered..."
                   value={formData.scope}
                   onChange={(e) => setFormData({ ...formData, scope: e.target.value })}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm font-mono text-white placeholder-silver/30 focus:border-cyan focus:outline-none transition-colors resize-none"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-mono text-slate-900 placeholder-slate-400 focus:border-[#00B6FF] focus:outline-none transition-colors shadow-sm resize-none"
                 />
               </div>
 
               {error && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 font-mono text-xs">
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-[#FF1E43] font-mono text-xs">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
                   <span>{error}</span>
                 </div>
@@ -339,7 +341,7 @@ export default function ArchitectureDiscovery() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 rounded-xl bg-cyan text-black font-mono font-bold text-sm uppercase tracking-wider hover:bg-white hover:shadow-[0_0_25px_rgba(0,229,255,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full btn-electric-gradient py-4 rounded-full font-mono font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
               >
                 {isSubmitting ? (
                   <>

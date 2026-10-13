@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import VideoSection from '../components/VideoSection';
+import LuminousBackground from '../components/effects/LuminousBackground';
+import CursorVortex from '../components/effects/CursorVortex';
 
 export default function VaultPage() {
   useEffect(() => {
@@ -9,9 +11,11 @@ export default function VaultPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-charcoal text-silver selection:bg-cyan/30 selection:text-white flex flex-col">
+    <div className="relative min-h-screen text-slate-900 selection:bg-[#00B6FF]/25 selection:text-[#0F172A] flex flex-col">
+      <LuminousBackground />
+      <CursorVortex />
       <Navbar />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-24 relative z-10">
         <VideoSection />
       </main>
       <Footer />

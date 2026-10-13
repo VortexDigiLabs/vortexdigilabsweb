@@ -11,6 +11,8 @@ import CoreCapabilities from './components/CoreCapabilities';
 import EnterpriseCaseStudies from './components/EnterpriseCaseStudies';
 import ArchitectureDiscovery from './components/ArchitectureDiscovery';
 import Footer from './components/Footer';
+import LuminousBackground from './components/effects/LuminousBackground';
+import CursorVortex from './components/effects/CursorVortex';
 import VaultPage from './pages/VaultPage';
 import ContactPage from './pages/ContactPage';
 import AssetsPage from './pages/AssetsPage';
@@ -23,10 +25,9 @@ function HomePage() {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
       if (element) {
-        // Small delay to ensure all canvas mounts are established
         setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        }, 80);
       }
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -34,21 +35,31 @@ function HomePage() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-[#07080b] text-silver selection:bg-cyan/30 selection:text-white">
+    <div className="relative min-h-screen text-slate-900 selection:bg-[#00B6FF]/25 selection:text-[#0F172A]">
+      {/* 1. Animated Living Spatial Canvas Background */}
+      <LuminousBackground />
+
+      {/* 2. Interactive Cursor Particle Vortex (1000ms Lifetime) */}
+      <CursorVortex />
+
+      {/* 3. Luminous Translucent Topbar */}
       <Navbar />
-      <main>
-        {/* 1. Hero Section with 3D Canvas, Copy, and CTAs */}
+
+      <main className="relative z-10">
+        {/* Luminous Hero Section (Spatial Minimalist) */}
         <Hero />
 
-        {/* 2. Core Capabilities: 3 Distinct Pillars */}
+        {/* 3-Pillar Core Capabilities */}
         <CoreCapabilities />
 
-        {/* 3. Enterprise Case Studies / Proof of Capability (#pilots) */}
+        {/* Enterprise Case Studies (#pilots) */}
         <EnterpriseCaseStudies />
 
-        {/* 4. Architecture Discovery & Engagement Framework (#contact) */}
+        {/* Architecture Discovery Engagement Framework (#contact) */}
         <ArchitectureDiscovery />
       </main>
+
+      {/* Luminous Footer */}
       <Footer />
     </div>
   );

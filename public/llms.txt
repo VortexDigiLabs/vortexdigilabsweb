@@ -3,9 +3,11 @@
 > Elite Agentic AI Engineering and Interactive 3D Studio.
 > Specializing in autonomous agentic pipelines, interactive 3D WebXR simulators, and modernised technical training environments for industrial and enterprise operations.
 
-## Overview
+## Overview & Brand Identity
 Vortex Digi Labs is a specialized systems engineering and spatial computing studio based in South Africa, operating globally. We bridge the gap between heavy enterprise operations and autonomous digital intelligence, converting legacy technical assets into interactive browser-native 3D twins and deploying multi-model agentic workflow pipelines.
 
+- **Visual Architecture**: Luminous Spatial Minimalist — High-contrast light pearlescent canvas (`#FCFDFF`), metallic chrome highlights, and glowing Electric Blue (`#00B6FF`) and Crimson Red (`#FF1E43`) brand accents.
+- **Interactive Physics**: Ambient living spatial background and interactive cursor vortex particle trail (60fps, 1000ms decay).
 - **Primary Focus**: Agentic AI Systems, Interactive 3D WebXR, Autonomous Workflow Engineering
 - **Engineering Philosophy**: Technical precision, zero-install accessibility, deterministic reliability, self-healing operational automation.
 - **Website**: https://vortexdigilabsweb.vercel.app
@@ -27,7 +29,7 @@ Vortex Digi Labs is a specialized systems engineering and spatial computing stud
 ### 2. Autonomous Agentic Workflows
 - **Focus**: Multi-model AI orchestration, bespoke task automation, and enterprise API integration.
 - **Key Deliverables**:
-  - Self-healing task runners and continuous background validation loops.
+  - Self-healing task runners and continuous background verification loops.
   - Intelligent routing across local (Ollama/vLLM) and cloud (Claude 3.7/Sonnet, GPT-4o, Gemini 2.5 Flash/Pro, DeepSeek R1) models based on cost, latency, and context window requirements.
   - Operational data pipelines connecting frontend user interfaces, enterprise CRMs, ERPs, webhooks, and communication hubs (WhatsApp, Slack, Email).
 - **Core Stack**: LangChain, LlamaIndex, Autonomous Agent SDKs, Fastify/Node.js, Python, Serverless edge workers, Vector databases (Pinecone/Qdrant/Chroma).
